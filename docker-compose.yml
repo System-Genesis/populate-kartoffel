@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  
+  rabbit:
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  mongo-to-rabbit:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    env_file: mongo-to-rabbit.env
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
+
+  

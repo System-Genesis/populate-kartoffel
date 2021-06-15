@@ -1,0 +1,39 @@
+{
+  "name": "populate-kartoffel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "env-var": "^7.0.1",
+    "express": "^4.17.1",
+    "menashmq": "^0.1.5",
+    "mongoose": "^5.12.14",
+    "node": "^16.1.0",
+    "ts-node": "^10.0.0",
+    "tsc": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/faker": "^5.5.5",
+    "@types/mongodb": "^3.6.16",
+    "@types/node": "^15.6.1",
+    "typescript": "^4.3.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "dev": "npm run build && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/System-Genesis/populate-kartoffel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/System-Genesis/populate-kartoffel/issues"
+  },
+  "homepage": "https://github.com/System-Genesis/populate-kartoffel#readme"
+}
