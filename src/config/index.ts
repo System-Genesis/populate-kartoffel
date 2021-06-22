@@ -5,6 +5,11 @@ dotenv.config();
 
 const config = {
   mongo: {
+    denormalizedEntityCollectionName:env.get("DENORMALIZED_ENTITY_COLLECTION_NAME").required().asString(),
+    organizationGroupCollectionName:env.get("ORGANIZATION_GROUP_COLLECTION_NAME").required().asString(),
+    digitalIdentityCollectionName:env.get("DIGITAL_IDENTITY_COLLECTION_NAME").required().asString(),
+    entityCollectionName:env.get("ENTITY_COLLECTION_NAME").required().asString(),
+    roleCollectionName:env.get("ROLE_COLLECTION_NAME").required().asString(),
     uri:
       env.get("MONGODB_USER_NAME").asString() &&
       env.get("MONGODB_PASSWORD").asString()

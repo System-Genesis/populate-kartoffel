@@ -9,12 +9,12 @@ services:
       - 5672:5672
       - 15672:15672
 
-  mongo-to-rabbit:
+  populate-kartoffel:
     build: .
     restart: unless-stopped
     ports:
-      - 3000:3000
-    env_file: mongo-to-rabbit.env
+      - 3001:3001
+    env_file: populate-kartoffel.env
     depends_on: 
       - mongo-primary
       - mongo-secondary
