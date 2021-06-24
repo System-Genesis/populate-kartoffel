@@ -9,5 +9,4 @@ export default new Schema({
     createdAt: Date,
     updatedAt: Date,
     isRoleAttachable: Boolean,
-    roleID: String,
 });

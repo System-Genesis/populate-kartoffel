@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import digitalIdentitySchema from './digitalIdentitySchema';
 
 export default new Schema({
     id: String,
@@ -21,5 +22,5 @@ export default new Schema({
     clearance: String, // String,of number - enum
     sex: String,
     birthDate: Date,
-    digitalIdentities: [Object],
+    digitalIdentities: [digitalIdentitySchema],
 });
