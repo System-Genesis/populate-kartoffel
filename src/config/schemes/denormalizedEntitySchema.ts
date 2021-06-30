@@ -1,7 +1,8 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
+import { DenormalizedEntity } from '../types';
 import digitalIdentitySchema from './digitalIdentitySchema';
 
-export default new Schema({
+export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, DenormalizedEntity>({
     id: String,
     displayName: String,
     entityType: String, // enum

@@ -18,6 +18,10 @@ export interface Description extends Object {
   timeStamp: Timestamp;
   ns: { db: string; coll: string };
   documentKey: { id: string };
+  updateDescription: {
+    updatedFields : Object,
+    removedFields : [ string ],
+ },
 };
 
 export interface DigitalIdentity extends Object {
@@ -30,7 +34,11 @@ export interface DigitalIdentity extends Object {
   createdAt: Date;
   updatedAt: Date;
   isRoleAttachable: boolean;
-  roleID: string;
+};
+
+export interface DenormalizedDigitalIdentity extends DigitalIdentity {
+  // DI's Basic information
+  role: Role[]
 };
 
 export interface Entity extends Object {
@@ -105,5 +113,5 @@ export interface DenormalizedEntity extends Object {
   clearance: string; // string of number - enum
   sex?: string;
   birthDate?: Date;
-  digitalIdentities: DigitalIdentity[];
+  digitalIdentities: DenormalizedDigitalIdentity[];
 };

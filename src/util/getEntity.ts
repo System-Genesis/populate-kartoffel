@@ -1,23 +1,28 @@
-import { DigitalIdentity, Entity, MyChangeEvent, OrganizationGroup, Role } from "../config/types";
+import { DigitalIdentity, Entity, MyChangeEvent, Role } from "../config/types";
 import config from "../config/index";
 import { digitalIdentityModel, entityModel } from "./repo/models";
+import extractChangeEventObjectType from "./extractChangeEventObjectType";
+import { find, findOne } from "./repo/repository";
 
 const { mongo } = config;
 
-export default (changeEventObject: MyChangeEvent, collection: string) : Entity=> {
-  return entityGetOptions[collection](changeEventObject.description as any);
+export default async (changeEventObject: MyChangeEvent) => {
+  const changeEventObjectType = extractChangeEventObjectType(changeEventObject);
+  return entityGetOptions[changeEventObjectType](changeEventObject.description as any);
 };
 
-const getEntityWithDigitalIdentity = (digitalIdentity: DigitalIdentity) : Entity => {
-  return entityModel.find({id: digitalIdentity.entityId})
+const getEntityWithDigitalIdentity = async(digitalIdentity: DigitalIdentity) => {
+  return await find(entityModel, {id: digitalIdentity.entityId})
 };
 
-const getEntityWithEntity = (entity: Entity) : Entity => {
-  return entityModel.find({id: entity.id})
+const getEntityWithEntity = async (entity: Entity) => {
+  return await find(entityModel, {id: entity.id})
 };
 
-const getEntityWithRole = (role: Role) : Entity => {
-  digitalIdentityModel.find({uniqueId: role.digitalIndentityUniqueId})
+const getEntityWithRole = async (role: Role) => {
+   let roleDI = await findOne(digitalIdentityModel, {uniqueId: role.digitalIndentityUniqueId}) as DigitalIdentity;
+   return await getEntityWithDigitalIdentity(roleDI)
+  
 };
 
 const entityGetOptions = {

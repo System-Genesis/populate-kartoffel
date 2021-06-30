@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
+import { OrganizationGroup } from '../types';
 
-export default new Schema({
+export default new Schema<OrganizationGroup,Model<OrganizationGroup>, OrganizationGroup>({
     // OG's Basic information
     id: String,
     name: String,

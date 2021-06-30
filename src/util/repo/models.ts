@@ -5,6 +5,7 @@ import organizationGroupSchema from "../../config/schemes/organizationGroupSchem
 import digitalIdentitySchema from "../../config/schemes/digitalIdentitySchema";
 import entitySchema from "../../config/schemes/entitySchema";
 import roleSchema from "../../config/schemes/roleSchema";
+// import { DenormalizedEntity, DigitalIdentity, Entity, OrganizationGroup, Role } from "../../config/types";
 
 export const denormalizedEntityModel = mongoose.model(
   config.mongo.denormalizedEntityCollectionName,

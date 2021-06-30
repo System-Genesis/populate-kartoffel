@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
+import { DigitalIdentity } from '../types';
 
-export default new Schema({
+export default new Schema<DigitalIdentity,Model<DigitalIdentity>, DigitalIdentity>({
     type: String,
     source: String,
     mail: String,

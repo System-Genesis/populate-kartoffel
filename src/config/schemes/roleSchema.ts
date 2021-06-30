@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
+import { Role } from '../types';
 
-export default new Schema({
+export default new Schema<Role,Model<Role>, Role>({
     // Role's Basic information
     roleId: String,
     jobTitle: String,

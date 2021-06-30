@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
+import { Entity } from '../types';
 
-export default new Schema({
+export default new Schema<Entity,Model<Entity>, Entity>({
     id: String,
     displayName: String,
     entityType: String, // enum
@@ -21,5 +22,4 @@ export default new Schema({
     clearance: String, // String,of number - enum
     sex: String,
     birthDate: Date,
-    digitalIdentities: [String],
 });
