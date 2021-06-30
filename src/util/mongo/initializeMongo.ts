@@ -13,7 +13,7 @@ export const initializeMongo = async () => {
       useUnifiedTopology: true,
     })
     .then(
-      async () => {
+      () => {
         mongoose.connection.on("disconnected", () => reinitializeOnError(initializeMongo));
         console.log("Mongo connection established");
       },

@@ -2,8 +2,8 @@ import config from "../config";
 import { MyChangeEvent } from "../config/types";
 import extractChangeEventObjectType from "../util/extractChangeEventObjectType";
 import getEntity from "../util/getEntity";
-import updateEntity from "./updateEntity";
-import updateWithTransaction from "./updateWithTransaction";
+import regularChangeUpdate from "./regularChangeUpdate";
+import connectionChangeUpdate from "./connectionChangeUpdate";
 
 const { mongo } = config;
 
@@ -38,9 +38,9 @@ export default async (changeEventObject: MyChangeEvent) => {
   else {
     const entity = await getEntity(changeEventObject);
     if(updateObjectsDependencyQuery(changeEventObject, collection)){
-      updateWithTransaction(entity, config.uniqueID[collection]);
+      connectionChangeUpdate(entity, config.uniqueID[collection]);
     }
-    else updateEntity(entity);
+    else regularChangeUpdate(entity);
   }
 };
 
