@@ -15,6 +15,7 @@ export async function rabbitConsumer() {
           msg.ack;
         },
         (err) => {
+          msg.nack;
           console.error(err)
         }
       );

@@ -3,7 +3,7 @@ import { OrganizationGroup } from '../types';
 
 export default new Schema<OrganizationGroup,Model<OrganizationGroup>, OrganizationGroup>({
     // OG's Basic information
-    id: String,
+    id: { type: String, unique: true },
     name: String,
     ancestors: [String],
     hierarchy: String,

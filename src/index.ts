@@ -1,14 +1,14 @@
 import config from "./config/index";
 import server from "./express/server";
 import buildMocks from "./mocks/index";
+import { initializeMongo } from "./util/mongo/initializeMongo";
 // import { initializeMongo } from "./util/mongo/initializeMongo";
 import { initializeRabbit } from "./util/rabbit/initializeRabbit";
 
 const main = async () => {
-  await Promise.all([
-    // initializeMongo(), 
-    initializeRabbit()
-  ]);
+  await initializeMongo();
+  
+  await initializeRabbit();
 
   await server();
 

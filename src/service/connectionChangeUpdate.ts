@@ -2,7 +2,7 @@ import { Entity } from "../config/types";
 import craeteDenormalizedEntity from "../util/craeteDenormalizedEntity";
 import { findOne } from "../util/repo/repository";
 import { entityModel } from "../util/repo/models";
-import insertToEntitysWithTransaction from "../util/insertToEntitysWithTransaction";
+import insertTwoEntitysWithTransaction from "../util/insertTwoEntitysWithTransaction";
 import transactions from "../util/repo/transactions";
 
 export default async (destinationEntity: Entity, sourceEntityId: string) => {
@@ -12,5 +12,5 @@ export default async (destinationEntity: Entity, sourceEntityId: string) => {
   const sourceDenormalizedEntity = await craeteDenormalizedEntity(sourceEntity);
   const destinationDenormalizedEntity = await craeteDenormalizedEntity(destinationEntity);
 
-  await transactions(insertToEntitysWithTransaction(sourceDenormalizedEntity, destinationDenormalizedEntity));
+  await transactions(insertTwoEntitysWithTransaction(sourceDenormalizedEntity, destinationDenormalizedEntity));
 };

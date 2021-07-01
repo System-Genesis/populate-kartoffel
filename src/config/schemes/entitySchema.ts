@@ -2,7 +2,7 @@ import { Model, Schema } from 'mongoose';
 import { Entity } from '../types';
 
 export default new Schema<Entity,Model<Entity>, Entity>({
-    id: String,
+    id: { type: String, unique: true },
     displayName: String,
     entityType: String, // enum
     identityCard: String,
