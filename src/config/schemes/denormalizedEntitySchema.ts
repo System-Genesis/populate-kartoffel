@@ -1,6 +1,6 @@
 import { Model, Schema } from 'mongoose';
 import { DenormalizedEntity } from '../types';
-import digitalIdentitySchema from './digitalIdentitySchema';
+import denormalizedDigitalIdentitySchema from './denormalizedDigitalIdentitySchema';
 
 export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, DenormalizedEntity>({
     id: { type: String, unique: true },
@@ -23,5 +23,5 @@ export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, Denormal
     clearance: String, // String,of number - enum
     sex: String,
     birthDate: Date,
-    digitalIdentities: [digitalIdentitySchema],
+    digitalIdentities: [denormalizedDigitalIdentitySchema],
 });

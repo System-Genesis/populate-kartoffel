@@ -5,10 +5,10 @@ import { DenormalizedEntity } from "../../config/types";
 export const find = async (
   model: Model<any, any, any>,
   filter: object | ObjectId
-) => await model.find(filter);
+) => await model.find(filter).lean();
 
 export const findOne = async (model: Model<any, any, any>,filter: object | ObjectId) => {
-  return await model.findOne(filter);
+  return await model.findOne(filter).lean();
 }
 
 export const findOneAndReplace = async (

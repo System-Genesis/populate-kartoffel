@@ -9,6 +9,6 @@ export default async (entity :Entity) => {
             return { ...DI, role: DIRole } as unknown as DenormalizedDigitalIdentity;
     }))
     
-    const denormalizedEntity = { ...entity, populatedDIs } as unknown as DenormalizedEntity
+    const denormalizedEntity = { ...entity, digitalIdentities: populatedDIs } as unknown as DenormalizedEntity
     return denormalizedEntity 
 };

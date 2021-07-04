@@ -11,7 +11,7 @@ export default async () => {
   });
 
   app.get("/getAllPopulated", async function (_: Request, res: Response) {
-    const responseFromDB = await find(denormalizedEntityModel,{});
+    const responseFromDB = JSON.stringify(await find(denormalizedEntityModel,{}));
     res.send(`${responseFromDB}`);
   });
 };

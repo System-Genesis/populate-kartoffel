@@ -5,7 +5,7 @@ export default new Schema<DigitalIdentity,Model<DigitalIdentity>, DigitalIdentit
     type: String,
     source: String,
     mail: String,
-    uniqueId: { type: String, unique: true },
+    uniqueId: { type: String, unique: true , sparse: true},
     entityId: String,
     createdAt: Date,
     updatedAt: Date,

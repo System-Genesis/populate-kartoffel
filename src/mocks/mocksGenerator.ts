@@ -10,8 +10,7 @@ export const generateCollections = async () => {
     await digitalIdentityModel.insertMany(mocksData['digitalIdentities']);
     await roleModel.insertMany(mocksData['roles']);
   } catch (err) {
-    if( err.code != 11000 ) console.error("mocks generator error:", err)  
-    else console.log('ach shelanu lo oved')
+    if( err.code != 11000 ) console.error("mocks generator error:", err)
   }
 };
 

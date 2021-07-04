@@ -3,7 +3,7 @@ import { Role } from '../types';
 
 export default new Schema<Role,Model<Role>, Role>({
     // Role's Basic information
-    roleId: { type: String, unique: true },
+    roleId: { type: String, unique: true , sparse: true},
     jobTitle: String,
     digitalIndentityUniqueId: String,
     directGroup: String,
