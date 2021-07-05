@@ -33,6 +33,9 @@ const config = {
   },
   port: env.get("PORT").required().asPortNumber(),
   isMock: env.get("IS_MOCK").required().asString(),
+  errorCodes: {
+    duplicateKey: 11000,
+  },
 };
 
 export default config;

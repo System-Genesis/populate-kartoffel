@@ -1,5 +1,6 @@
 import faker from "faker";
 import { readFileSync } from "fs";
+import config from "../config/index";
 import { digitalIdentityModel, entityModel, roleModel } from "../util/repo/models";
 
 const mocksData = JSON.parse(readFileSync('./src/mocks/db.json').toString())
@@ -10,7 +11,7 @@ export const generateCollections = async () => {
     await digitalIdentityModel.insertMany(mocksData['digitalIdentities']);
     await roleModel.insertMany(mocksData['roles']);
   } catch (err) {
-    if( err.code != 11000 ) console.error("mocks generator error:", err)
+    if( err.code != config.errorCodes.duplicateKey ) console.error("mocks generator error:", err)
   }
 };
 
