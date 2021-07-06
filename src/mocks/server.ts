@@ -7,7 +7,7 @@ import { denormalizedEntityModel } from "../util/repo/models";
 export default async () => {
   app.get("/updatePerson", async function (_: Request, res: Response) {
     const responseFromDB = await updatePersonsOnCommend();
-    res.send(`${responseFromDB}`);
+    res.send(`${JSON.stringify(responseFromDB)}`);
   });
 
   app.get("/getAllPopulated", async function (_: Request, res: Response) {

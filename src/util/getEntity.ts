@@ -7,16 +7,19 @@ import { findOne } from "./repo/repository";
 const { mongo } = config;
 
 const getEntityWithDigitalIdentity = async(digitalIdentity: DigitalIdentity) => {
-  return await findOne(entityModel, {id: digitalIdentity.entityId})
+  if(digitalIdentity) return await findOne(entityModel, {id: digitalIdentity.entityId})
+  else return null
 };
 
 const getEntityWithEntity = async (entity: Entity) => {
-  return await findOne(entityModel, {id: entity.id})
+  if(entity) return await findOne(entityModel, {id: entity.id})
+  else return null
 };
 
 const getEntityWithRole = async (role: Role) => {
-   let roleDI = await findOne(digitalIdentityModel, {uniqueId: role.digitalIndentityUniqueId}) as DigitalIdentity;
-   return await getEntityWithDigitalIdentity(roleDI)
+   let roleDI = await findOne(digitalIdentityModel, {uniqueId: role.digitalIdentityUniqueId}) as DigitalIdentity;
+   if(role) return await getEntityWithDigitalIdentity(roleDI)
+   else return null
   
 };
 

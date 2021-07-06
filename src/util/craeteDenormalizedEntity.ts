@@ -5,7 +5,7 @@ import { find, findOne } from "./repo/repository";
 export default async (entity :Entity) => {
     const DIs = await find(digitalIdentityModel, {entityId: entity.id});
     const populatedDIs = await Promise.all(DIs.map(async (DI: DigitalIdentity)  => {
-            const DIRole = await findOne(roleModel, { digitalIndentityUniqueId: DI.uniqueId });
+            const DIRole = await findOne(roleModel, { digitalIdentityUniqueId: DI.uniqueId });
             return { ...DI, role: DIRole } as unknown as DenormalizedDigitalIdentity;
     }))
     

@@ -8,4 +8,5 @@ export default async (entity: Entity) => {
   const filterQuery = {id: denormalizedEntity.id};
   const responseFromDB = await findOneAndUpdate(denormalizedEntityModel, filterQuery, denormalizedEntity)
   if(responseFromDB == null) await create(denormalizedEntityModel, denormalizedEntity)
+  console.log('the change has completed:', JSON.stringify(denormalizedEntity))
 };

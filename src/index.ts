@@ -4,11 +4,14 @@ import buildMocks from "./mocks/index";
 import { initializeMongo } from "./util/mongo/initializeMongo";
 // import { initializeMongo } from "./util/mongo/initializeMongo";
 import { initializeRabbit } from "./util/rabbit/initializeRabbit";
+import { rabbitConsumer } from "./util/rabbit/initiateRabbitConsumer";
 
 const main = async () => {
   await initializeMongo();
   
   await initializeRabbit();
+
+  await rabbitConsumer();
 
   await server();
 

@@ -1,17 +1,52 @@
 version: "3.3"
 
+
 services:
-  
+  mongo-primary:
+    image: bitnami/mongodb:latest
+    restart: unless-stopped
+    environment:
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ADVERTISED_HOSTNAME=mongo-primary
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_ROOT_PASSWORD=nitro123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_USERNAME=nitro
+      - MONGODB_PASSWORD=password123
+      - MONGODB_DATABASE=kartoffelMock
+    ports:
+      - 27017:27017
+
+  mongo-secondary:
+    image: bitnami/mongodb:latest
+    restart: unless-stopped
+    environment:
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_ADVERTISED_HOSTNAME=mongo-secondary
+      - MONGODB_PRIMARY_HOST=mongo-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_PRIMARY_ROOT_PASSWORD=nitro123
+      - MONGODB_REPLICA_SET_NAME=rs0
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    ports:
+      - 27018:27017
+    depends_on:
+      - mongo-primary
+
   rabbit:
     image: rabbitmq:3-management
     restart: unless-stopped
     ports:
       - 5672:5672
       - 15672:15672
+    hostname: mabbit
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/data
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq/log
 
   populate-kartoffel:
     build: .
-    restart: unless-stopped
+    restart: always
     ports:
       - 3001:3001
     env_file: populate-kartoffel.env

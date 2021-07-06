@@ -5,7 +5,7 @@ export default new Schema<Role,Model<Role>, Role>({
     // Role's Basic information
     roleId: { type: String, unique: true , sparse: true},
     jobTitle: String,
-    digitalIndentityUniqueId: String,
+    digitalIdentityUniqueId: String,
     directGroup: String,
     hierarchy: String,
     hierarchyIds: [String],

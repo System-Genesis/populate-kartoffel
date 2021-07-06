@@ -36,6 +36,10 @@ const config = {
   errorCodes: {
     duplicateKey: 11000,
   },
+  operationTypes:{
+    update: 'update',
+    insert: 'insert'
+  },
 };
 
 export default config;

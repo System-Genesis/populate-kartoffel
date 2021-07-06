@@ -7,17 +7,18 @@ import connectionChangeUpdate from "./connectionChangeUpdate";
 
 const { mongo } = config;
 
-const ignoreUpdateQuery = (collection: string, operationType: String) =>
-  operationType == "inesrt" &&
-  collection ==
-    (mongo.roleCollectionName || mongo.digitalIdentityCollectionName);
+const ignoreUpdateQuery = (collection: string, operationType: string) =>
+  !config.operationTypes[operationType] ||
+  (operationType == config.operationTypes.insert &&
+    collection ==
+      (mongo.roleCollectionName || mongo.digitalIdentityCollectionName));
 
 const updateObjectsDependencyQuery = (
   changeEventObject: MyChangeEvent,
   collection: string,
   operationType: String
 ) => {
-  if (operationType == "update") {
+  if (operationType == config.operationTypes.update) {
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
     for (const key in updatedFields) {
@@ -31,19 +32,30 @@ const updateObjectsDependencyQuery = (
 const ObjectCconnectionFields = {
   [mongo.digitalIdentityCollectionName]: "entityId",
   [mongo.entityCollectionName]: [],
-  [mongo.roleCollectionName]: "digitalIndentityUniqueId",
+  [mongo.roleCollectionName]: "digitalIdentityUniqueId",
 };
 
 export default async (changeEventObject: MyChangeEvent) => {
-  const collection = extractChangeEventObjectType(changeEventObject);
-  const operationType = changeEventObject.description.operationType;
+  const operationType = changeEventObject.description.operationType as string;
+  const collection = config.operationTypes[operationType] ? extractChangeEventObjectType(changeEventObject) : '';
   if (ignoreUpdateQuery(collection, operationType)) null;
   else {
     const entity = await getEntity(changeEventObject);
-    if (
-      updateObjectsDependencyQuery(changeEventObject, collection, operationType)
-    ) {
-      connectionChangeUpdate(entity, config.uniqueID[collection]);
-    } else regularChangeUpdate(entity);
+    if (!entity) {
+      console.error(
+        "the entity that matches this change does not exist in the DB:",
+        changeEventObject.description.fullDocument
+      );
+    } else {
+      if (
+        updateObjectsDependencyQuery(
+          changeEventObject,
+          collection,
+          operationType
+        )
+      ) {
+        await connectionChangeUpdate(entity, config.uniqueID[collection]);
+      } else await regularChangeUpdate(entity);
+    }
   }
 };
