@@ -6,8 +6,9 @@ import {
   entityModel,
   roleModel,
 } from "../util/repo/models";
+import path from "path"
 
-const mocksData = JSON.parse(readFileSync("./src/mocks/db.json").toString());
+const mocksData = JSON.parse(readFileSync(path.resolve(__dirname, "db.json"), 'utf8'));
 
 export const generateCollections = async () => {
   mocksData["entities"].forEach(async (element: any) => {

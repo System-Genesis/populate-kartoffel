@@ -16,6 +16,8 @@ services:
       - MONGODB_DATABASE=kartoffelMock
     ports:
       - 27017:27017
+    networks: 
+      - my-network
 
   mongo-secondary:
     image: bitnami/mongodb:latest
@@ -32,6 +34,8 @@ services:
       - 27018:27017
     depends_on:
       - mongo-primary
+    networks: 
+      - my-network
 
   rabbit:
     image: rabbitmq:3-management
@@ -43,6 +47,8 @@ services:
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/data
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq/log
+    networks: 
+      - my-network
 
   populate-kartoffel:
     build: .
@@ -54,5 +60,10 @@ services:
       - mongo-primary
       - mongo-secondary
       - rabbit
+    networks: 
+      - my-network
 
+networks: 
+  my-network:
+    driver: bridge
   

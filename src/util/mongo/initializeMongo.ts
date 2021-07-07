@@ -19,7 +19,7 @@ export const initializeMongo = async () => {
       },
       (err) => {
         console.log(err)
-        reinitializeOnError(initializeMongo);
+        process.exit(1);
       }
     );
 };

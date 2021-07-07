@@ -17,9 +17,10 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "./dist/",
     "lib": ["ES2020.Promise"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/mocks/db.json"]
 }
