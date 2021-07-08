@@ -1,4 +1,4 @@
-import { DigitalIdentity, Entity, MyChangeEvent, Role } from "../config/types";
+import { DenormalizedEntity, DigitalIdentity, Entity, MyChangeEvent, Role } from "../config/types";
 import config from "../config/index";
 import { digitalIdentityModel, entityModel } from "./repo/models";
 import extractChangeEventObjectType from "./extractChangeEventObjectType";
@@ -11,7 +11,7 @@ const getEntityWithDigitalIdentity = async(digitalIdentity: DigitalIdentity) => 
   else return null
 };
 
-const getEntityWithEntity = async (entity: Entity) => {
+const getEntityWithEntity = async (entity: Entity | DenormalizedEntity) => {
   if(entity) return await findOne(entityModel, {id: entity.id})
   else return null
 };
@@ -23,13 +23,14 @@ const getEntityWithRole = async (role: Role) => {
   
 };
 
-const entityGetOptions = {
+export const getEntityOptions = {
   [mongo.digitalIdentityCollectionName]: getEntityWithDigitalIdentity,
+  [mongo.denormalizedEntityCollectionName]: getEntityWithEntity,
   [mongo.entityCollectionName]: getEntityWithEntity,
   [mongo.roleCollectionName]: getEntityWithRole,
 };
 
-export default async (changeEventObject: MyChangeEvent) => {
+export const getEntityFromChangeEvent =  async (changeEventObject: MyChangeEvent) => {
   const changeEventObjectType = extractChangeEventObjectType(changeEventObject);
-  return await entityGetOptions[changeEventObjectType](changeEventObject.description.fullDocument as any);
+  return await getEntityOptions[changeEventObjectType](changeEventObject.description.fullDocument as any);
 };

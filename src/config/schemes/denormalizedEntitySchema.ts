@@ -3,7 +3,7 @@ import { DenormalizedEntity } from '../types';
 import denormalizedDigitalIdentitySchema from './denormalizedDigitalIdentitySchema';
 
 export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, DenormalizedEntity>({
-    id: { type: String, unique: true },
+    id: { type: String, unique: true , sparse: true},
     displayName: String,
     entityType: String, // enum
     identityCard: String,

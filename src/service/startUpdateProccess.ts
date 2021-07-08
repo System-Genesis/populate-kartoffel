@@ -1,7 +1,7 @@
 import config from "../config";
 import { MyChangeEvent } from "../config/types";
 import extractChangeEventObjectType from "../util/extractChangeEventObjectType";
-import getEntity from "../util/getEntity";
+import { getEntityFromChangeEvent } from "../util/getEntity";
 import regularChangeUpdate from "./regularChangeUpdate";
 import connectionChangeUpdate from "./connectionChangeUpdate";
 
@@ -22,8 +22,7 @@ const updateObjectsDependencyQuery = (
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
     for (const key in updatedFields) {
-      if (ObjectCconnectionFields[collection] == updatedFields[key])
-        return true;
+      if (ObjectCconnectionFields[collection] == key) return true;
     }
     return false;
   } else return false;
@@ -37,10 +36,12 @@ const ObjectCconnectionFields = {
 
 export default async (changeEventObject: MyChangeEvent) => {
   const operationType = changeEventObject.description.operationType as string;
-  const collection = config.operationTypes[operationType] ? extractChangeEventObjectType(changeEventObject) : '';
+  const collection = config.operationTypes[operationType]
+    ? extractChangeEventObjectType(changeEventObject)
+    : "";
   if (ignoreUpdateQuery(collection, operationType)) null;
   else {
-    const entity = await getEntity(changeEventObject);
+    const entity = await getEntityFromChangeEvent(changeEventObject);
     if (!entity) {
       console.error(
         "the entity that matches this change does not exist in the DB:",
@@ -54,7 +55,13 @@ export default async (changeEventObject: MyChangeEvent) => {
           operationType
         )
       ) {
-        await connectionChangeUpdate(entity, config.uniqueID[collection]);
+        await connectionChangeUpdate(
+          entity,
+          collection,
+          changeEventObject.description.fullDocument[
+            config.uniqueID[collection]
+          ]
+        );
       } else await regularChangeUpdate(entity);
     }
   }

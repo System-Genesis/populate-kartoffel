@@ -1,16 +1,27 @@
 import { Entity } from "../config/types";
 import craeteDenormalizedEntity from "../util/craeteDenormalizedEntity";
-import { findOne } from "../util/repo/repository";
-import { entityModel } from "../util/repo/models";
-import insertTwoEntitysWithTransaction from "../util/insertTwoEntitysWithTransaction";
-import transactions from "../util/repo/transactions";
+import { findOne, findOneAndUpdate } from "../util/repo/repository";
+import { denormalizedEntityModel } from "../util/repo/models";
+import config from "../config";
+import { getEntityOptions } from "../util/getEntity";
+import regularChangeUpdate from "./regularChangeUpdate";
+// import insertTwoEntitysWithTransaction from "../util/insertTwoEntitysWithTransaction";
+// import transactions from "../util/repo/transactions";
 
-export default async (destinationEntity: Entity, sourceEntityId: string) => {
-  const sourceEntityIdFindOneQuery = {id: sourceEntityId}
-  const sourceEntity = await findOne(entityModel, sourceEntityIdFindOneQuery) as Entity
+export default async (destinationEntity: Entity, collection: string, sourceChangedObjectId: string) => {
+  const sourceEntityIdFindOneQuery = {[config.uniqueIDPath[collection]]: sourceChangedObjectId}
+  const sourceDenormalizedEntityBeforeChange = await findOne(denormalizedEntityModel, sourceEntityIdFindOneQuery)
+  const sourceEntity = await getEntityOptions[config.mongo.denormalizedEntityCollectionName](sourceDenormalizedEntityBeforeChange as any);
+
+  if(!sourceEntity){
+    regularChangeUpdate(destinationEntity)
+  }else{
+    const sourceDenormalizedEntity = await craeteDenormalizedEntity(sourceEntity);
+    const destinationDenormalizedEntity = await craeteDenormalizedEntity(destinationEntity);
   
-  const sourceDenormalizedEntity = await craeteDenormalizedEntity(sourceEntity);
-  const destinationDenormalizedEntity = await craeteDenormalizedEntity(destinationEntity);
-
-  await transactions(insertTwoEntitysWithTransaction(sourceDenormalizedEntity, destinationDenormalizedEntity));
+    await findOneAndUpdate(denormalizedEntityModel, {id: sourceDenormalizedEntity.id}, sourceDenormalizedEntity)
+    await findOneAndUpdate(denormalizedEntityModel, {id: destinationDenormalizedEntity.id}, destinationDenormalizedEntity)
+  }
+  
+  // await transactions(insertTwoEntitysWithTransaction(sourceDenormalizedEntity, destinationDenormalizedEntity));
 };

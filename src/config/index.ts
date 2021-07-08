@@ -27,6 +27,11 @@ const config = {
     [env.get("ENTITY_COLLECTION_NAME").required().asString()]: 'id',
     [env.get("ROLE_COLLECTION_NAME").required().asString()]: 'roleId',
   },
+  uniqueIDPath:{
+    [env.get("DIGITAL_IDENTITY_COLLECTION_NAME").required().asString()]: 'digitalIdentities.uniqueId',
+    [env.get("ENTITY_COLLECTION_NAME").required().asString()]: 'id',
+    [env.get("ROLE_COLLECTION_NAME").required().asString()]: 'digitalIdentities.role.roleId',
+  },
   rabbit: {
     uri: env.get("RABBIT_URI").required().asString(),
     queueName: env.get("RABBIT_QUEUE_NAME").required().asString(),
@@ -40,6 +45,7 @@ const config = {
     update: 'update',
     insert: 'insert'
   },
+  prefetchAmount: 20,
 };
 
 export default config;

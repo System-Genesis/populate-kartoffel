@@ -5,20 +5,19 @@ import startUpdateProccess from "../../service/startUpdateProccess";
 
 export async function rabbitConsumer() {
   await menash.queue(config.rabbit.queueName).activateConsumer(
-    (msg: ConsumerMessage) => {
+    async (msg: ConsumerMessage) => {
       const changeEventObject = msg.getContent() as MyChangeEvent;
       console.log(
         `change accepted from rabbit: ${JSON.stringify(changeEventObject)}`
       );
-      startUpdateProccess(changeEventObject).then(
-        () => {
-          msg.ack;
-        },
-        (err) => {
-          msg.nack;
+      try{
+        await startUpdateProccess(changeEventObject);
+        msg.ack();
+      } catch(err) {
+          // TODO return nack on proccess exit 
+          msg.nack(true);
           console.error(err)
         }
-      );
     },
     { noAck: false }
   );

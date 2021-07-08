@@ -41,3 +41,12 @@ export const updatePersonsOnCommend = async () => {
     }
   ).lean();
 };
+
+export const updateDIOnCommend = async () => {
+  return await digitalIdentityModel.findOneAndUpdate(
+    { entityId: '43dr4e3s233'},
+    {
+      $set: { entityId: "03dr4e3s233"  },
+    }
+  ).lean();
+};
