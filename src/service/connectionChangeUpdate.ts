@@ -5,8 +5,6 @@ import { denormalizedEntityModel } from "../util/repo/models";
 import config from "../config";
 import { getEntityOptions } from "../util/getEntity";
 import regularChangeUpdate from "./regularChangeUpdate";
-// import insertTwoEntitysWithTransaction from "../util/insertTwoEntitysWithTransaction";
-// import transactions from "../util/repo/transactions";
 
 export default async (destinationEntity: Entity, collection: string, sourceChangedObjectId: string) => {
   const sourceEntityIdFindOneQuery = {[config.uniqueIDPath[collection]]: sourceChangedObjectId}

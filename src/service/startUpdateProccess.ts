@@ -1,28 +1,32 @@
 import config from "../config";
 import { MyChangeEvent } from "../config/types";
-import extractChangeEventObjectType from "../util/extractChangeEventObjectType";
+import getCollectionName from "../util/getCollectionName";
 import { getEntityFromChangeEvent } from "../util/getEntity";
 import regularChangeUpdate from "./regularChangeUpdate";
 import connectionChangeUpdate from "./connectionChangeUpdate";
 
 const { mongo } = config;
 
-const ignoreUpdateQuery = (collection: string, operationType: string) =>
+const isIgnoreChangeQuery = (collectionName: string, operationType: string) =>
   !config.operationTypes[operationType] ||
   (operationType == config.operationTypes.insert &&
-    collection ==
+    collectionName ==
       (mongo.roleCollectionName || mongo.digitalIdentityCollectionName));
 
-const updateObjectsDependencyQuery = (
+const isDependencyFieldChangedQuery = (
   changeEventObject: MyChangeEvent,
-  collection: string,
+  collectionName: string,
   operationType: String
 ) => {
   if (operationType == config.operationTypes.update) {
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
     for (const key in updatedFields) {
-      if (ObjectCconnectionFields[collection] == key) return true;
+      if (
+        ObjectCconnectionFields[collectionName] &&
+        ObjectCconnectionFields[collectionName] == key
+      )
+        return true;
     }
     return false;
   } else return false;
@@ -30,17 +34,15 @@ const updateObjectsDependencyQuery = (
 
 const ObjectCconnectionFields = {
   [mongo.digitalIdentityCollectionName]: "entityId",
-  [mongo.entityCollectionName]: [],
+  [mongo.entityCollectionName]: null,
   [mongo.roleCollectionName]: "digitalIdentityUniqueId",
 };
 
 export default async (changeEventObject: MyChangeEvent) => {
   const operationType = changeEventObject.description.operationType as string;
-  const collection = config.operationTypes[operationType]
-    ? extractChangeEventObjectType(changeEventObject)
-    : "";
-  if (ignoreUpdateQuery(collection, operationType)) null;
-  else {
+  const collectionName = getCollectionName(changeEventObject);
+
+  if (!isIgnoreChangeQuery(collectionName, operationType)) {
     const entity = await getEntityFromChangeEvent(changeEventObject);
     if (!entity) {
       console.error(
@@ -49,17 +51,17 @@ export default async (changeEventObject: MyChangeEvent) => {
       );
     } else {
       if (
-        updateObjectsDependencyQuery(
+        isDependencyFieldChangedQuery(
           changeEventObject,
-          collection,
+          collectionName,
           operationType
         )
       ) {
         await connectionChangeUpdate(
           entity,
-          collection,
+          collectionName,
           changeEventObject.description.fullDocument[
-            config.uniqueID[collection]
+            config.uniqueID[collectionName]
           ]
         );
       } else await regularChangeUpdate(entity);

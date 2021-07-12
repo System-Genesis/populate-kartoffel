@@ -6,9 +6,11 @@ import {
   entityModel,
   roleModel,
 } from "../util/repo/models";
-import path from "path"
+import path from "path";
 
-const mocksData = JSON.parse(readFileSync(path.resolve(__dirname, "db.json"), 'utf8'));
+const mocksData = JSON.parse(
+  readFileSync(path.resolve(__dirname, "db.json"), "utf8")
+);
 
 export const generateCollections = async () => {
   mocksData["entities"].forEach(async (element: any) => {
@@ -31,22 +33,26 @@ export const generateCollections = async () => {
   });
 };
 
-export const updatePersonsOnCommend = async () => {
+export const updatePersonsOnCommend = async (entityId) => {
   const randomFirstName = faker.name.firstName();
 
-  return await entityModel.findOneAndUpdate(
-    { id: "03dr4e3s233" },
-    {
-      $set: { firstName: randomFirstName },
-    }
-  ).lean();
+  return await entityModel
+    .findOneAndUpdate(
+      { id: entityId },
+      {
+        $set: { firstName: randomFirstName },
+      }
+    )
+    .lean();
 };
 
-export const updateDIOnCommend = async () => {
-  return await digitalIdentityModel.findOneAndUpdate(
-    { entityId: '43dr4e3s233'},
-    {
-      $set: { entityId: "03dr4e3s233"  },
-    }
-  ).lean();
+export const updateDIOnCommend = async (sourceEntityId, destEntityId) => {
+  return await digitalIdentityModel
+    .findOneAndUpdate(
+      { entityId: sourceEntityId },
+      {
+        $set: { entityId: destEntityId },
+      }
+    )
+    .lean();
 };
