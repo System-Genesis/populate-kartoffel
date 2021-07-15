@@ -1,9 +1,11 @@
-import { Model, Schema } from 'mongoose';
-import { DenormalizedEntity } from '../types';
-import denormalizedDigitalIdentitySchema from './denormalizedDigitalIdentitySchema';
+import { Model, Schema } from "mongoose";
+import config from "..";
+import { DenormalizedEntity } from "../types";
+import denormalizedDigitalIdentitySchema from "./denormalizedDigitalIdentitySchema";
 
-export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, DenormalizedEntity>({
-    id: { type: String, unique: true , sparse: true},
+export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, DenormalizedEntity> (
+  {
+    id: { type: String, unique: true, sparse: true },
     displayName: String,
     entityType: String, // enum
     identityCard: String,
@@ -24,4 +26,6 @@ export default new Schema<DenormalizedEntity,Model<DenormalizedEntity>, Denormal
     sex: String,
     birthDate: Date,
     digitalIdentities: [denormalizedDigitalIdentitySchema],
-});
+  },
+  { collection: config.mongo.denormalizedEntityCollectionName }
+);

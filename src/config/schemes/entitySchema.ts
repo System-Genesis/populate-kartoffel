@@ -1,7 +1,9 @@
-import { Model, Schema } from 'mongoose';
-import { Entity } from '../types';
+import { Model, Schema } from "mongoose";
+import config from "..";
+import { Entity } from "../types";
 
-export default new Schema<Entity,Model<Entity>, Entity>({
+export default new Schema<Entity, Model<Entity>, Entity>(
+  {
     id: { type: String, unique: true },
     displayName: String,
     entityType: String, // enum
@@ -22,4 +24,6 @@ export default new Schema<Entity,Model<Entity>, Entity>({
     clearance: String, // String,of number - enum
     sex: String,
     birthDate: Date,
-});
+  },
+  { collection: config.mongo.entityCollectionName }
+);

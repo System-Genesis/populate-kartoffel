@@ -1,9 +1,11 @@
-import { Model, Schema } from 'mongoose';
-import { Role } from '../types';
+import { Model, Schema } from "mongoose";
+import config from "..";
+import { Role } from "../types";
 
-export default new Schema<Role,Model<Role>, Role>({
+export default new Schema<Role, Model<Role>, Role>(
+  {
     // Role's Basic information
-    roleId: { type: String, unique: true , sparse: true},
+    roleId: { type: String, unique: true, sparse: true },
     jobTitle: String,
     digitalIdentityUniqueId: String,
     directGroup: String,
@@ -12,4 +14,6 @@ export default new Schema<Role,Model<Role>, Role>({
     createdAt: Date,
     updatedAt: Date,
     source: String,
-});
+  },
+  { collection: config.mongo.roleCollectionName }
+);

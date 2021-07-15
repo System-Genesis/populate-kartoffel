@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import config from "../../config";
-import { reinitializeOnError } from "../reinitializeOnError";
 
 export const initializeMongo = async () => {
   console.log("Connecting to Mongo...");
@@ -14,7 +13,10 @@ export const initializeMongo = async () => {
     })
     .then(
       () => {
-        mongoose.connection.on("disconnected", () => reinitializeOnError(initializeMongo));
+        mongoose.connection.on('reconnected', function () {
+          console.info('Reconnected to MongoDB')
+        })      
+        mongoose.connection.on("disconnected", () => console.info('MongoDB disconnected'));
         console.log("Mongo connection established");
       },
       (err) => {

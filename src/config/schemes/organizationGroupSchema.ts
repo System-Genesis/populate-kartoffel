@@ -1,7 +1,9 @@
-import { Model, Schema } from 'mongoose';
-import { OrganizationGroup } from '../types';
+import { Model, Schema } from "mongoose";
+import config from "..";
+import { OrganizationGroup } from "../types";
 
-export default new Schema<OrganizationGroup,Model<OrganizationGroup>, OrganizationGroup>({
+export default new Schema<OrganizationGroup,Model<OrganizationGroup>, OrganizationGroup>(
+  {
     // OG's Basic information
     id: { type: String, unique: true },
     name: String,
@@ -12,4 +14,6 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     isLeaf: Boolean,
     createdAt: Date,
     updatedAt: Date,
-});
+  },
+  { collection: config.mongo.organizationGroupCollectionName }
+);
