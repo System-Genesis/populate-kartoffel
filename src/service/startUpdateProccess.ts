@@ -39,7 +39,7 @@ const ObjectCconnectionFields = {
 };
 
 export default async (changeEventObject: MyChangeEvent) => {
-  const operationType = changeEventObject.description.operationType as string;
+  const operationType = changeEventObject?.description?.operationType as string;
   const collectionName = getCollectionName(changeEventObject);
 
   if (!isIgnoreChangeQuery(collectionName, operationType)) {
