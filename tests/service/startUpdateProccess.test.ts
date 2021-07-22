@@ -1,11 +1,10 @@
 import { MyChangeEvent } from "../../src/config/types";
 import startUpdateProccess from "../../src/service/startUpdateProccess";
-import { getEntityFromChangeEvent } from "../../src/util/getEntity";
 import regularChangeUpdate from "../../src/service/regularChangeUpdate";
 import connectionChangeUpdate from "../../src/service/connectionChangeUpdate";
 import * as getEntity from "../../src/util/getEntity";
 
-const entity = {
+const entityMock = {
   id: "03dr4e3s233",
   entityType: "agumon",
   personalNumber: "7842365",
@@ -73,7 +72,7 @@ const changeObjectToConnectionTest = (object) => {
   return newObject;
 };
 
-const changeObjectToUnvalidTest = (object) => {
+const operationTypeUnvalidTest = (object) => {
   const newObject = JSON.parse(JSON.stringify(object));
   newObject["description"].operationType = "drop" ;
   return newObject;
@@ -87,7 +86,7 @@ jest.mock("../../src/util/getEntity", () => {
   return {
     getEntityFromChangeEvent: jest.fn(
       async (changeEventObject: MyChangeEvent) => {
-        if (changeEventObject) return entity;
+        if (changeEventObject) return entityMock;
         return null;
       }
     ),
@@ -101,25 +100,25 @@ describe("startUpdateProccess test", () => {
     jest.clearAllMocks();
   });
   
-  test("go to regular case", async () => {
+  test("should start regularChangeUpdate flow", async () => {
     await startUpdateProccess(changeEventObjectRegularTest);
     expect(getEntity.getEntityFromChangeEvent).toHaveBeenCalled();
     expect(regularChangeUpdate).toHaveBeenCalled();
   });
-  test("go to connection case", async () => {
+  test("should start connectionChangeUpdate flow", async () => {
     const changeEventObjectConnectionObject = changeObjectToConnectionTest(changeEventObjectRegularTest);
     await startUpdateProccess(changeEventObjectConnectionObject);
     expect(getEntity.getEntityFromChangeEvent).toHaveBeenCalled();
     expect(connectionChangeUpdate).toHaveBeenCalled();
   });
-  test("case of unpredicted operation type", async () => {
-    const changeObjectUnvalid = changeObjectToUnvalidTest(changeEventObjectRegularTest);
+  test("case of operationType unvalid, should not start any flow", async () => {
+    const changeObjectUnvalid = operationTypeUnvalidTest(changeEventObjectRegularTest);
     await startUpdateProccess(changeObjectUnvalid);
     expect(getEntity.getEntityFromChangeEvent).not.toHaveBeenCalled();
     expect(connectionChangeUpdate).not.toHaveBeenCalled();
     expect(regularChangeUpdate).not.toHaveBeenCalled();
   });
-  test("case of no changeEventObject", async () => {
+  test("case of no changeEventObject, should not start any flow", async () => {
     await startUpdateProccess({} as MyChangeEvent);
     expect(getEntity.getEntityFromChangeEvent).not.toHaveBeenCalled();
     expect(connectionChangeUpdate).not.toHaveBeenCalled();

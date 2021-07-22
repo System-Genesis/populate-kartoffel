@@ -1,0 +1,19 @@
+mongo-url = "mongodb://nitro:password123@mongo-primary:27017,mongo-secondary:27018/kartoffelMock?replicaSet=rs0"
+elasticsearch-urls = ["http://elasticsearch:9200"]
+verbose = true
+
+change-stream-namespaces = ["kartoffelMock.denormalizedEntity"]
+
+direct-read-namespaces = ["kartoffelMock.denormalizedEntity"]
+
+elasticsearch-retry = true
+
+enable-http-server= true
+
+# workers = ["w1", "w2"]
+# cluster-name = "HA"
+
+# replay = true
+resume = true
+
+stats= true
