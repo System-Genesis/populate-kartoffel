@@ -1,4 +1,6 @@
 import { Timestamp } from "mongodb";
+import { Types } from "mongoose";
+// import config from "./index";
 
 export interface MyChangeEvent extends Object {
   _id: String;
@@ -28,11 +30,9 @@ export interface DigitalIdentity extends Object {
   // DI's Basic information
   type: string;
   source: string;
-  mail: string;
+  mail?: string;
   uniqueId: string;
-  entityId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  entityId?: string;
   isRoleAttachable: boolean;
 };
 
@@ -43,51 +43,50 @@ export interface DenormalizedDigitalIdentity extends DigitalIdentity {
 
 export interface Entity extends Object {
   // Entity's Basic information
-  id: string;
-  displayName: string;
-  entityType: string; // enum
-  identityCard: string;
-  personalNumber: string;
-  serviceType: string;
+  id: Types.ObjectId;
   firstName: string;
-  lastName: string;
-  akaUnit: string;
-  status: string;
-  dischargeDate: Date;
-  rank: string; // enum
-  mail: string;
-  job: string;
-  phone: string;
-  mobilePHone: string;
-  address: string;
-  clearance: string; // string of number - enum
-  sex?: string;
+  lastName?: string;
+  entityType: String;
+  hierarchy?: string;
+  displayName?: string;
+  personalNumber?: string; // use value object
+  identityCard?: string;
+  rank?: string; //use vale object / enum
+  akaUnit?: string;
+  clearance?: number; // value object
+  mail?: string; //value object
+  sex?: String;
+  serviceType?: string; //value object
+  dischargeDate?: Date;
   birthDate?: Date;
+  jobTitle?: string;
+  address?: string; // value?
+  phone?: string[]; //value object
+  mobilePhone?: string[]; //value object
+  goalUserId?: string;
 };
 
 export interface OrganizationGroup extends Object {
   // OG's Basic information
-  id: string;
+  id: Types.ObjectId;
+  source: string;
   name: string;
-  ancestors: string[];
+  ancestors: Types.ObjectId[];
   hierarchy: string;
-  akaUnit: string;
-  status: string;
-  isLeaf: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  directGroup?: Types.ObjectId;
+  childrenNames: string[];
+  status?: string;
+  akaUnit?: string;
+}
 
 export interface Role extends Object {
   // Role's Basic information
   roleId: string;
-  jobTitle: string;
-  digitalIdentityUniqueId: string;
+  jobTitle?: string;
+  digitalIdentityUniqueId?: string;
   directGroup: string;
   hierarchy: string;
   hierarchyIds: string[];
-  createdAt: Date;
-  updatedAt: Date;
   source: string;
 };
 

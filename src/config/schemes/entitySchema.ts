@@ -13,17 +13,20 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     firstName: String,
     lastName: String,
     akaUnit: String,
-    status: String,
     dischargeDate: Date,
     rank: String, // enum
     mail: String,
-    job: String,
     phone: String,
-    mobilePHone: String,
     address: String,
     clearance: String, // String,of number - enum
     sex: String,
     birthDate: Date,
-  },
-  { collection: config.mongo.entityCollectionName }
+    jobTitle: String,
+    mobilePhone: [String], //value object
+    goalUserId: String,
+  },{ 
+    collection: config.mongo.entityCollectionName,
+    versionKey: false,
+    timestamps: true,
+  }
 );

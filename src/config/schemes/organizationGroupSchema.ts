@@ -7,13 +7,14 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     // OG's Basic information
     id: { type: String, unique: true , sparse: true },
     name: String,
-    ancestors: [String],
+    source: String,
+    ancestors: [Schema.Types.ObjectId],
     hierarchy: String,
     akaUnit: String,
+    childrenNames: [String],
     status: String,
-    isLeaf: Boolean,
-    createdAt: Date,
-    updatedAt: Date,
-  },
-  { collection: config.mongo.organizationGroupCollectionName }
-);
+    directGroup: Schema.Types.ObjectId,
+  },{ collection: config.mongo.organizationGroupCollectionName,
+    versionKey: false,
+    timestamps: true, 
+});

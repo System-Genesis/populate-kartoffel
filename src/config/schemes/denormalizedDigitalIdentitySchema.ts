@@ -8,8 +8,6 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     mail: String,
     uniqueId: { type: String, unique: true, sparse: true },
     entityId: String,
-    createdAt: Date,
-    updatedAt: Date,
     isRoleAttachable: Boolean,
     role: [roleSchema],
 });

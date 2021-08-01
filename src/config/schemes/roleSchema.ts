@@ -11,9 +11,10 @@ export default new Schema<Role, Model<Role>, Role>(
     directGroup: String,
     hierarchy: String,
     hierarchyIds: [String],
-    createdAt: Date,
-    updatedAt: Date,
     source: String,
-  },
-  { collection: config.mongo.roleCollectionName }
+  },{
+    versionKey: false,
+    timestamps: true,
+    collection: config.mongo.roleCollectionName 
+  }
 );
