@@ -1,17 +1,16 @@
-import config from "../config";
+import config, { collectionsMap } from "../config";
 import { MyChangeEvent } from "../config/types";
 import getCollectionName from "../util/getCollectionName";
-import { getEntityFromChangeEvent } from "../util/getEntity";
-import regularChangeUpdate from "./regularChangeUpdate";
-import connectionChangeUpdate from "./connectionChangeUpdate";
+// import { getEntityFromChangeEvent } from "../util/getEntity";
+import DIHandler from "./collectionsHandlers/DIHandler";
+import OGHandler from "./collectionsHandlers/OGHandler";
+import entityHandler from "./collectionsHandlers/entityHandler";
+import roleHandler from "./collectionsHandlers/roleHandler";
 
 const { mongo } = config;
 
-const isIgnoreChangeQuery = (collectionName: string, operationType: string) =>
-  !config.operationTypes[operationType] ||
-  (operationType == config.operationTypes.insert &&
-    collectionName ==
-      (mongo.roleCollectionName || mongo.digitalIdentityCollectionName));
+const isIgnoreChangeQuery = (operationType: string) =>
+  !config.operationTypes[operationType]
 
 const isDependencyFieldChangedQuery = (
   changeEventObject: MyChangeEvent,
@@ -23,8 +22,8 @@ const isDependencyFieldChangedQuery = (
       changeEventObject.description.updateDescription.updatedFields;
     for (const key in updatedFields) {
       if (
-        ObjectCconnectionFields[collectionName] &&
-        ObjectCconnectionFields[collectionName] == key
+        collectionsMap.objectCconnectionFields[collectionName] &&
+        collectionsMap.objectCconnectionFields[collectionName] == key
       )
         return true;
     }
@@ -32,39 +31,36 @@ const isDependencyFieldChangedQuery = (
   } else return false;
 };
 
-const ObjectCconnectionFields = {
-  [mongo.digitalIdentityCollectionName]: "entityId",
-  [mongo.entityCollectionName]: null,
-  [mongo.roleCollectionName]: "digitalIdentityUniqueId",
+const collectionsHandler = {
+  [mongo.digitalIdentityCollectionName]: DIHandler,
+  [mongo.entityCollectionName]: entityHandler,
+  [mongo.roleCollectionName]: roleHandler,
+  [mongo.organizationGroupCollectionName]: OGHandler,
 };
 
 export default async (changeEventObject: MyChangeEvent) => {
   const operationType = changeEventObject?.description?.operationType as string;
   const collectionName = getCollectionName(changeEventObject);
 
-  if (!isIgnoreChangeQuery(collectionName, operationType)) {
-    const entity = await getEntityFromChangeEvent(changeEventObject);
-    if (!entity) {
-      console.error(
-        "the entity that matches this change does not exist in the DB:",
-        changeEventObject.description.fullDocument
-      );
+  if (!isIgnoreChangeQuery(operationType)) {
+    const changedObject = changeEventObject.description.fullDocument as any;
+    // const entity = await getEntityFromChangeEvent(changeEventObject, collectionName);
+    if (
+      isDependencyFieldChangedQuery(
+        changeEventObject,
+        collectionName,
+        operationType
+      )
+    ) {
+      await collectionsHandler[collectionName](changedObject, true, operationType);
     } else {
-      if (
-        isDependencyFieldChangedQuery(
-          changeEventObject,
-          collectionName,
-          operationType
-        )
-      ) {
-        await connectionChangeUpdate(
-          entity,
-          collectionName,
-          changeEventObject.description.fullDocument[
-            config.uniqueID[collectionName]
-          ]
-        );
-      } else await regularChangeUpdate(entity);
+      // if (!entity) {
+      //   console.error(
+      //     "the entity that matches this change does not exist in the DB:",
+      //     changeEventObject.description.fullDocument
+      //   );
+      // } else //send object id
+        await collectionsHandler[collectionName](changedObject, false, operationType);
     }
   }
 };

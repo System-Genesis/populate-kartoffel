@@ -9,5 +9,5 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     uniqueId: { type: String, unique: true, sparse: true },
     entityId: String,
     isRoleAttachable: Boolean,
-    role: [roleSchema],
+    role: roleSchema,
 });

@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 import { Model } from "mongoose";
-import { DenormalizedEntity } from "../../config/types";
 
 export const find = async (
   model: Model<any, any, any>,
@@ -32,5 +31,5 @@ export const findOneAndUpdate = async (
 
 export const create = async (
   model: Model<any, any, any>,
-  newDenormalizedEntity: DenormalizedEntity
-) => await model.create(newDenormalizedEntity);
+  objectToInsert: object
+) => await model.create(objectToInsert);

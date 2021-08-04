@@ -6,6 +6,7 @@ import { findOne } from "./repo/repository";
 
 const { mongo } = config;
 
+// TODO generic Fields
 const getEntityByDigitalIdentity = async(digitalIdentity: DigitalIdentity) => {
   if(digitalIdentity) return await findOne(entityModel, {id: digitalIdentity.entityId})
   else return null
@@ -30,7 +31,6 @@ export const getEntityOptions = {
   [mongo.roleCollectionName]: getEntityByRole,
 };
 
-export const getEntityFromChangeEvent =  async (changeEventObject: MyChangeEvent) => {
-  const collectionName = getCollectionName(changeEventObject);
+export const getEntityFromChangeEvent =  async (changeEventObject: MyChangeEvent, collectionName: string) => {
   return await getEntityOptions[collectionName](changeEventObject.description.fullDocument as any);
 };

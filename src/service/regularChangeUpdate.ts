@@ -1,12 +1,15 @@
-import { Entity } from "../config/types";
-import craeteDenormalizedEntity from "../util/craeteDenormalizedEntity";
-import { denormalizedEntityModel } from "../util/repo/models";
+import { collectionsMap } from "../config";
+// import { Entity, DigitalIdentity, OrganizationGroup, Role} from "../config/types";
+import craeteDenormalizedObject from "../util/craeteDenormalizedObject";
 import { create, findOneAndUpdate } from "../util/repo/repository";
 
-export default async (entity: Entity) => {
-  const denormalizedEntity = await craeteDenormalizedEntity(entity);
-  const filterQuery = {id: denormalizedEntity.id};
-  const responseFromDB = await findOneAndUpdate(denormalizedEntityModel, filterQuery, denormalizedEntity)
-  if(!responseFromDB) await create(denormalizedEntityModel, denormalizedEntity)
-  console.log('the change has completed:', JSON.stringify(denormalizedEntity))
+export default async (dataObjectId: string, collectionName: string) => {
+  const denormalizedObject = await craeteDenormalizedObject[collectionName](dataObjectId);
+  const filterQuery = {
+    [collectionsMap.uniqueID[collectionName]]:
+      denormalizedObject[collectionsMap.uniqueID[collectionName]],
+  }; 
+  const responseFromDB = await findOneAndUpdate(collectionsMap.modelsMap[collectionName], filterQuery, denormalizedObject)
+  if(!responseFromDB) await create(collectionsMap.modelsMap[collectionName], denormalizedObject)
+  console.log('the change has completed:', JSON.stringify(denormalizedObject))
 };

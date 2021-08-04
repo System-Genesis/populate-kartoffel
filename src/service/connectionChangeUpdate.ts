@@ -1,25 +1,56 @@
-import { Entity } from "../config/types";
-import craeteDenormalizedEntity from "../util/craeteDenormalizedEntity";
+import { DigitalIdentity, Entity , Role, OrganizationGroup } from "../config/types";
+import craeteDenormalizedObject from "../util/craeteDenormalizedObject";
 import { findOne, findOneAndUpdate } from "../util/repo/repository";
 import { denormalizedEntityModel } from "../util/repo/models";
-import config from "../config";
+import config, { collectionsMap } from "../config";
 import { getEntityOptions } from "../util/getEntity";
 import regularChangeUpdate from "./regularChangeUpdate";
 
-export default async (destinationEntity: Entity, collection: string, sourceChangedObjectId: string) => {
-  const sourceEntityIdFindOneQuery = {[config.uniqueIDPath[collection]]: sourceChangedObjectId}
-  const sourceDenormalizedEntityBeforeChange = await findOne(denormalizedEntityModel, sourceEntityIdFindOneQuery)
-  const sourceEntity = await getEntityOptions[config.mongo.denormalizedEntityCollectionName](sourceDenormalizedEntityBeforeChange as any);
+export default async (
+  destinationObject: Entity | DigitalIdentity | OrganizationGroup | Role,
+  collectionName: string,
+  changedObjectId: string
+) => {
+  const sourceObjectIdFindOneQuery = {
+    [collectionsMap.uniqueIDPath[collectionName]]: changedObjectId,
+  }; // corrent collection and dest collection
+  const sourceDenormalizedEntityBeforeChange = await findOne(
+    denormalizedEntityModel,
+    sourceObjectIdFindOneQuery
+  );
+  const sourceEntity = await getEntityOptions[
+    config.mongo.denormalizedEntityCollectionName
+  ](sourceDenormalizedEntityBeforeChange as any);
 
-  if(!sourceEntity){
-    regularChangeUpdate(destinationEntity)
-  }else{
-    const sourceDenormalizedEntity = await craeteDenormalizedEntity(sourceEntity);
-    const destinationDenormalizedEntity = await craeteDenormalizedEntity(destinationEntity);
-  
-    await findOneAndUpdate(denormalizedEntityModel, {id: sourceDenormalizedEntity.id}, sourceDenormalizedEntity)
-    await findOneAndUpdate(denormalizedEntityModel, {id: destinationDenormalizedEntity.id}, destinationDenormalizedEntity)
+  if (!sourceEntity) {
+    regularChangeUpdate(destinationObject, collectionName);
+  } else {
+    const sourceDenormalizedEntity = await craeteDenormalizedObject[
+      config.mongo.entityCollectionName
+    ](sourceEntity);
+    const destinationDenormalizedEntity = await craeteDenormalizedObject[
+      config.mongo.entityCollectionName
+    ](destinationObject as any);
+
+    await findOneAndUpdate(
+      collectionsMap.modelsMap[collectionName],
+      {
+        [collectionsMap.uniqueID[collectionName]]:
+          sourceDenormalizedEntity[collectionsMap.uniqueID[collectionName]],
+      },
+      sourceDenormalizedEntity
+    );
+    await findOneAndUpdate(
+      collectionsMap.modelsMap[collectionName],
+      {
+        [collectionsMap.uniqueID[collectionName]]:
+          destinationDenormalizedEntity[
+            collectionsMap.uniqueID[collectionName]
+          ],
+      },
+      destinationDenormalizedEntity
+    );
   }
-  
+
   // await transactions(insertTwoEntitysWithTransaction(sourceDenormalizedEntity, destinationDenormalizedEntity));
 };
