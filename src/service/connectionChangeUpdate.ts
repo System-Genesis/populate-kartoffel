@@ -3,7 +3,7 @@ import craeteDenormalizedObject from "../util/craeteDenormalizedObject";
 import { findOne, findOneAndUpdate } from "../util/repo/repository";
 import { denormalizedEntityModel } from "../util/repo/models";
 import config, { collectionsMap } from "../config";
-import { getEntityOptions } from "../util/getEntity";
+import { entityGetOptions } from "../util/getConnectedObject/getEntity";
 import regularChangeUpdate from "./regularChangeUpdate";
 
 export default async (
@@ -18,7 +18,7 @@ export default async (
     denormalizedEntityModel,
     sourceObjectIdFindOneQuery
   );
-  const sourceEntity = await getEntityOptions[
+  const sourceEntity = await entityGetOptions[
     config.mongo.denormalizedEntityCollectionName
   ](sourceDenormalizedEntityBeforeChange as any);
 

@@ -2,7 +2,7 @@ import { MyChangeEvent } from "../../src/config/types";
 import startUpdateProccess from "../../src/service/startUpdateProccess";
 import regularChangeUpdate from "../../src/service/regularChangeUpdate";
 import connectionChangeUpdate from "../../src/service/connectionChangeUpdate";
-import * as getEntity from "../../src/util/getEntity";
+import * as getEntity from "../../src/util/getConnectedObject/getEntity";
 
 const entityMock = {
   id: "03dr4e3s233",

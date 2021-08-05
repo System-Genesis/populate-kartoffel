@@ -1,7 +1,8 @@
 import config, { collectionsMap } from "../../config";
 import { DigitalIdentity } from "../../config/types";
-import connectionChangeUpdate from "../connectionChangeUpdate";
+import { getConnectedObject } from "../../util/getConnectedObject";
 import regularChangeUpdate from "../regularChangeUpdate";
+import entityHandler from "./entityHandler";
 
 const DICollectionName = config.mongo.digitalIdentityCollectionName;
 
@@ -9,21 +10,17 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
   const updatedDIId = updatedDI[collectionsMap.uniqueID[DICollectionName]]
   if (operationType == config.operationTypes.insert) {
     await regularChangeUpdate(updatedDIId, DICollectionName);
-    
-  } else if (operationType == config.operationTypes.update) {
-    if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName]]) {
+
+  } else {
+    if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][0]]) {
       await regularChangeUpdate(updatedDIId, DICollectionName);
-      const roleDigitalIdentity = await getConnectedObject(updatedDIId)
+      const DIEntity = await getConnectedObject(updatedDIId, DICollectionName)
+      await entityHandler(DIEntity, false, config.operationTypes.update)
       
-      if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
-      else{
-        const entityDigitalIdentity = await getConnectedObject(updatedDIId)
-        await entityHandler(entityDigitalIdentity, false, config.operationTypes.update)
-      }
     } else {
-      const roleDigitalIdentity = await getConnectedObject(updatedDIId)
+      const DIEntity = await getConnectedObject(updatedDIId)
       await regularChangeUpdate(updatedDIId, DICollectionName);
-      await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
+      await entityHandler(DIEntity, false, config.operationTypes.update)
     }
   }  
 };

@@ -8,10 +8,10 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     id: { type: String, unique: true , sparse: true },
     name: String,
     source: String,
-    ancestors: [Schema.Types.ObjectId],
-    hierarchy: String,
+    // ancestors: [Schema.Types.ObjectId],
+    // hierarchy: String,
     akaUnit: String,
-    childrenNames: [String],
+    childrenNames: [String],//not in the populated collection
     status: String,
     directGroup: Schema.Types.ObjectId,
   },{ collection: config.mongo.organizationGroupCollectionName,

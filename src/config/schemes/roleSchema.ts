@@ -9,8 +9,8 @@ export default new Schema<Role, Model<Role>, Role>(
     jobTitle: String,
     digitalIdentityUniqueId: String,
     directGroup: String,
-    hierarchy: String,
-    hierarchyIds: [String],
+    // hierarchy: String,
+    // hierarchyIds: [String],
     source: String,
   },{
     versionKey: false,

@@ -10,7 +10,7 @@ import roleHandler from "./collectionsHandlers/roleHandler";
 const { mongo } = config;
 
 const isIgnoreChangeQuery = (operationType: string) =>
-  !config.operationTypes[operationType]
+  !config.operationTypes[operationType];
 
 const isDependencyFieldChangedQuery = (
   changeEventObject: MyChangeEvent,
@@ -20,12 +20,10 @@ const isDependencyFieldChangedQuery = (
   if (operationType == config.operationTypes.update) {
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
-    for (const key in updatedFields) {
-      if (
-        collectionsMap.objectCconnectionFields[collectionName] &&
-        collectionsMap.objectCconnectionFields[collectionName] == key
-      )
-        return true;
+    for (const updatedField in updatedFields) {
+      for (const connectionField in collectionsMap.objectCconnectionFields[collectionName]) {
+        if (connectionField && connectionField == updatedField) return true;
+      }
     }
     return false;
   } else return false;
@@ -52,7 +50,11 @@ export default async (changeEventObject: MyChangeEvent) => {
         operationType
       )
     ) {
-      await collectionsHandler[collectionName](changedObject, true, operationType);
+      await collectionsHandler[collectionName](
+        changedObject,
+        true,
+        operationType
+      );
     } else {
       // if (!entity) {
       //   console.error(
@@ -60,7 +62,11 @@ export default async (changeEventObject: MyChangeEvent) => {
       //     changeEventObject.description.fullDocument
       //   );
       // } else //send object id
-        await collectionsHandler[collectionName](changedObject, false, operationType);
+      await collectionsHandler[collectionName](
+        changedObject,
+        false,
+        operationType
+      );
     }
   }
 };

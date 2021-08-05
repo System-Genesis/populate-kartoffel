@@ -2,8 +2,8 @@ import connectionChangeUpdate from "../../src/service/connectionChangeUpdate";
 import { DenormalizedEntity, Entity } from "../../src/config/types";
 import regularChangeUpdate from "../../src/service/regularChangeUpdate";
 import { findOneAndUpdate, findOne } from "../../src/util/repo/repository";
-import craeteDenormalizedEntity from "../../src/util/craeteDenormalizedEntity";
-import * as getEntity from "../../src/util/getEntity";
+import craeteDenormalizedObject from "../../src/util/craeteDenormalizedObject";
+import * as getEntity from "../../src/util/getConnectedObject/getEntity";
 
 const entityMockDest = {
   id: "03dr4e3s233",

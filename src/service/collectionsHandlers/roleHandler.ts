@@ -3,6 +3,7 @@ import { Role } from "../../config/types";
 import regularChangeUpdate from "../regularChangeUpdate";
 import DIHandler from "./DIHandler";
 import entityHandler from "./entityHandler";
+import { getConnectedObject } from "../../util/getConnectedObject";
 
 const roleCollectionName = config.mongo.roleCollectionName;
 
@@ -11,8 +12,8 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
   if (operationType == config.operationTypes.insert) {
     await regularChangeUpdate(updatedRoleId, roleCollectionName);
   
-  } else if (operationType == config.operationTypes.update) {
-    if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName]]) {
+  } else {
+    if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName].digitalIdentityUniqueId as string]) {
       await regularChangeUpdate(updatedRoleId, roleCollectionName);
       const roleDigitalIdentity = await getConnectedObject(updatedRoleId)
       
@@ -28,4 +29,4 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
     }
   }  
 };
-// define getConnectedObject
+

@@ -10,4 +10,7 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     entityId: String,
     isRoleAttachable: Boolean,
     role: roleSchema,
+  }, {
+    versionKey: false,
+    timestamps: true
 });

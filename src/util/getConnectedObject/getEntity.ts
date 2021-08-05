@@ -1,8 +1,7 @@
-import { DenormalizedEntity, DigitalIdentity, Entity, MyChangeEvent, Role } from "../config/types";
-import config from "../config/index";
-import { digitalIdentityModel, entityModel } from "./repo/models";
-import getCollectionName from "./getCollectionName";
-import { findOne } from "./repo/repository";
+import { DenormalizedEntity, DigitalIdentity, Entity, MyChangeEvent, Role } from "../../config/types";
+import config from "../../config/index";
+import { digitalIdentityModel, entityModel } from "../repo/models";
+import { findOne } from "../repo/repository";
 
 const { mongo } = config;
 
@@ -24,7 +23,7 @@ const getEntityByRole = async (role: Role) => {
   
 };
 
-export const getEntityOptions = {
+export const entityGetOptions = {
   [mongo.digitalIdentityCollectionName]: getEntityByDigitalIdentity,
   [mongo.denormalizedEntityCollectionName]: getEntityByEntity,
   [mongo.entityCollectionName]: getEntityByEntity,
@@ -32,5 +31,5 @@ export const getEntityOptions = {
 };
 
 export const getEntityFromChangeEvent =  async (changeEventObject: MyChangeEvent, collectionName: string) => {
-  return await getEntityOptions[collectionName](changeEventObject.description.fullDocument as any);
+  return await entityGetOptions[collectionName](changeEventObject.description.fullDocument as any);
 };

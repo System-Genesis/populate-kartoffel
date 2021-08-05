@@ -71,8 +71,8 @@ export interface OrganizationGroup extends Object {
   id: Types.ObjectId;
   source: string;
   name: string;
-  ancestors: Types.ObjectId[];
-  hierarchy: string;
+  // ancestors: Types.ObjectId[];
+  // hierarchy: string;
   directGroup?: Types.ObjectId;
   childrenNames: string[];
   status?: string;
@@ -80,6 +80,7 @@ export interface OrganizationGroup extends Object {
 }
 
 export interface Role extends Object {
+  digitalIdentityUniqueId: any;
   // Role's Basic information
   roleId: string;
   jobTitle?: string;
@@ -94,13 +95,17 @@ export interface DenormalizedEntity extends Object {
   // Entity's Basic information
   id: string;
   displayName: string;
+  directGroup: String;
+  hierarchy: String;
   entityType: string; // enum
   identityCard: string;
   personalNumber: string;
+  goalUserId: String;
   serviceType: string;
   firstName: string;
   lastName: string;
   akaUnit: string;
+  fullName: String;
   status: string;
   dischargeDate: Date;
   rank: string; // enum
@@ -110,6 +115,12 @@ export interface DenormalizedEntity extends Object {
   mobilePHone: string;
   address: string;
   clearance: string; // string of number - enum
+  pictures:{
+    profile:{ 
+      url: String;
+      meta: Object;
+    }
+  };
   sex?: string;
   birthDate?: Date;
   digitalIdentities: DenormalizedDigitalIdentity[];

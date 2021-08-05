@@ -1,6 +1,11 @@
 import * as env from "env-var";
 import * as dotenv from "dotenv";
-import { digitalIdentityModel, entityModel, organizationGroupModel, roleModel } from "../util/repo/models";
+import {
+  digitalIdentityModel,
+  entityModel,
+  organizationGroupModel,
+  roleModel,
+} from "../util/repo/models";
 
 dotenv.config();
 
@@ -65,17 +70,22 @@ export const collectionsMap = {
     [config.mongo.organizationGroupCollectionName]: "", //TODO
   },
   objectCconnectionFields: {
-    [config.mongo.digitalIdentityCollectionName]: "entityId",
-    [config.mongo.entityCollectionName]: "", //TODO
-    [config.mongo.roleCollectionName]: "digitalIdentityUniqueId",
-    [config.mongo.organizationGroupCollectionName]: "", //TODO
+    [config.mongo.digitalIdentityCollectionName]: { entityID: "entityId" },
+    [config.mongo.entityCollectionName]: {}, //TODO
+    [config.mongo.roleCollectionName]: {
+      digitalIdentityUniqueId: "digitalIdentityUniqueId",
+    },
+    [config.mongo.organizationGroupCollectionName]: {
+      directGroup: "directGroup",
+      name: "name",
+    },
   },
-  modelsMap:{
+  modelsMap: {
     [config.mongo.digitalIdentityCollectionName]: digitalIdentityModel,
     [config.mongo.entityCollectionName]: entityModel,
     [config.mongo.roleCollectionName]: roleModel,
-    [config.mongo.organizationGroupCollectionName]: organizationGroupModel, 
-  }
+    [config.mongo.organizationGroupCollectionName]: organizationGroupModel,
+  },
 };
 // TODO move string config fields to the .env file
 export default config;
