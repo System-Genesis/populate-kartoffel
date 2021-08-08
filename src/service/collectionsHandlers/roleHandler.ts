@@ -6,6 +6,7 @@ import entityHandler from "./entityHandler";
 import { getConnectedObject } from "../../util/getConnectedObject";
 
 const roleCollectionName = config.mongo.roleCollectionName;
+const DICollectionName = config.mongo.digitalIdentityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
   const updatedRoleId = updatedRole[collectionsMap.uniqueID[roleCollectionName]]
@@ -13,7 +14,7 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
     await regularChangeUpdate(updatedRoleId, roleCollectionName);
   
   } else {
-    if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName].digitalIdentityUniqueId as string]) {
+    if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName][DICollectionName] as string]) {
       await regularChangeUpdate(updatedRoleId, roleCollectionName);
       const roleDigitalIdentity = await getConnectedObject(updatedRoleId)
       

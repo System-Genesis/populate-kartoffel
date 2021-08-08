@@ -5,6 +5,7 @@ import regularChangeUpdate from "../regularChangeUpdate";
 import entityHandler from "./entityHandler";
 
 const DICollectionName = config.mongo.digitalIdentityCollectionName;
+const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, operationType: string) => {
   const updatedDIId = updatedDI[collectionsMap.uniqueID[DICollectionName]]
@@ -12,7 +13,7 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
     await regularChangeUpdate(updatedDIId, DICollectionName);
 
   } else {
-    if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][0]]) {
+    if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
       await regularChangeUpdate(updatedDIId, DICollectionName);
       const DIEntity = await getConnectedObject(updatedDIId, DICollectionName)
       await entityHandler(DIEntity, false, config.operationTypes.update)

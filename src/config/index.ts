@@ -70,10 +70,10 @@ export const collectionsMap = {
     [config.mongo.organizationGroupCollectionName]: "", //TODO
   },
   objectCconnectionFields: {
-    [config.mongo.digitalIdentityCollectionName]: { entityID: "entityId" },
+    [config.mongo.digitalIdentityCollectionName]: { [config.mongo.entityCollectionName]: "entityId" },
     [config.mongo.entityCollectionName]: {}, //TODO
     [config.mongo.roleCollectionName]: {
-      digitalIdentityUniqueId: "digitalIdentityUniqueId",
+      [config.mongo.digitalIdentityCollectionName]: "digitalIdentityUniqueId",
     },
     [config.mongo.organizationGroupCollectionName]: {
       directGroup: "directGroup",
