@@ -4,7 +4,7 @@ import craeteDenormalizedObject from "../util/craeteDenormalizedObject";
 import { create, findOneAndUpdate } from "../util/repo/repository";
 
 export default async (dataObjectId: string, collectionName: string) => {
-  const denormalizedObject = await craeteDenormalizedObject[collectionName](dataObjectId);
+  const denormalizedObject = await craeteDenormalizedObject[collectionName](dataObjectId as any);
   const filterQuery = {
     [collectionsMap.uniqueID[collectionName]]:
       denormalizedObject[collectionsMap.uniqueID[collectionName]],

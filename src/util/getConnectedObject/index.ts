@@ -7,7 +7,7 @@ import { roleGetOptions } from "./getRole";
 export const getConnectedObject = async (currentObjectId: string, currentCollectionName: string, connectedObjectCollctionName: string) => {
   const query = {[collectionsMap.uniqueID[currentCollectionName]]: currentObjectId}
   const currentObject = await findOne(collectionsMap.modelsMap[currentCollectionName], query)
-  return connectedObjectMap[connectedObjectCollctionName](currentObject);
+  return connectedObjectMap[connectedObjectCollctionName][currentCollectionName](currentObject); //TODO think maybe use if else and divide the functions
 
 };
 

@@ -8,13 +8,7 @@ const craeteDenormalizedEntity = async (entityId: Entity) => {
   const entity = await find(entityModel, { id: entityId });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
   const populatedDIs = (await Promise.all(
-    DIs.map(async (DI: DigitalIdentity) => {
-      const DIRole = await findOne(roleModel, {
-        digitalIdentityUniqueId: DI.uniqueId,
-      });
-      return { ...DI, role: DIRole } as DenormalizedDigitalIdentity;
-    })
-  )) as DenormalizedDigitalIdentity[];
+    DIs.map(craeteDenormalizedDigitalIdentity)));
 
   const denormalizedEntity = {
     ...entity,
@@ -24,7 +18,10 @@ const craeteDenormalizedEntity = async (entityId: Entity) => {
 };
 
 const craeteDenormalizedDigitalIdentity = async (digitalIdentity: DigitalIdentity) => {
-  return digitalIdentity as DigitalIdentity;
+  const DIRole = await findOne(roleModel, {
+    digitalIdentityUniqueId: digitalIdentity.uniqueId,
+  });
+  return { ...digitalIdentity, role: DIRole } as DenormalizedDigitalIdentity;
 };
 
 const craeteDenormalizedOrganizationGroup = async (organizationGroup: OrganizationGroup) => {

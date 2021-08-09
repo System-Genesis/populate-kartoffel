@@ -1,5 +1,5 @@
 import config, { collectionsMap } from "../../config";
-import { DigitalIdentity } from "../../config/types";
+import { DigitalIdentity, Entity } from "../../config/types";
 import { getConnectedObject } from "../../util/getConnectedObject";
 import regularChangeUpdate from "../regularChangeUpdate";
 import entityHandler from "./entityHandler";
@@ -15,11 +15,11 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
   } else {
     if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
       await regularChangeUpdate(updatedDIId, DICollectionName);
-      const DIEntity = await getConnectedObject(updatedDIId, DICollectionName)
+      const DIEntity = await getConnectedObject(updatedDIId, DICollectionName, entityCollectionName) as Entity
       await entityHandler(DIEntity, false, config.operationTypes.update)
       
     } else {
-      const DIEntity = await getConnectedObject(updatedDIId)
+      const DIEntity = await getConnectedObject(updatedDIId, DICollectionName, entityCollectionName) as Entity
       await regularChangeUpdate(updatedDIId, DICollectionName);
       await entityHandler(DIEntity, false, config.operationTypes.update)
     }

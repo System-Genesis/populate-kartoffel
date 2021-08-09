@@ -7,6 +7,7 @@ import { getConnectedObject } from "../../util/getConnectedObject";
 
 const roleCollectionName = config.mongo.roleCollectionName;
 const DICollectionName = config.mongo.digitalIdentityCollectionName;
+const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
   const updatedRoleId = updatedRole[collectionsMap.uniqueID[roleCollectionName]]
@@ -16,15 +17,15 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
   } else {
     if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName][DICollectionName] as string]) {
       await regularChangeUpdate(updatedRoleId, roleCollectionName);
-      const roleDigitalIdentity = await getConnectedObject(updatedRoleId)
+      const roleDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
       
       if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
       else{
-        const entityDigitalIdentity = await getConnectedObject(updatedRoleId)
+        const entityDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, entityCollectionName)
         await entityHandler(entityDigitalIdentity, false, config.operationTypes.update)
       }
     } else {
-      const roleDigitalIdentity = await getConnectedObject(updatedRoleId)
+      const roleDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
       await regularChangeUpdate(updatedRoleId, roleCollectionName);
       await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
     }
