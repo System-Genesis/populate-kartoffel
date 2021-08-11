@@ -16,7 +16,7 @@ export const findOneAndReplace = async (
   objectToInsert: object
 ) => {
   try{
-    return await model.findOneAndReplace(filter, objectToInsert);
+    return await model.findOneAndReplace(filter, objectToInsert).lean();
   }
   catch (err){
     console.log(err)
@@ -27,7 +27,7 @@ export const findOneAndUpdate = async (
   model: Model<any, any, any>,
   filter: object | ObjectId,
   objectToInsert: object
-) => await model.findOneAndUpdate(filter, objectToInsert);
+) => await model.findOneAndUpdate(filter, objectToInsert).lean();
 
 export const create = async (
   model: Model<any, any, any>,

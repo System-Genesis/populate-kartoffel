@@ -6,10 +6,11 @@ import denormalizedDigitalIdentitySchema from "./denormalizedDigitalIdentitySche
 export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, DenormalizedEntity> (
   {
     id: { type: String, unique: true, sparse: true },
-    displayName: String,
-    directGroup: String,
+    displayName: String,// added
+    directGroup: String,//added
     hierarchy: String,
-    entityType: String, // enum
+    hierarchyIds: [String],//added
+    entityType: String,
     identityCard: String,
     personalNumber: String,
     goalUserId: String,
@@ -17,25 +18,24 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     firstName: String,
     lastName: String,
     akaUnit: String,
-    fullName: String,
-    status: String,
+    fullName: String,//added
     dischargeDate: Date,
-    rank: String, // enum
-    mail: String,
-    job: String,
+    rank: String, 
+    mail: String, //added
+    jobTitle: String, //added
     phone: String,
-    mobilePHone: String,
+    mobilePhone: String,
     address: String,
-    clearance: String, // String,of number - enum
+    clearance: String, 
     pictures:{
       profile:{ 
-        url: String,
+        path: String,
         meta: Object,
       }
     },
     sex: String,
     birthDate: Date,
-    digitalIdentities: [denormalizedDigitalIdentitySchema],
+    digitalIdentities: [denormalizedDigitalIdentitySchema],//added
   }, {
     versionKey: false,
     timestamps: true,

@@ -47,23 +47,26 @@ export interface Entity extends Object {
   firstName: string;
   lastName?: string;
   entityType: String;
-  hierarchy?: string;
-  displayName?: string;
   personalNumber?: string; // use value object
   identityCard?: string;
   rank?: string; //use vale object / enum
   akaUnit?: string;
   clearance?: number; // value object
-  mail?: string; //value object
   sex?: String;
   serviceType?: string; //value object
   dischargeDate?: Date;
   birthDate?: Date;
-  jobTitle?: string;
   address?: string; // value?
   phone?: string[]; //value object
   mobilePhone?: string[]; //value object
   goalUserId?: string;
+  primaryDigitalIdentityId: String;
+  pictures:{
+    profile:{ 
+      path: String;
+      meta: Object;
+    }
+  },
 };
 
 export interface OrganizationGroup extends Object {
@@ -79,15 +82,37 @@ export interface OrganizationGroup extends Object {
   akaUnit?: string;
 }
 
+export interface DenormalizedOrganizationGroupSchema extends Object {
+  // OG's Basic information
+  id: Types.ObjectId;
+  source: string;
+  name: string;
+  ancestors: Types.ObjectId[];
+  hierarchy: string;
+  directGroup?: Types.ObjectId;
+  childrenNames: string[];
+  status?: string;
+  akaUnit?: string;
+}
+
+export interface DenormalizedRole extends Object {
+  // Role's Basic information
+  roleId: string;
+  jobTitle?: string;
+  displayName: string;
+  digitalIdentityUniqueId?: string;
+  directGroup: string;
+  hierarchy: string;
+  hierarchyIds: string[];
+  source: string;
+};
+
 export interface Role extends Object {
-  digitalIdentityUniqueId: any;
   // Role's Basic information
   roleId: string;
   jobTitle?: string;
   digitalIdentityUniqueId?: string;
   directGroup: string;
-  hierarchy: string;
-  hierarchyIds: string[];
   source: string;
 };
 
@@ -97,6 +122,7 @@ export interface DenormalizedEntity extends Object {
   displayName: string;
   directGroup: String;
   hierarchy: String;
+  hierarchyIds: string[];
   entityType: string; // enum
   identityCard: string;
   personalNumber: string;
@@ -106,18 +132,17 @@ export interface DenormalizedEntity extends Object {
   lastName: string;
   akaUnit: string;
   fullName: String;
-  status: string;
   dischargeDate: Date;
   rank: string; // enum
   mail: string;
-  job: string;
+  jobTitle: string;
   phone: string;
-  mobilePHone: string;
+  mobilePhone: string;
   address: string;
   clearance: string; // string of number - enum
   pictures:{
     profile:{ 
-      url: String;
+      path: String;
       meta: Object;
     }
   };

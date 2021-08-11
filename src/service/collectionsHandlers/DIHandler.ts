@@ -16,12 +16,12 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
     if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
       await regularChangeUpdate(updatedDIId, DICollectionName);
       const DIEntity = await getConnectedObject(updatedDIId, DICollectionName, entityCollectionName) as Entity
-      await entityHandler(DIEntity, false, config.operationTypes.update)
+      await entityHandler(DIEntity)
       
     } else {
       const DIEntity = await getConnectedObject(updatedDIId, DICollectionName, entityCollectionName) as Entity
       await regularChangeUpdate(updatedDIId, DICollectionName);
-      await entityHandler(DIEntity, false, config.operationTypes.update)
+      await entityHandler(DIEntity)
     }
   }  
 };

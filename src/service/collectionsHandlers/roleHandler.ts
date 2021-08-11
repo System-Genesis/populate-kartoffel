@@ -22,7 +22,7 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
       if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
       else{
         const entityDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, entityCollectionName)
-        await entityHandler(entityDigitalIdentity, false, config.operationTypes.update)
+        await entityHandler(entityDigitalIdentity)
       }
     } else {
       const roleDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)

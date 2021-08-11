@@ -57,6 +57,9 @@ services:
       - discovery.type=single-node
     ports:
       - 9200:9200
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
     networks: 
       - my-network
 
@@ -73,6 +76,19 @@ services:
       - ./monstache-config.toml:/app/config.toml
     networks: 
       - my-network
+
+  mongo-to-rabbit:
+    image: systemgenesis0/mongo-to-rabbit:latest
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+    networks: 
+      - my-network
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
   
   populate-kartoffel:
     build: .
