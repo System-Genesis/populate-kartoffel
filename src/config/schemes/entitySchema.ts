@@ -21,7 +21,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     birthDate: Date,
     mobilePhone: [String], //value object
     goalUserId: String,
-    primaryDigitalIdentityId: String,
+    primaryDigitalIdentityId: String,//-
     pictures:{
       profile:{ 
         path: String,

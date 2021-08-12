@@ -15,6 +15,18 @@ const config = {
       .get("DENORMALIZED_ENTITY_COLLECTION_NAME")
       .required()
       .asString(),
+    denormalizedDICollectionName: env
+      .get("DENORMALIZED_DI_COLLECTION_NAME")
+      .required()
+      .asString(),
+    denormalizedOGCollectionName: env
+      .get("DENORMALIZED_OG_COLLECTION_NAME")
+      .required()
+      .asString(),
+    denormalizedRoleCollectionName: env
+      .get("DENORMALIZED_ROLE_COLLECTION_NAME")
+      .required()
+      .asString(),
     organizationGroupCollectionName: env
       .get("ORGANIZATION_GROUP_COLLECTION_NAME")
       .required()
@@ -70,7 +82,9 @@ export const collectionsMap = {
     [config.mongo.organizationGroupCollectionName]: "", //TODO
   },
   objectCconnectionFields: {
-    [config.mongo.digitalIdentityCollectionName]: { [config.mongo.entityCollectionName]: "entityId" },
+    [config.mongo.digitalIdentityCollectionName]: {
+      [config.mongo.entityCollectionName]: "entityId",
+    },
     [config.mongo.entityCollectionName]: {}, //TODO
     [config.mongo.roleCollectionName]: {
       [config.mongo.digitalIdentityCollectionName]: "digitalIdentityUniqueId",

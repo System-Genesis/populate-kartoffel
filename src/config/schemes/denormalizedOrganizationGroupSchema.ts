@@ -1,8 +1,8 @@
 import { Model, Schema } from "mongoose";
 import config from "..";
-import { DenormalizedOrganizationGroupSchema } from "../types";
+import { DenormalizedOrganizationGroup } from "../types";
 
-export default new Schema<DenormalizedOrganizationGroupSchema,Model<DenormalizedOrganizationGroupSchema>, DenormalizedOrganizationGroupSchema>(
+export default new Schema<DenormalizedOrganizationGroup,Model<DenormalizedOrganizationGroup>, DenormalizedOrganizationGroup>(
   {
     id: { type: String, unique: true , sparse: true },
     name: String,
@@ -12,7 +12,8 @@ export default new Schema<DenormalizedOrganizationGroupSchema,Model<Denormalized
     akaUnit: String,
     status: String,
     directGroup: Schema.Types.ObjectId,
-  },{ collection: config.mongo.organizationGroupCollectionName,
+  },{ 
+    collection: config.mongo.denormalizedOGCollectionName,
     versionKey: false,
     timestamps: true, 
 });

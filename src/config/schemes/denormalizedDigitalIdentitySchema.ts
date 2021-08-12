@@ -1,4 +1,5 @@
 import { Model, Schema } from 'mongoose';
+import config from '..';
 import { DenormalizedDigitalIdentity } from '../types';
 import roleSchema from './roleSchema';
 
@@ -13,5 +14,6 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     role: roleSchema,// added
   }, {
     versionKey: false,
-    timestamps: true
+    timestamps: true,
+    collection: config.mongo.denormalizedDICollectionName
 });
