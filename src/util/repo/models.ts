@@ -5,10 +5,28 @@ import organizationGroupSchema from "../../config/schemes/organizationGroupSchem
 import digitalIdentitySchema from "../../config/schemes/digitalIdentitySchema";
 import entitySchema from "../../config/schemes/entitySchema";
 import roleSchema from "../../config/schemes/roleSchema";
+import denormalizedOrganizationGroupSchema from "../../config/schemes/denormalizedOrganizationGroupSchema";
+import denormalizedDigitalIdentitySchema from "../../config/schemes/denormalizedDigitalIdentitySchema";
+import denormalizedRoleSchema from "../../config/schemes/denormalizedRoleSchema";
 
 export const denormalizedEntityModel = mongoose.model(
   config.mongo.denormalizedEntityCollectionName,
   denormalizedEntitySchema
+);
+
+export const denormalizedDigitalIdentityModel = mongoose.model(
+  config.mongo.denormalizedDICollectionName,
+  denormalizedDigitalIdentitySchema
+);
+
+export const denormalizedRoleModel = mongoose.model(
+  config.mongo.denormalizedRoleCollectionName,
+  denormalizedRoleSchema
+);
+
+export const denormalizedOrganizationGroupModel = mongoose.model(
+  config.mongo.denormalizedOGCollectionName,
+  denormalizedOrganizationGroupSchema
 );
 
 export const organizationGroupModel = mongoose.model(

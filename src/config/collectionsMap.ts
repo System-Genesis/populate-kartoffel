@@ -1,4 +1,8 @@
 import {
+  denormalizedDigitalIdentityModel,
+  denormalizedEntityModel,
+  denormalizedOrganizationGroupModel,
+  denormalizedRoleModel,
   digitalIdentityModel,
   entityModel,
   organizationGroupModel,
@@ -37,6 +41,12 @@ const collectionsMap = {
     [config.mongo.entityCollectionName]: entityModel,
     [config.mongo.roleCollectionName]: roleModel,
     [config.mongo.organizationGroupCollectionName]: organizationGroupModel,
+  },
+  denormalizedModelsMap: {
+    [config.mongo.digitalIdentityCollectionName]: denormalizedDigitalIdentityModel,
+    [config.mongo.entityCollectionName]: denormalizedEntityModel,
+    [config.mongo.roleCollectionName]: denormalizedRoleModel,
+    [config.mongo.organizationGroupCollectionName]: denormalizedOrganizationGroupModel,
   },
 };
 export default collectionsMap;

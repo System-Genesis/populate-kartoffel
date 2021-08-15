@@ -9,7 +9,7 @@ export default async (dataObjectId: string, collectionName: string) => {
     [collectionsMap.uniqueID[collectionName]]:
       denormalizedObject[collectionsMap.uniqueID[collectionName]],
   }; 
-  const responseFromDB = await findOneAndUpdate(collectionsMap.modelsMap[collectionName], filterQuery, denormalizedObject)
-  if(!responseFromDB) await create(collectionsMap.modelsMap[collectionName], denormalizedObject)
+  const responseFromDB = await findOneAndUpdate(collectionsMap.denormalizedModelsMap[collectionName], filterQuery, denormalizedObject)
+  if(!responseFromDB) await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
   console.log('the change has completed:', JSON.stringify(denormalizedObject))
 };
