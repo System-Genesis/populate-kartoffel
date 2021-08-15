@@ -1,4 +1,5 @@
-import config, { collectionsMap } from "../../config";
+import config from "../../config";
+import collectionsMap from "../../config/collectionsMap";
 import { Role } from "../../config/types";
 import regularChangeUpdate from "../regularChangeUpdate";
 import DIHandler from "./DIHandler";

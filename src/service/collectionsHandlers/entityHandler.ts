@@ -1,5 +1,6 @@
 import regularChangeUpdate from "../regularChangeUpdate";
-import config, { collectionsMap } from "../../config/index";
+import config from "../../config/index";
+import collectionsMap from "../../config/collectionsMap";
 import { Entity } from "../../config/types";
 
 const entityCollectionName = config.mongo.entityCollectionName;

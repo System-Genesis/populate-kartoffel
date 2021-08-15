@@ -1,4 +1,5 @@
-import config, { collectionsMap } from "../../config";
+import config from "../../config";
+import collectionsMap from "../../config/collectionsMap";
 import { findOne } from "../repo/repository";
 import { digitalIdentityGetOptions } from "./getDigitalIdentity";
 import { entityGetOptions } from "./getEntity";

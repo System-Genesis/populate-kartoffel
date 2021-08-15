@@ -1,4 +1,4 @@
-import { collectionsMap } from "../config";
+import collectionsMap  from "../config/collectionsMap";
 // import { Entity, DigitalIdentity, OrganizationGroup, Role} from "../config/types";
 import craeteDenormalizedObject from "../util/craeteDenormalizedObject";
 import { create, findOneAndUpdate } from "../util/repo/repository";

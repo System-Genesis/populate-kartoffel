@@ -1,4 +1,5 @@
-import config, { collectionsMap } from "../../config";
+import config from "../../config";
+import collectionsMap from "../../config/collectionsMap";
 import { DigitalIdentity, Entity } from "../../config/types";
 import { getConnectedObject } from "../../util/getConnectedObject";
 import regularChangeUpdate from "../regularChangeUpdate";

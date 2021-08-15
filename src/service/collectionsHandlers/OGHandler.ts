@@ -1,4 +1,5 @@
-import config, { collectionsMap } from "../../config";
+import config from "../../config";
+import collectionsMap from "../../config/collectionsMap";
 import { OrganizationGroup } from "../../config/types";
 import regularChangeUpdate from "../regularChangeUpdate";
 import { organizationGroupModel, roleModel } from "../../util/repo/models";

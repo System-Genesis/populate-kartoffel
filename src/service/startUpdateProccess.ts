@@ -1,4 +1,5 @@
-import config, { collectionsMap } from "../config";
+import config from "../config";
+import collectionsMap from "../config/collectionsMap";
 import { MyChangeEvent } from "../config/types";
 import getCollectionName from "../util/getCollectionName";
 // import { getEntityFromChangeEvent } from "../util/getEntity";
