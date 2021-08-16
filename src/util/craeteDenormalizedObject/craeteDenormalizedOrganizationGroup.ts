@@ -1,13 +1,15 @@
 import config from "../../config";
 import { OrganizationGroup, DenormalizedOrganizationGroup } from "../../config/types";
 import { organizationGroupModel } from "../repo/models";
+import { findOne } from "../repo/repository";
 
 
 export const craeteDenormalizedOrganizationGroup = async (
-  organizationGroup: OrganizationGroup
+  organizationGroupId: string
 ) => {
+  const organizationGroup = await findOne(organizationGroupModel, { id: organizationGroupId });
   const ancestorsObject = getAncestorsFromGroupId(
-    organizationGroup.id as unknown as string
+    organizationGroupId as unknown as string
   );
   const ancestorsAndHierarchy = ancestorsObject["ancestors"].reduce(
     (resultObject, ancestorsObject) => {

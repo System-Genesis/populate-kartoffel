@@ -10,14 +10,14 @@ export async function rabbitConsumer() {
       console.log(
         `change accepted from rabbit: ${JSON.stringify(changeEventObject)}`
       );
-      try{
+      try {
         await startUpdateProccess(changeEventObject);
         msg.ack();
-      } catch(err) {
-          // TODO return nack on proccess exit 
-          msg.nack(true);
-          console.error(err)
-        }
+      } catch (err) {
+        // TODO return nack on proccess exit
+        msg.nack(true);
+        console.error(err);
+      }
     },
     { noAck: false }
   );

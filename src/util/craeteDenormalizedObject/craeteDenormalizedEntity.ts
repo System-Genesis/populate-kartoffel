@@ -7,8 +7,8 @@ import { digitalIdentityModel, entityModel } from "../repo/models";
 import { find, findOne } from "../repo/repository";
 
 // TODO generic fields( .id , .uniqueId etc)
-export const craeteDenormalizedEntity = async (entityId: Entity) => {
-  const entity = await find(entityModel, { id: entityId });
+export const craeteDenormalizedEntity = async (entityId: string) => {
+  const entity = await findOne(entityModel, { id: entityId });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
   const populatedDIs = await Promise.all(
     DIs.map(craeteDenormalizedDigitalIdentity)

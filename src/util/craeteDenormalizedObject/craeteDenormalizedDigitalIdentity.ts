@@ -1,12 +1,13 @@
-import { DigitalIdentity, DenormalizedDigitalIdentity } from "../../config/types";
-import { roleModel } from "../repo/models";
+import { DenormalizedDigitalIdentity } from "../../config/types";
+import { digitalIdentityModel, roleModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 
 export const craeteDenormalizedDigitalIdentity = async (
-  digitalIdentity: DigitalIdentity
+  digitalIdentityId: string
 ) => {
+  const digitalIdentity = await findOne(digitalIdentityModel, { uniqueId: digitalIdentityId });
   const DIRole = await findOne(roleModel, {
-    digitalIdentityUniqueId: digitalIdentity.uniqueId,
+    digitalIdentityUniqueId: digitalIdentityId,
   });
   return { ...digitalIdentity, role: DIRole } as DenormalizedDigitalIdentity;
 };

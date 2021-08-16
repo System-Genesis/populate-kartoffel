@@ -1,16 +1,17 @@
 import config from "../../config";
 import { Role, DenormalizedRole } from "../../config/types";
 import { getConnectedObject } from "../getConnectedObject";
-import { organizationGroupModel } from "../repo/models";
+import { organizationGroupModel, roleModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 import { craeteDenormalizedOrganizationGroup } from "./craeteDenormalizedOrganizationGroup";
 
-export const craeteDenormalizedRole = async (role: Role) => {
-  const findOGquery = { id: role.directGroup };
+export const craeteDenormalizedRole = async (roleId: string) => {
+  const role = await findOne(roleModel, { roleId: roleId });
+  const findOGquery = { id: roleId };
   const organizationGroup = await findOne(organizationGroupModel, findOGquery);
   const denormalizedOrganizationGroup = await craeteDenormalizedOrganizationGroup(organizationGroup);
   const roleEntity = await getConnectedObject(
-    role.roleId,
+    roleId,
     config.mongo.roleCollectionName,
     config.mongo.entityCollectionName
   );
