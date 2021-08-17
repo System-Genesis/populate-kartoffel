@@ -1,7 +1,7 @@
 import { DenormalizedEntity, Entity } from "../../src/config/types";
 import regularChangeUpdate from "../../src/service/regularChangeUpdate";
 import { create, findOneAndUpdate } from "../../src/util/repo/repository";
-import craeteDenormalizedEntity from "../../src/util/craeteDenormalizedEntity";
+import createDenormalizedEntity from "../../src/util/createDenormalizedEntity";
 
 const entityMock = {
   id: "03dr4e3s233",
@@ -71,7 +71,7 @@ jest.mock("../../src/util/repo/repository", () => {
   };
 });
 
-jest.mock("../../src/util/craeteDenormalizedEntity", () =>
+jest.mock("../../src/util/createDenormalizedEntity", () =>
   jest.fn(async (entity: Entity) => {
     if (entity['findFlag']) return addFindFlagToObject(denormalizedEntityMock);
     else if(entity)return denormalizedEntityMock;

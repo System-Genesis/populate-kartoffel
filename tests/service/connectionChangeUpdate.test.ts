@@ -2,7 +2,7 @@ import connectionChangeUpdate from "../../src/service/connectionChangeUpdate";
 import { DenormalizedEntity, Entity } from "../../src/config/types";
 import regularChangeUpdate from "../../src/service/regularChangeUpdate";
 import { findOneAndUpdate, findOne } from "../../src/util/repo/repository";
-import craeteDenormalizedObject from "../../src/util/craeteDenormalizedObject";
+import createDenormalizedObject from "../../src/util/createDenormalizedObject";
 import * as getEntity from "../../src/util/getConnectedObject/getEntity";
 
 const entityMockDest = {
@@ -97,7 +97,7 @@ jest.mock("../../src/util/getEntity", () => {
   };
 });
 
-jest.mock("../../src/util/craeteDenormalizedEntity", () => jest.fn(()=> denormalizedEntityMock));
+jest.mock("../../src/util/createDenormalizedEntity", () => jest.fn(()=> denormalizedEntityMock));
 
 describe("startUpdateProccess test", () => {
   afterEach(() => {
