@@ -1,14 +1,14 @@
 import config from "../../config";
-import { OrganizationGroup, DenormalizedOrganizationGroup } from "../../config/types";
+import {  DenormalizedOrganizationGroup } from "../../config/types";
 import { organizationGroupModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 
 
-export const craeteDenormalizedOrganizationGroup = async (
+export const createDenormalizedOrganizationGroup = async (
   organizationGroupId: string
 ) => {
   const organizationGroup = await findOne(organizationGroupModel, { id: organizationGroupId });
-  const ancestorsObject = getAncestorsFromGroupId(
+  const ancestorsObject = await getAncestorsFromGroupId(
     organizationGroupId as unknown as string
   );
   const ancestorsAndHierarchy = ancestorsObject["ancestors"].reduce(
@@ -28,13 +28,13 @@ export const craeteDenormalizedOrganizationGroup = async (
 const getAncestorsFromGroupId = async (groupId: string) => {
   const groupsWithAncestors = await organizationGroupModel
     .aggregate([
-      { $match: { id: groupId } },
+      { $match: { _id: groupId } },
       {
         $graphLookup: {
           from: config.mongo.organizationGroupCollectionName,
           startWith: "$directGroup",
           connectFromField: "directGroup",
-          connectToField: "id",
+          connectToField: "_id",
           as: "ancestors",
         },
       },

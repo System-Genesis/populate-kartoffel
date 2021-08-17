@@ -14,7 +14,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     akaUnit: String,
     dischargeDate: Date,
     rank: String, // enum
-    phone: String,
+    phone: [String],
     address: String,
     clearance: String, // String,of number - enum
     sex: String,

@@ -1,4 +1,4 @@
-import { DenormalizedEntity, DigitalIdentity, Entity, MyChangeEvent, Role } from "../../config/types";
+import { DenormalizedDigitalIdentity, DenormalizedEntity, DenormalizedRole, DigitalIdentity, Entity, MyChangeEvent, Role } from "../../config/types";
 import config from "../../config/index";
 import { digitalIdentityModel, entityModel } from "../repo/models";
 import { findOne } from "../repo/repository";
@@ -6,7 +6,7 @@ import { findOne } from "../repo/repository";
 const { mongo } = config;
 
 // TODO generic Fields
-const getEntityByDigitalIdentity = async(digitalIdentity: DigitalIdentity) => {
+const getEntityByDigitalIdentity = async(digitalIdentity: DigitalIdentity | DenormalizedDigitalIdentity ) => {
   if(digitalIdentity) return await findOne(entityModel, {id: digitalIdentity.entityId})
   else return null
 };
@@ -16,7 +16,7 @@ const getEntityByEntity = async (entity: Entity | DenormalizedEntity) => {
   else return null
 };
 
-const getEntityByRole = async (role: Role) => {
+const getEntityByRole = async (role: Role | DenormalizedRole) => {
    let roleDI = await findOne(digitalIdentityModel, {uniqueId: role.digitalIdentityUniqueId}) as DigitalIdentity;
    if(role) return await getEntityByDigitalIdentity(roleDI)
    else return null

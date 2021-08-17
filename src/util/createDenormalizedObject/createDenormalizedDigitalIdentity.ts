@@ -2,7 +2,7 @@ import { DenormalizedDigitalIdentity } from "../../config/types";
 import { digitalIdentityModel, roleModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 
-export const craeteDenormalizedDigitalIdentity = async (
+export const createDenormalizedDigitalIdentity = async (
   digitalIdentityId: string
 ) => {
   const digitalIdentity = await findOne(digitalIdentityModel, { uniqueId: digitalIdentityId });

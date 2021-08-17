@@ -6,6 +6,8 @@ import { Entity } from "../../config/types";
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updetedEntity: Entity) => {
-  const updatedEntityId = updetedEntity[collectionsMap.uniqueID[entityCollectionName]]
-  await regularChangeUpdate(updatedEntityId, entityCollectionName);
+  if (updetedEntity) {
+    const updatedEntityId = updetedEntity[collectionsMap.uniqueID[entityCollectionName]]
+    await regularChangeUpdate(updatedEntityId, entityCollectionName);
+  }
 };

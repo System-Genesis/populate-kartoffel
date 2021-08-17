@@ -23,7 +23,7 @@ const isDependencyFieldChangedQuery = (
       changeEventObject.description.updateDescription.updatedFields;
     for (const updatedField in updatedFields) {
       for (const connectionField in collectionsMap.objectCconnectionFields[collectionName]) {
-        if (connectionField && connectionField == updatedField) return true;
+        if (connectionField && collectionsMap.objectCconnectionFields[collectionName][connectionField] == updatedField) return true;
       }
     }
     return false;

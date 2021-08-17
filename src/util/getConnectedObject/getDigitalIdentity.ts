@@ -1,21 +1,21 @@
-import { DigitalIdentity, Entity, MyChangeEvent,/* OrganizationGroup,*/ Role } from "../../config/types";
+import { DenormalizedDigitalIdentity, DenormalizedEntity, DenormalizedRole, DigitalIdentity, Entity, MyChangeEvent,/* OrganizationGroup,*/ Role } from "../../config/types";
 import config from "../../config/index";
 import { digitalIdentityModel } from "../repo/models";
 import { find } from "../repo/repository";
 
 const { mongo } = config;
 
-const getDigitalIdentityWithDigitalIdentity = async (digitalIdentity: DigitalIdentity) => {
+const getDigitalIdentityWithDigitalIdentity = async (digitalIdentity: DigitalIdentity | DenormalizedDigitalIdentity) => {
   if(digitalIdentity) return await find(digitalIdentityModel, {uniqueId: digitalIdentity.uniqueId})
   else return null
 };
 
-const getDigitalIdentityWithEntity = async (entity: Entity) => {
+const getDigitalIdentityWithEntity = async (entity: Entity | DenormalizedEntity) => {
   if(entity) return await find(digitalIdentityModel, {entityId: entity.id})
   else return null
 };
 
-const getDigitalIdentityWithRole = async (role: Role) => {
+const getDigitalIdentityWithRole = async (role: Role | DenormalizedRole ) => {
   if(role) return await find(digitalIdentityModel, {uniqueId: role.digitalIdentityUniqueId})
   else return null
 };

@@ -1,17 +1,20 @@
 import config from "../../config";
-import { Role, DenormalizedRole } from "../../config/types";
+import collectionsMap from "../../config/collectionsMap";
+import { DenormalizedRole } from "../../config/types";
 import { getConnectedObject } from "../getConnectedObject";
 import { organizationGroupModel, roleModel } from "../repo/models";
 import { findOne } from "../repo/repository";
-import { craeteDenormalizedOrganizationGroup } from "./craeteDenormalizedOrganizationGroup";
+import { createDenormalizedOrganizationGroup } from "./createDenormalizedOrganizationGroup";
 
-export const craeteDenormalizedRole = async (roleId: string) => {
+const OGCollectionName = config.mongo.organizationGroupCollectionName;
+
+export const createDenormalizedRole = async (roleId: string) => {
   const role = await findOne(roleModel, { roleId: roleId });
-  const findOGquery = { id: roleId };
+  const findOGquery = { id: role.directGroup };
   const organizationGroup = await findOne(organizationGroupModel, findOGquery);
-  const denormalizedOrganizationGroup = await craeteDenormalizedOrganizationGroup(organizationGroup);
+  const denormalizedOrganizationGroup = await createDenormalizedOrganizationGroup(organizationGroup[collectionsMap.uniqueID[OGCollectionName]]);
   const roleEntity = await getConnectedObject(
-    roleId,
+    role,
     config.mongo.roleCollectionName,
     config.mongo.entityCollectionName
   );

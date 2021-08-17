@@ -1,16 +1,14 @@
 import faker from "faker";
-import { readFileSync } from "fs";
 import config from "../config/index";
 import {
   digitalIdentityModel,
   entityModel,
+  organizationGroupModel,
   roleModel,
 } from "../util/repo/models";
-import path from "path";
+import { db } from "./db";
 
-const mocksData = JSON.parse(
-  readFileSync(path.resolve(__dirname, "db.json"), "utf8")
-);
+const mocksData = db;
 
 export const generateCollections = async () => {
   mocksData["entities"].forEach(async (element: any) => {
@@ -31,6 +29,12 @@ export const generateCollections = async () => {
         console.error("mocks generator error:", err);
     });
   });
+  mocksData["groups"].forEach(async (element: any) => {
+    await organizationGroupModel.create(element).catch((err) => {
+      if (err.code != config.errorCodes.duplicateKey)
+        console.error("mocks generator error:", err);
+    });
+  });
 };
 
 export const updatePersonsOnCommend = async (entityId) => {
@@ -46,10 +50,21 @@ export const updatePersonsOnCommend = async (entityId) => {
     .lean();
 };
 
-export const updateDIOnCommend = async (sourceEntityId, destEntityId) => {
+export const disconnectDIOnCommend = async (DIId) => {
   return await digitalIdentityModel
     .findOneAndUpdate(
-      { entityId: sourceEntityId },
+      { uniqueId: DIId },
+      {
+        $set: { entityId: undefined },
+      }
+    )
+    .lean();
+};
+
+export const connectDIOnCommend = async (DIId, destEntityId) => {
+  return await digitalIdentityModel
+    .findOneAndUpdate(
+      { uniqueId: DIId },
       {
         $set: { entityId: destEntityId },
       }

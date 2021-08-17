@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { updateDIOnCommend, updatePersonsOnCommend } from "./mocksGenerator";
+import { connectDIOnCommend, disconnectDIOnCommend, updatePersonsOnCommend } from "./mocksGenerator";
 import { find } from "../util/repo/repository";
 import { denormalizedEntityModel } from "../util/repo/models";
 import config from "../config";
@@ -16,12 +16,21 @@ export default async () => {
     }
   });
 
-  app.get("/updateDI", async function (req : Request, res: Response) {
-    const sourceEntityId = req.query.sourceEntityId ? req.query.sourceEntityId : null;
-    const destEntityId = req.query.destEntityId ? req.query.destEntityId : null;
-    if (!sourceEntityId || !destEntityId) res.send('you should enter an: "?sourceEntityId=someValue&destEntityId=someOtherValue"');
+  app.get("/disconnectDIOnCommend", async function (req : Request, res: Response) {
+    const DIId = req.query.DIId ? req.query.DIId : null;
+    if (!DIId ) res.send('you should enter an: "?DIId=someValue"');
     else {
-      const responseFromDB = await updateDIOnCommend(sourceEntityId, destEntityId);
+      const responseFromDB = await disconnectDIOnCommend(DIId);
+      res.send(`${JSON.stringify(responseFromDB)}`);
+    }
+  });
+
+  app.get("/connectDIOnCommend", async function (req : Request, res: Response) {
+    const DIId = req.query.DIId ? req.query.DIId : null;
+    const destEntityId = req.query.destEntityId ? req.query.destEntityId : null;
+    if (!DIId || !destEntityId) res.send('you should enter an: "?DIId=someValue&destEntityId=someOtherValue"');
+    else {
+      const responseFromDB = await connectDIOnCommend(DIId, destEntityId);
       res.send(`${JSON.stringify(responseFromDB)}`);
     }
   });

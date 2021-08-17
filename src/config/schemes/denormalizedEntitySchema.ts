@@ -15,13 +15,13 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     akaUnit: String,
     dischargeDate: Date,
     rank: String, 
-    phone: String,
+    phone: [String],
     address: String,
     clearance: String, 
     sex: String,
     birthDate: Date,
     goalUserId: String,
-    mobilePhone: String,
+    mobilePhone: [String],
     displayName: String,// added
     directGroup: String,//added
     hierarchy: String,//added
