@@ -10,7 +10,7 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     akaUnit: String,
     childrenNames: [String],//not in the populated collection
     status: String,
-    directGroup: Schema.Types.ObjectId,
+    directGroup: String,
   },{ 
     collection: config.mongo.organizationGroupCollectionName,
     versionKey: false,

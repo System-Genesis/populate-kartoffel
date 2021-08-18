@@ -16,6 +16,10 @@ const collectionsMap = {
     [config.mongo.entityCollectionName]: "id",
     [config.mongo.roleCollectionName]: "roleId",
     [config.mongo.organizationGroupCollectionName]: "id",
+    [config.mongo.denormalizedDICollectionName]: "uniqueId",
+    [config.mongo.denormalizedEntityCollectionName]: "id",
+    [config.mongo.denormalizedRoleCollectionName]: "roleId",
+    [config.mongo.denormalizedOGCollectionName]: "id",
   },
   uniqueIDPath: {
     [config.mongo.digitalIdentityCollectionName]: "digitalIdentities.uniqueId",
@@ -30,6 +34,7 @@ const collectionsMap = {
     [config.mongo.entityCollectionName]: {},
     [config.mongo.roleCollectionName]: {
       [config.mongo.digitalIdentityCollectionName]: "digitalIdentityUniqueId",
+      // [config.mongo.organizationGroupCollectionName]: "directGroup",
     },
     [config.mongo.organizationGroupCollectionName]: {
       directGroup: "directGroup",
@@ -41,6 +46,10 @@ const collectionsMap = {
     [config.mongo.entityCollectionName]: entityModel,
     [config.mongo.roleCollectionName]: roleModel,
     [config.mongo.organizationGroupCollectionName]: organizationGroupModel,
+    [config.mongo.denormalizedDICollectionName]: denormalizedDigitalIdentityModel,
+    [config.mongo.denormalizedEntityCollectionName]: denormalizedEntityModel,
+    [config.mongo.denormalizedRoleCollectionName]: denormalizedRoleModel,
+    [config.mongo.denormalizedOGCollectionName]: denormalizedOrganizationGroupModel,
   },
   denormalizedModelsMap: {
     [config.mongo.digitalIdentityCollectionName]: denormalizedDigitalIdentityModel,

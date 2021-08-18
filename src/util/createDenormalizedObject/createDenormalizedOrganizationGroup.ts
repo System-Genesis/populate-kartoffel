@@ -1,23 +1,26 @@
 import config from "../../config";
-import {  DenormalizedOrganizationGroup } from "../../config/types";
+import { DenormalizedOrganizationGroup } from "../../config/types";
 import { organizationGroupModel } from "../repo/models";
 import { findOne } from "../repo/repository";
-
 
 export const createDenormalizedOrganizationGroup = async (
   organizationGroupId: string
 ) => {
-  const organizationGroup = await findOne(organizationGroupModel, { id: organizationGroupId });
-  const ancestorsObject = await getAncestorsFromGroupId(
-    organizationGroupId as unknown as string
+  const organizationGroup = await findOne(organizationGroupModel, {
+    id: organizationGroupId,
+  });
+  const ancestorsObjectsArray = await getAncestorsFromGroupId(
+    organizationGroupId
   );
-  const ancestorsAndHierarchy = ancestorsObject["ancestors"].reduce(
-    (resultObject, ancestorsObject) => {
-      resultObject.ancestors.push(ancestorsObject.id);
-      resultObject.hierarchy.push(ancestorsObject.name);
-      return resultObject;
-    }
-  );
+  const ancestorsAndHierarchy: { ancestors: string[]; hierarchy: string[] } = {
+    ancestors: [],
+    hierarchy: [],
+  };
+  ancestorsObjectsArray.ancestors.forEach((ancestorsObject) => {
+    ancestorsAndHierarchy.ancestors.push(ancestorsObject.id);
+    ancestorsAndHierarchy.hierarchy.push(ancestorsObject.name);
+  });
+
   const hierarchyValue = ancestorsAndHierarchy.hierarchy.join("/");
   return {
     ...organizationGroup,
@@ -26,21 +29,18 @@ export const createDenormalizedOrganizationGroup = async (
   } as unknown as DenormalizedOrganizationGroup;
 };
 const getAncestorsFromGroupId = async (groupId: string) => {
-  const groupsWithAncestors = await organizationGroupModel
-    .aggregate([
-      { $match: { _id: groupId } },
-      {
-        $graphLookup: {
-          from: config.mongo.organizationGroupCollectionName,
-          startWith: "$directGroup",
-          connectFromField: "directGroup",
-          connectToField: "_id",
-          as: "ancestors",
-        },
+  const groupsWithAncestors = await organizationGroupModel.aggregate([
+    { $match: { id: groupId } },
+    {
+      $graphLookup: {
+        from: config.mongo.organizationGroupCollectionName,
+        startWith: "$directGroup",
+        connectFromField: "directGroup",
+        connectToField: "id",
+        as: "ancestors",
       },
-      { $unwind: "$ancestors" },
-      { $project: { _id: 1, name: 1 } },
-    ])
-    .exec();
-  return groupsWithAncestors;
+    },
+    { $project: { 'ancestors.id': 1, 'ancestors.name': 1 } },
+  ]).exec();
+  return groupsWithAncestors[0];
 };

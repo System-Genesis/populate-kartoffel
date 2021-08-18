@@ -14,6 +14,6 @@ export default async (dataObjectId: string, collectionName: string) => {
     }; 
     const responseFromDB = await findOneAndUpdate(collectionsMap.denormalizedModelsMap[collectionName], filterQuery, denormalizedObject)
     if(!responseFromDB) await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
-    console.log('the change has completed:', JSON.stringify(denormalizedObject))
+    console.log(`the change has completed in ${collectionName} collection:`, JSON.stringify(denormalizedObject))
   }
 };

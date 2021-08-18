@@ -28,6 +28,8 @@ export const roleGetOptions = {
   // [mongo.entityCollectionName]: getRoleWithEntity,
   [mongo.roleCollectionName]: getRoleWithRole,
   // [mongo.organizationGroupCollectionName]: getRoleWithOrganizationGroup,
+  [mongo.denormalizedDICollectionName]: getRoleWithDigitalIdentity,
+  [mongo.denormalizedRoleCollectionName]: getRoleWithRole,
 };
 
 export default (changeEventObject: MyChangeEvent, collectionName: string) => {

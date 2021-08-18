@@ -7,11 +7,11 @@ export default new Schema<DenormalizedOrganizationGroup,Model<DenormalizedOrgani
     id: { type: String, unique: true , sparse: true },
     name: String,
     source: String,
-    ancestors: [Schema.Types.ObjectId],//added
+    ancestors: [String],//added
     hierarchy: String,//added
     akaUnit: String,
     status: String,
-    directGroup: Schema.Types.ObjectId,
+    directGroup: String,
   },{ 
     collection: config.mongo.denormalizedOGCollectionName,
     versionKey: false,

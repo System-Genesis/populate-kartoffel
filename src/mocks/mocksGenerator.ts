@@ -71,3 +71,36 @@ export const connectDIOnCommend = async (DIId, destEntityId) => {
     )
     .lean();
 };
+
+export const disconnectRoleOnCommend = async (roleId) => {
+  return await roleModel
+    .findOneAndUpdate(
+      { roleId: roleId },
+      {
+        $set: { digitalIdentityUniqueId: undefined },
+      }
+    )
+    .lean();
+};
+
+export const connectRoleOnCommend = async (roleId, destIdRole) => {
+  return await roleModel
+    .findOneAndUpdate(
+      { roleId: roleId },
+      {
+        $set: { digitalIdentityUniqueId: destIdRole },
+      }
+    )
+    .lean();
+};
+
+export const changeRoleDirectGroup = async (roleId, OGId) => {
+  return await roleModel
+    .findOneAndUpdate(
+      { roleId: roleId },
+      {
+        $set: { directGroup: OGId },
+      }
+    )
+    .lean();
+};

@@ -1,6 +1,6 @@
 import { DenormalizedDigitalIdentity, DenormalizedEntity, DenormalizedRole, DigitalIdentity, Entity, MyChangeEvent, Role } from "../../config/types";
 import config from "../../config/index";
-import { digitalIdentityModel, entityModel } from "../repo/models";
+import { denormalizedDigitalIdentityModel, digitalIdentityModel, entityModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 
 const { mongo } = config;
@@ -23,11 +23,20 @@ const getEntityByRole = async (role: Role | DenormalizedRole) => {
   
 };
 
+const getEntityByDenormalizedRole = async (role: Role | DenormalizedRole) => {
+  let roleDI = await findOne(denormalizedDigitalIdentityModel, {uniqueId: role.digitalIdentityUniqueId}) as DenormalizedDigitalIdentity;
+  if(role) return await getEntityByDigitalIdentity(roleDI)
+  else return null
+ 
+};
+
 export const entityGetOptions = {
   [mongo.digitalIdentityCollectionName]: getEntityByDigitalIdentity,
-  [mongo.denormalizedEntityCollectionName]: getEntityByEntity,
   [mongo.entityCollectionName]: getEntityByEntity,
   [mongo.roleCollectionName]: getEntityByRole,
+  [mongo.denormalizedDICollectionName]: getEntityByDigitalIdentity,
+  [mongo.denormalizedEntityCollectionName]: getEntityByEntity,
+  [mongo.denormalizedRoleCollectionName]: getEntityByDenormalizedRole,
 };
 
 export const getEntityFromChangeEvent =  async (changeEventObject: MyChangeEvent, collectionName: string) => {

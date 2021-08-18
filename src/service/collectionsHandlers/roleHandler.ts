@@ -5,27 +5,25 @@ import regularChangeUpdate from "../regularChangeUpdate";
 import DIHandler from "./DIHandler";
 import entityHandler from "./entityHandler";
 import { getConnectedObject } from "../../util/getConnectedObject";
-import { roleModel } from "../../util/repo/models";
-import { findOne } from "../../util/repo/repository";
 
 const roleCollectionName = config.mongo.roleCollectionName;
+const denormalizedRoleCollectionName = config.mongo.denormalizedRoleCollectionName;
 const DICollectionName = config.mongo.digitalIdentityCollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
   const updatedRoleId = updatedRole[collectionsMap.uniqueID[roleCollectionName]]
-  const role = await findOne(roleModel, {[collectionsMap.uniqueID[roleCollectionName]]: updatedRoleId})
   if (operationType != config.operationTypes.insert) {
     if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName][DICollectionName] as string]) {
-      const roleDigitalIdentity = await getConnectedObject(role, roleCollectionName, DICollectionName)
+      const roleDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
       
       if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
       else{
-        const entityDigitalIdentity = await getConnectedObject(role, roleCollectionName, entityCollectionName)
+        const entityDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, entityCollectionName)
         await entityHandler(entityDigitalIdentity)
       }
     } else {
-      const roleDigitalIdentity = await getConnectedObject(role, roleCollectionName, DICollectionName)
+      const roleDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
       await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
     }
   }  
