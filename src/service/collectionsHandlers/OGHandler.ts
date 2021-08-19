@@ -12,7 +12,7 @@ export default async (updatedOG: OrganizationGroup, connectionUpdate: boolean, o
   const updatedOGId = updatedOG[collectionsMap.uniqueID[OGCollectionName]]
   await regularChangeUpdate(updatedOGId, OGCollectionName);
   if (operationType == config.operationTypes.update && connectionUpdate) {//TODO check what count as connection- in which case to do this
-    const groupWithDescendants = getDescendantsFromGroupId(updatedOGId);
+    const groupWithDescendants = await getDescendantsFromGroupId(updatedOGId);
     groupWithDescendants['descendants'].forEach(async (element: Object) => {
       await regularChangeUpdate(element['id'], OGCollectionName);
       const rolesToUpdate = await find(roleModel, {directGroup: element['id']})
@@ -34,12 +34,11 @@ const getDescendantsFromGroupId = async (groupId: string) => {
           startWith: "$id", //field to start
           connectFromField: "id",
           connectToField: "directGroup",
-          as: "ancestors",
+          as: "descendants",
         },
       },
-      { $unwind: "$descendants" },
-      { $project: { _id: 1 } },
+      { $project: { 'descendants.id': 1 } },
     ])
     .exec();
-  return groupsWithDescendants;
+  return groupsWithDescendants[0];
 };

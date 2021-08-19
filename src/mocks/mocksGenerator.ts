@@ -104,3 +104,14 @@ export const changeRoleDirectGroup = async (roleId, OGId) => {
     )
     .lean();
 };
+
+export const changeOGDirectGroup = async (OGId, directGroupId) => {
+  return await organizationGroupModel
+    .findOneAndUpdate(
+      { id: OGId },
+      {
+        $set: { directGroup: directGroupId },
+      }
+    )
+    .lean();
+};

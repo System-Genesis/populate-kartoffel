@@ -2,9 +2,19 @@ mongo-url = "mongodb://nitro:password123@mongo-primary:27017,mongo-secondary:270
 elasticsearch-urls = ["http://elasticsearch:9200"]
 verbose = true
 
-change-stream-namespaces = ["kartoffelMock.denormalizedEntity"]
+change-stream-namespaces = [
+  "kartoffelMock.denormalizedEntity",
+  "kartoffelMock.denormalizedDigitalIdentity", 
+  "kartoffelMock.denormalizedRole", 
+  "kartoffelMock.denormalizedOrganizationGroup"
+]
 
-direct-read-namespaces = ["kartoffelMock.denormalizedEntity"]
+direct-read-namespaces = [
+  "kartoffelMock.denormalizedEntity", 
+  "kartoffelMock.denormalizedDigitalIdentity", 
+  "kartoffelMock.denormalizedRole", 
+  "kartoffelMock.denormalizedOrganizationGroup"
+]
 
 elasticsearch-retry = true
 

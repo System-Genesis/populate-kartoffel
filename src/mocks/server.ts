@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { changeRoleDirectGroup, connectDIOnCommend, connectRoleOnCommend, disconnectDIOnCommend, disconnectRoleOnCommend, updatePersonsOnCommend } from "./mocksGenerator";
+import { changeOGDirectGroup, changeRoleDirectGroup, connectDIOnCommend, connectRoleOnCommend, disconnectDIOnCommend, disconnectRoleOnCommend, updatePersonsOnCommend } from "./mocksGenerator";
 import { find } from "../util/repo/repository";
 import { denormalizedEntityModel } from "../util/repo/models";
 import config from "../config";
@@ -67,6 +67,16 @@ export default async () => {
     if (!roleId || !destOGId) res.send('you should enter an: "?roleId=someValue&destOGId=someOtherValue"');
     else {
       const responseFromDB = await changeRoleDirectGroup(roleId, destOGId);
+      res.send(`${JSON.stringify(responseFromDB)}`);
+    }
+  });
+
+  app.get("/changeOGDirectGroup", async function (req : Request, res: Response) {
+    const OGId = req.query.OGId ? req.query.OGId : null;
+    const directGroupId = req.query.directGroupId ? req.query.directGroupId : null;
+    if (!OGId || !directGroupId) res.send('you should enter an: "?OGId=someValue&directGroupId=someOtherValue"');
+    else {
+      const responseFromDB = await changeOGDirectGroup(OGId, directGroupId);
       res.send(`${JSON.stringify(responseFromDB)}`);
     }
   });
