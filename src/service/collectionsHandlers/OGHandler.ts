@@ -8,21 +8,27 @@ import { find } from "../../util/repo/repository";
 
 const OGCollectionName = config.mongo.organizationGroupCollectionName;
 
-export default async (updatedOG: OrganizationGroup, connectionUpdate: boolean, operationType: string) => {
-  const updatedOGId = updatedOG[collectionsMap.uniqueID[OGCollectionName]]
+export default async (
+  updatedOG: OrganizationGroup,
+  connectionUpdate: boolean,
+  operationType: string
+) => {
+  const updatedOGId = updatedOG[collectionsMap.uniqueID[OGCollectionName]];
   await regularChangeUpdate(updatedOGId, OGCollectionName);
-  if (operationType == config.operationTypes.update && connectionUpdate) {//TODO check what count as connection- in which case to do this
+  if (operationType == config.operationTypes.update && connectionUpdate) {
+    //TODO check what count as connection- in which case to do this
     const groupWithDescendants = await getDescendantsFromGroupId(updatedOGId);
-    groupWithDescendants['descendants'].forEach(async (element: Object) => {
-      await regularChangeUpdate(element['id'], OGCollectionName);
-      const rolesToUpdate = await find(roleModel, {directGroup: element['id']})
-      rolesToUpdate.forEach(async role => {
-        await roleHandler(role, false, config.operationTypes.update)
+    groupWithDescendants.forEach(async (descendantsObject: Object) => {
+      await regularChangeUpdate(descendantsObject['descendants']['id'], OGCollectionName);
+      const rolesToUpdate = await find(roleModel, {
+        directGroup: descendantsObject['descendants']['id'],
+      });
+      rolesToUpdate.forEach(async (role) => {
+        await roleHandler(role, false, config.operationTypes.update);
       });
     });
-  }  
+  }
 };
-
 
 const getDescendantsFromGroupId = async (groupId: string) => {
   const groupsWithDescendants = await organizationGroupModel
@@ -35,12 +41,12 @@ const getDescendantsFromGroupId = async (groupId: string) => {
           connectFromField: "id",
           connectToField: "directGroup",
           as: "descendants",
-          depthField: 'depth',
+          depthField: "depth",
         },
       },
-      { $sort: { depthField: 1 } },
-      { $project: { 'descendants.id': 1 } },
-    ])
-    .exec();
-  return groupsWithDescendants[0];
+      { $unwind: "$descendants" },
+      { $sort: { "descendants.depth": -1 } },
+      { $project: { "descendants.id": 1} },
+    ]);
+  return groupsWithDescendants;
 };

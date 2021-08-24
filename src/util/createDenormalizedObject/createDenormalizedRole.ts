@@ -12,27 +12,40 @@ export const createDenormalizedRole = async (roleId: string) => {
   const role = await findOne(roleModel, { roleId: roleId });
   const findOGquery = { id: role.directGroup };
   const organizationGroup = await findOne(organizationGroupModel, findOGquery);
-  if(!organizationGroup){
+  if (!organizationGroup) {
     return role as DenormalizedRole;
   } else {
-    const denormalizedOrganizationGroup = await createDenormalizedOrganizationGroup(organizationGroup[collectionsMap.uniqueID[OGCollectionName]]);
+    const denormalizedOrganizationGroup =
+      await createDenormalizedOrganizationGroup(
+        organizationGroup[collectionsMap.uniqueID[OGCollectionName]]
+      );
     const roleEntity = await getConnectedObject(
       roleId,
       config.mongo.roleCollectionName,
       config.mongo.entityCollectionName
     );
-  
+
+    const hierarchyNames =
+      (denormalizedOrganizationGroup.hierarchy
+        ? denormalizedOrganizationGroup.hierarchy + "/"
+        : "") +
+      (denormalizedOrganizationGroup.name
+        ? denormalizedOrganizationGroup.name
+        : "");
+
     const displayNameValue = roleEntity
-      ? denormalizedOrganizationGroup.hierarchy +
-      "/" +
-      role.jobTitle +
-      "- " +
-      roleEntity.firstName +
-      " " +
-      roleEntity.lastName
-      : denormalizedOrganizationGroup.hierarchy + "/" + role.jobTitle;
+      ? hierarchyNames +
+        "/" +
+        role.jobTitle +
+        "- " +
+        roleEntity.firstName +
+        " " +
+        roleEntity.lastName
+      : hierarchyNames;
     const hierarchyValue = denormalizedOrganizationGroup.hierarchy;
-    const hierarchyIdsValue = [role.directGroup].concat(denormalizedOrganizationGroup.ancestors);
+    const hierarchyIdsValue = [role.directGroup].concat(
+      denormalizedOrganizationGroup.ancestors
+    );
     return {
       ...role,
       displayName: displayNameValue,

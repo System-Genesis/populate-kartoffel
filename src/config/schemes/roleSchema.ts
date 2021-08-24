@@ -9,6 +9,7 @@ export default new Schema<Role, Model<Role>, Role>(
     digitalIdentityUniqueId: String,
     directGroup: String,
     source: String,
+    clearance: String,
   },{
     versionKey: false,
     timestamps: true,

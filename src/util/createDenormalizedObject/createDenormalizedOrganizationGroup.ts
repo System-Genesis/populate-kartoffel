@@ -16,9 +16,9 @@ export const createDenormalizedOrganizationGroup = async (
     ancestors: [],
     hierarchy: [],
   };
-  ancestorsObjectsArray.ancestors.forEach((ancestorsObject) => {
-    ancestorsAndHierarchy.ancestors.push(ancestorsObject.id);
-    ancestorsAndHierarchy.hierarchy.push(ancestorsObject.name);
+  ancestorsObjectsArray.forEach((ancestorsObject) => {
+    ancestorsAndHierarchy.ancestors.push(ancestorsObject.ancestors.id);
+    ancestorsAndHierarchy.hierarchy.push(ancestorsObject.ancestors.name);
   });
 
   const hierarchyValue = ancestorsAndHierarchy.hierarchy.join("/");
@@ -41,8 +41,9 @@ const getAncestorsFromGroupId = async (groupId: string) => {
         depthField: 'depth',
       },
     },
-    { $sort: { depthField: 1 } },
+    { $unwind: "$ancestors" },
+    { $sort: { 'ancestors.depth': -1 } },
     { $project: { 'ancestors.id': 1, 'ancestors.name': 1 } },
-  ]).exec();
-  return groupsWithAncestors[0];
+  ]);
+  return groupsWithAncestors;
 };

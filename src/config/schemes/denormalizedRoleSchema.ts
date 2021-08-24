@@ -9,6 +9,7 @@ export default new Schema<DenormalizedRole, Model<DenormalizedRole>, Denormalize
     digitalIdentityUniqueId: String,
     directGroup: String,
     source: String,
+    clearance: String,
     displayName: String,// hirerchy / job ?- /fullname(if connected to person)
     hierarchy: String,//added
     hierarchyIds: [String],//added

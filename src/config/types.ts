@@ -80,6 +80,7 @@ export interface Role extends Object {
   digitalIdentityUniqueId?: string;
   directGroup: string;
   source: string;
+  clearance: string,
 };
 
 export interface DenormalizedDigitalIdentity extends DigitalIdentity {
