@@ -35,8 +35,10 @@ const getDescendantsFromGroupId = async (groupId: string) => {
           connectFromField: "id",
           connectToField: "directGroup",
           as: "descendants",
+          depthField: 'depth',
         },
       },
+      { $sort: { depth: 1 } },
       { $project: { 'descendants.id': 1 } },
     ])
     .exec();

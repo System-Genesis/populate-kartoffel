@@ -15,7 +15,7 @@ export const createDenormalizedEntity = async (entityId: string) => {
   const entity = await findOne(entityModel, { id: entityId });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
-  const fullNameValue = entity.firstName + ' ' + entity.lastname;
+  const fullNameValue = entity.firstName + ' ' + entity.lastName;
   delete entity.primaryDigitalIdentityId;
 
   let denormalizedEntity;

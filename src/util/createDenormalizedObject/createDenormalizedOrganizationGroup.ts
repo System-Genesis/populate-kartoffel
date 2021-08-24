@@ -38,8 +38,10 @@ const getAncestorsFromGroupId = async (groupId: string) => {
         connectFromField: "directGroup",
         connectToField: "id",
         as: "ancestors",
+        depthField: 'depth',
       },
     },
+    { $sort: { depth: 1 } },
     { $project: { 'ancestors.id': 1, 'ancestors.name': 1 } },
   ]).exec();
   return groupsWithAncestors[0];

@@ -37,7 +37,7 @@ export const generateCollections = async () => {
   });
 };
 
-export const updatePersonsOnCommend = async (entityId) => {
+export const updatePersonsOnCommand = async (entityId) => {
   const randomFirstName = faker.name.firstName();
 
   return await entityModel
@@ -50,7 +50,7 @@ export const updatePersonsOnCommend = async (entityId) => {
     .lean();
 };
 
-export const disconnectDIOnCommend = async (DIId) => {
+export const disconnectDIOnCommand = async (DIId) => {
   return await digitalIdentityModel
     .findOneAndUpdate(
       { uniqueId: DIId },
@@ -61,7 +61,7 @@ export const disconnectDIOnCommend = async (DIId) => {
     .lean();
 };
 
-export const connectDIOnCommend = async (DIId, destEntityId) => {
+export const connectDIOnCommand = async (DIId, destEntityId) => {
   return await digitalIdentityModel
     .findOneAndUpdate(
       { uniqueId: DIId },
@@ -72,7 +72,7 @@ export const connectDIOnCommend = async (DIId, destEntityId) => {
     .lean();
 };
 
-export const disconnectRoleOnCommend = async (roleId) => {
+export const disconnectRoleOnCommand = async (roleId) => {
   return await roleModel
     .findOneAndUpdate(
       { roleId: roleId },
@@ -83,7 +83,7 @@ export const disconnectRoleOnCommend = async (roleId) => {
     .lean();
 };
 
-export const connectRoleOnCommend = async (roleId, destIdRole) => {
+export const connectRoleOnCommand = async (roleId, destIdRole) => {
   return await roleModel
     .findOneAndUpdate(
       { roleId: roleId },
