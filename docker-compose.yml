@@ -1,6 +1,5 @@
 version: "3.3"
 
-
 services:
   mongo-primary:
     image: bitnami/mongodb:latest
@@ -77,12 +76,51 @@ services:
     networks: 
       - my-network
 
-  mongo-to-rabbit:
+  mongo-to-rabbit-OG:
     image: systemgenesis0/mongo-to-rabbit:latest
-    build: .
     restart: always
     ports:
       - 3000:3000
+    env_file: mongo-to-rabbit-OG.env
+    networks: 
+      - my-network
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
+
+  mongo-to-rabbit-entity:
+    image: systemgenesis0/mongo-to-rabbit:latest
+    restart: always
+    ports:
+      - 3100:3000
+    env_file: mongo-to-rabbit-entity.env
+    networks: 
+      - my-network
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
+
+  mongo-to-rabbit-DI:
+    image: systemgenesis0/mongo-to-rabbit:latest
+    restart: always
+    ports:
+      - 3200:3000
+    env_file: mongo-to-rabbit-DI.env
+    networks: 
+      - my-network
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
+
+  mongo-to-rabbit-role:
+    image: systemgenesis0/mongo-to-rabbit:latest
+    restart: always
+    ports:
+      - 3300:3000
+    env_file: mongo-to-rabbit-role.env
     networks: 
       - my-network
     depends_on: 
@@ -102,6 +140,19 @@ services:
       - rabbit
     networks: 
       - my-network
+
+  # search:
+  #   image: systemgensis0/search
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9001:8000
+  #   env_file: search-docker.env
+  #   volumes:
+  #     - ./db-enums.ts:/usr/src/app/app/config/db-enums.ts
+  #   depends_on:
+  #     - rabbit
+  #     - elasticsearch
+
 
 networks: 
   my-network:
