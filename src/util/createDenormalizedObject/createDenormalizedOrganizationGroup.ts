@@ -41,7 +41,7 @@ const getAncestorsFromGroupId = async (groupId: string) => {
         depthField: 'depth',
       },
     },
-    { $sort: { depth: 1 } },
+    { $sort: { depthField: 1 } },
     { $project: { 'ancestors.id': 1, 'ancestors.name': 1 } },
   ]).exec();
   return groupsWithAncestors[0];
