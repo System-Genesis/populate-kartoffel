@@ -7,7 +7,7 @@ export default new Schema<Role, Model<Role>, Role>(
     roleId: { type: String, unique: true, sparse: true },
     jobTitle: String,
     digitalIdentityUniqueId: String,
-    directGroup: String,
+    directGroup: Schema.Types.ObjectId,
     source: String,
     clearance: String,
   },{

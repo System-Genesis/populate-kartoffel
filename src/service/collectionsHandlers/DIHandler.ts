@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import config from "../../config";
 import collectionsMap from "../../config/collectionsMap";
 import { DigitalIdentity, Entity } from "../../config/types";
@@ -10,7 +11,7 @@ const denormalizedDICollectionName = config.mongo.denormalizedDICollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, operationType: string) => {
-  const updatedDIId = updatedDI[collectionsMap.uniqueID[DICollectionName]]
+  const updatedDIId = updatedDI.uniqueId;
   if (operationType == config.operationTypes.insert) {
   } else {
     if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
@@ -21,5 +22,5 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
       await entityHandler(DIEntity)
     }
   }  
-  await regularChangeUpdate(updatedDIId, DICollectionName);
+  await regularChangeUpdate(updatedDIId as unknown as Types.ObjectId, DICollectionName);
 };

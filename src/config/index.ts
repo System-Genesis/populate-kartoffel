@@ -58,6 +58,7 @@ export const config = {
   operationTypes: {
     update: "update",
     insert: "insert",
+    // delete: "delete",
   },
   prefetchAmount: 20,
 };

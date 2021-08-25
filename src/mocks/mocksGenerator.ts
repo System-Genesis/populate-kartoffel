@@ -42,7 +42,7 @@ export const updatePersonsOnCommand = async (entityId) => {
 
   return await entityModel
     .findOneAndUpdate(
-      { id: entityId },
+      { _id: entityId },
       {
         $set: { firstName: randomFirstName },
       }
@@ -108,7 +108,7 @@ export const changeRoleDirectGroup = async (roleId, OGId) => {
 export const changeOGDirectGroup = async (OGId, directGroupId) => {
   return await organizationGroupModel
     .findOneAndUpdate(
-      { id: OGId },
+      { _id: OGId },
       {
         $set: { directGroup: directGroupId },
       }

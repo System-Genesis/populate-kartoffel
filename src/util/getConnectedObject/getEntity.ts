@@ -7,12 +7,12 @@ const { mongo } = config;
 
 // TODO generic Fields
 const getEntityByDigitalIdentity = async(digitalIdentity: DigitalIdentity | DenormalizedDigitalIdentity ) => {
-  if(digitalIdentity) return await findOne(entityModel, {id: digitalIdentity.entityId})
+  if(digitalIdentity) return await findOne(entityModel, { _id: digitalIdentity.entityId})
   else return null
 };
 
 const getEntityByEntity = async (entity: Entity | DenormalizedEntity) => {
-  if(entity) return await findOne(entityModel, {id: entity.id})
+  if(entity) return await findOne(entityModel, { _id: entity._id})
   else return null
 };
 

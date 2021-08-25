@@ -5,21 +5,20 @@ import { createDenormalizedRole } from "./createDenormalizedRole";
 import { getConnectedObject } from "../getConnectedObject";
 import { digitalIdentityModel, entityModel } from "../repo/models";
 import { find, findOne } from "../repo/repository";
-import collectionsMap from "../../config/collectionsMap";
-
-const digitalIdentityCollectionName =
-  config.mongo.digitalIdentityCollectionName;
+import { Types } from "mongoose";
 
 // TODO generic fields( .id , .uniqueId etc)
-export const createDenormalizedEntity = async (entityId: string) => {
-  const entity = await findOne(entityModel, { id: entityId });
+export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
+  const entity = await findOne(entityModel, {
+    _id: entityId,
+  });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
-  const fullNameValue = entity.firstName + ' ' + entity.lastName;
-  delete entity.primaryDigitalIdentityId;
+  const fullNameValue = entity.firstName + " " + entity.lastName;
 
   let denormalizedEntity;
   const primaryDIId = entity.primaryDigitalIdentityId;
+  delete entity.primaryDigitalIdentityId;
   if (DIs.length == 0) {
     const populatedDIs = [];
 
@@ -30,11 +29,7 @@ export const createDenormalizedEntity = async (entityId: string) => {
     } as unknown as DenormalizedEntity;
   } else {
     const populatedDIs = await Promise.all(
-      DIs.map((DI) =>
-        createDenormalizedDigitalIdentity(
-          DI[collectionsMap.uniqueID[digitalIdentityCollectionName]]
-        )
-      )
+      DIs.map((DI) => createDenormalizedDigitalIdentity(DI.uniqueId))
     );
     if (!primaryDIId) {
       denormalizedEntity = {
@@ -52,24 +47,25 @@ export const createDenormalizedEntity = async (entityId: string) => {
         config.mongo.roleCollectionName
       );
 
-      const denormalizedPrimaryRole = await createDenormalizedRole(primaryRole);
-
+      let roleDependencyFields; //todo role dependancy
+      if(primaryRole){
+        const denormalizedPrimaryRole = await createDenormalizedRole(
+          primaryRole.roleId
+          );
+          roleDependencyFields.displayName = denormalizedPrimaryRole.displayName;
+          roleDependencyFields.directGroup = denormalizedPrimaryRole.directGroup;
+          roleDependencyFields.hierarchy = denormalizedPrimaryRole.hierarchy;
+          roleDependencyFields.jobTitle = denormalizedPrimaryRole.jobTitle;
+          roleDependencyFields.hierarchyIds = denormalizedPrimaryRole.hierarchyIds;
+        }
+        
       const mailValue = primaryDI.mail;
-      const displayNameValue = denormalizedPrimaryRole.displayName;
-      const directGroupValue = denormalizedPrimaryRole.directGroup;
-      const hierarchyValue = denormalizedPrimaryRole.hierarchy;
-      const jobTitleValue = denormalizedPrimaryRole.jobTitle;
-      const hierarchyIdsValue = denormalizedPrimaryRole.hierarchyIds;
-
+        
       denormalizedEntity = {
         ...entity,
-        displayName: displayNameValue,
-        directGroup: directGroupValue,
-        hierarchy: hierarchyValue,
+        ...roleDependencyFields,
         fullName: fullNameValue,
         mail: mailValue,
-        jobTitle: jobTitleValue,
-        hierarchyIds: hierarchyIdsValue,
         digitalIdentities: populatedDIs,
       } as unknown as DenormalizedEntity;
     }

@@ -13,17 +13,17 @@ import { config } from "./index";
 const collectionsMap = {
   uniqueID: {
     [config.mongo.digitalIdentityCollectionName]: "uniqueId",
-    [config.mongo.entityCollectionName]: "id",
+    [config.mongo.entityCollectionName]: "_id",
     [config.mongo.roleCollectionName]: "roleId",
-    [config.mongo.organizationGroupCollectionName]: "id",
+    [config.mongo.organizationGroupCollectionName]: "_id",
     [config.mongo.denormalizedDICollectionName]: "uniqueId",
-    [config.mongo.denormalizedEntityCollectionName]: "id",
+    [config.mongo.denormalizedEntityCollectionName]: "_id",
     [config.mongo.denormalizedRoleCollectionName]: "roleId",
-    [config.mongo.denormalizedOGCollectionName]: "id",
+    [config.mongo.denormalizedOGCollectionName]: "_id",
   },
   uniqueIDPath: {
     [config.mongo.digitalIdentityCollectionName]: "digitalIdentities.uniqueId",
-    [config.mongo.entityCollectionName]: "id",
+    [config.mongo.entityCollectionName]: "_id",
     [config.mongo.roleCollectionName]: "digitalIdentities.role.roleId",
     [config.mongo.organizationGroupCollectionName]: "", //TODO
   },

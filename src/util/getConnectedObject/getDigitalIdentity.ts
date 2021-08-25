@@ -11,7 +11,7 @@ const getDigitalIdentityWithDigitalIdentity = async (digitalIdentity: DigitalIde
 };
 
 const getDigitalIdentityWithEntity = async (entity: Entity | DenormalizedEntity) => {
-  if(entity) return await find(digitalIdentityModel, {entityId: entity.id})
+  if(entity) return await find(digitalIdentityModel, {entityId: entity._id})
   else return null
 };
 

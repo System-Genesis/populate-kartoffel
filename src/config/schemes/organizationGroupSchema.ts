@@ -4,13 +4,13 @@ import { OrganizationGroup } from "../types";
 
 export default new Schema<OrganizationGroup,Model<OrganizationGroup>, OrganizationGroup>(
   {
-    id: { type: String, unique: true , sparse: true },
+    _id: {type: Schema.Types.ObjectId, unique: true, sparse: true },
     name: String,
     source: String,
     akaUnit: String,
     childrenNames: [String],//not in the populated collection
     status: String,
-    directGroup: String,
+    directGroup: Schema.Types.ObjectId,
   },{ 
     collection: config.mongo.organizationGroupCollectionName,
     versionKey: false,

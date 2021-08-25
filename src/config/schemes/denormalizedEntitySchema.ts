@@ -5,7 +5,7 @@ import denormalizedDigitalIdentitySchema from "./denormalizedDigitalIdentitySche
 
 export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, DenormalizedEntity> (
   {
-    id: { type: String, unique: true, sparse: true },
+    _id: {type: Schema.Types.ObjectId, unique: true, sparse: true },
     entityType: String,
     identityCard: String,
     personalNumber: String,

@@ -1,14 +1,16 @@
+import { Types } from "mongoose";
 import config from "../../config";
 import { DenormalizedOrganizationGroup } from "../../config/types";
 import { organizationGroupModel } from "../repo/models";
 import { findOne } from "../repo/repository";
 
 export const createDenormalizedOrganizationGroup = async (
-  organizationGroupId: string
+  organizationGroupId: Types.ObjectId
 ) => {
   const organizationGroup = await findOne(organizationGroupModel, {
-    id: organizationGroupId,
+    _id: organizationGroupId,
   });
+  if (organizationGroup.childrenNames) delete organizationGroup.childrenNames;
   const ancestorsObjectsArray = await getAncestorsFromGroupId(
     organizationGroupId
   );
@@ -17,7 +19,7 @@ export const createDenormalizedOrganizationGroup = async (
     hierarchy: [],
   };
   ancestorsObjectsArray.forEach((ancestorsObject) => {
-    ancestorsAndHierarchy.ancestors.push(ancestorsObject.ancestors.id);
+    ancestorsAndHierarchy.ancestors.push(ancestorsObject.ancestors._id);
     ancestorsAndHierarchy.hierarchy.push(ancestorsObject.ancestors.name);
   });
 
@@ -28,22 +30,22 @@ export const createDenormalizedOrganizationGroup = async (
     hierarchy: hierarchyValue,
   } as unknown as DenormalizedOrganizationGroup;
 };
-const getAncestorsFromGroupId = async (groupId: string) => {
+const getAncestorsFromGroupId = async (groupId: Types.ObjectId) => {
   const groupsWithAncestors = await organizationGroupModel.aggregate([
-    { $match: { id: groupId } },
+    { $match: { _id: groupId } },
     {
       $graphLookup: {
         from: config.mongo.organizationGroupCollectionName,
         startWith: "$directGroup",
         connectFromField: "directGroup",
-        connectToField: "id",
+        connectToField: "_id",
         as: "ancestors",
-        depthField: 'depth',
+        depthField: "depth",
       },
     },
     { $unwind: "$ancestors" },
-    { $sort: { 'ancestors.depth': -1 } },
-    { $project: { 'ancestors.id': 1, 'ancestors.name': 1 } },
+    { $sort: { "ancestors.depth": -1 } },
+    { $project: { "ancestors._id": 1, "ancestors.name": 1 } },
   ]);
   return groupsWithAncestors;
 };

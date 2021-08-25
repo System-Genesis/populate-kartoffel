@@ -5,6 +5,7 @@ import regularChangeUpdate from "../regularChangeUpdate";
 import DIHandler from "./DIHandler";
 import entityHandler from "./entityHandler";
 import { getConnectedObject } from "../../util/getConnectedObject";
+import { Types } from "mongoose";
 
 const roleCollectionName = config.mongo.roleCollectionName;
 const denormalizedRoleCollectionName = config.mongo.denormalizedRoleCollectionName;
@@ -12,7 +13,7 @@ const DICollectionName = config.mongo.digitalIdentityCollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
-  const updatedRoleId = updatedRole[collectionsMap.uniqueID[roleCollectionName]]
+  const updatedRoleId = updatedRole.roleId;
   if (operationType != config.operationTypes.insert) {
     if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName][DICollectionName] as string]) {
       const roleDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
@@ -27,6 +28,6 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
       await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
     }
   }  
-  await regularChangeUpdate(updatedRoleId, roleCollectionName);
+  await regularChangeUpdate(updatedRoleId as unknown as Types.ObjectId, roleCollectionName);
 };
 

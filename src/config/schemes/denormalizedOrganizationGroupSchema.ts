@@ -4,14 +4,14 @@ import { DenormalizedOrganizationGroup } from "../types";
 
 export default new Schema<DenormalizedOrganizationGroup,Model<DenormalizedOrganizationGroup>, DenormalizedOrganizationGroup>(
   {
-    id: { type: String, unique: true , sparse: true },
+    _id: {type: Schema.Types.ObjectId, unique: true, sparse: true },
     name: String,
     source: String,
     ancestors: [String],//added
     hierarchy: String,//added
     akaUnit: String,
     status: String,
-    directGroup: String,
+    directGroup: Schema.Types.ObjectId,
   },{ 
     collection: config.mongo.denormalizedOGCollectionName,
     versionKey: false,

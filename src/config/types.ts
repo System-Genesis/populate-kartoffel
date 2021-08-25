@@ -1,4 +1,5 @@
 import { Timestamp } from "mongodb";
+import { Types } from "mongoose";
 
 export interface MyChangeEvent extends Object {
   _id: String;
@@ -36,7 +37,7 @@ export interface DigitalIdentity extends Object {
 
 export interface Entity extends Object {
   // Entity's Basic information
-  id: string;
+  _id: Types.ObjectId;
   firstName: string;
   lastName?: string;
   entityType: String;
@@ -64,10 +65,10 @@ export interface Entity extends Object {
 
 export interface OrganizationGroup extends Object {
   // OG's Basic information
-  id: string;
+  _id: Types.ObjectId;
   source: string;
   name: string;
-  directGroup?: string;
+  directGroup?: Types.ObjectId;
   childrenNames: string[];
   status?: string;
   akaUnit?: string;
@@ -78,7 +79,7 @@ export interface Role extends Object {
   roleId: string;
   jobTitle?: string;
   digitalIdentityUniqueId?: string;
-  directGroup: string;
+  directGroup: Types.ObjectId;
   source: string;
   clearance: string,
 };

@@ -4,7 +4,7 @@ import { Entity } from "../types";
 
 export default new Schema<Entity, Model<Entity>, Entity>(
   {
-    id: { type: String, unique: true, sparse: true},
+    _id: { type: Schema.Types.ObjectId, unique: true, sparse: true},
     entityType: String, // enum
     identityCard: String,
     personalNumber: String,

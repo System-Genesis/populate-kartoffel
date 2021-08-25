@@ -7,7 +7,7 @@ export default new Schema<DenormalizedRole, Model<DenormalizedRole>, Denormalize
     roleId: { type: String, unique: true, sparse: true },
     jobTitle: String,
     digitalIdentityUniqueId: String,
-    directGroup: String,
+    directGroup: Schema.Types.ObjectId,
     source: String,
     clearance: String,
     displayName: String,// hirerchy / job ?- /fullname(if connected to person)
