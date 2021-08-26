@@ -7,7 +7,6 @@ import { digitalIdentityModel, entityModel } from "../repo/models";
 import { find, findOne } from "../repo/repository";
 import { Types } from "mongoose";
 
-// TODO generic fields( .id , .uniqueId etc)
 export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   const entity = await findOne(entityModel, {
     _id: entityId,
@@ -41,33 +40,36 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
       const primaryDI = await findOne(digitalIdentityModel, {
         uniqueId: primaryDIId,
       });
+      const mailValue = primaryDI.mail;
+
       const primaryRole = await getConnectedObject(
         primaryDIId,
         config.mongo.digitalIdentityCollectionName,
         config.mongo.roleCollectionName
       );
-
-      let roleDependencyFields; //todo role dependancy
-      if(primaryRole){
+      if (!primaryRole) {
+        denormalizedEntity = {
+          ...entity,
+          fullName: fullNameValue,
+          mail: mailValue,
+          digitalIdentities: populatedDIs,
+        } as unknown as DenormalizedEntity;
+      } else {
         const denormalizedPrimaryRole = await createDenormalizedRole(
           primaryRole.roleId
-          );
-          roleDependencyFields.displayName = denormalizedPrimaryRole.displayName;
-          roleDependencyFields.directGroup = denormalizedPrimaryRole.directGroup;
-          roleDependencyFields.hierarchy = denormalizedPrimaryRole.hierarchy;
-          roleDependencyFields.jobTitle = denormalizedPrimaryRole.jobTitle;
-          roleDependencyFields.hierarchyIds = denormalizedPrimaryRole.hierarchyIds;
-        }
-        
-      const mailValue = primaryDI.mail;
-        
-      denormalizedEntity = {
-        ...entity,
-        ...roleDependencyFields,
-        fullName: fullNameValue,
-        mail: mailValue,
-        digitalIdentities: populatedDIs,
-      } as unknown as DenormalizedEntity;
+        );
+        denormalizedEntity = {
+          ...entity,
+          displayName: denormalizedPrimaryRole.displayName,
+          directGroup: denormalizedPrimaryRole.directGroup,
+          hierarchy: denormalizedPrimaryRole.hierarchy,
+          jobTitle: denormalizedPrimaryRole.jobTitle,
+          hierarchyIds: denormalizedPrimaryRole.hierarchyIds,
+          fullName: fullNameValue,
+          mail: mailValue,
+          digitalIdentities: populatedDIs,
+        } as unknown as DenormalizedEntity;
+      }
     }
   }
 

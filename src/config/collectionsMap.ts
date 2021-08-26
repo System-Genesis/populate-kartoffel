@@ -21,12 +21,6 @@ const collectionsMap = {
     [config.mongo.denormalizedRoleCollectionName]: "roleId",
     [config.mongo.denormalizedOGCollectionName]: "_id",
   },
-  uniqueIDPath: {
-    [config.mongo.digitalIdentityCollectionName]: "digitalIdentities.uniqueId",
-    [config.mongo.entityCollectionName]: "_id",
-    [config.mongo.roleCollectionName]: "digitalIdentities.role.roleId",
-    [config.mongo.organizationGroupCollectionName]: "", //TODO
-  },
   objectCconnectionFields: {
     [config.mongo.digitalIdentityCollectionName]: {
       [config.mongo.entityCollectionName]: "entityId",

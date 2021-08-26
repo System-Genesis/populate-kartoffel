@@ -14,7 +14,6 @@ export async function rabbitConsumer() {
         await startUpdateProccess(changeEventObject);
         msg.ack();
       } catch (err) {
-        // TODO return nack on proccess exit
         msg.nack(true);
         console.error(err);
       }

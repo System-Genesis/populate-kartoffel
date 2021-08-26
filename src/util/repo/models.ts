@@ -9,6 +9,29 @@ import denormalizedOrganizationGroupSchema from "../../config/schemes/denormaliz
 import denormalizedDigitalIdentitySchema from "../../config/schemes/denormalizedDigitalIdentitySchema";
 import denormalizedRoleSchema from "../../config/schemes/denormalizedRoleSchema";
 
+denormalizedEntitySchema.index({
+  personalNumber: 1,
+  identityCard: 1,
+  goalUserId: 1,
+  hierarchyIds: 1,
+  hierarchy: 1,
+  updatedAt: 1,
+  rank: 1,
+  entityType: 1,
+});
+
+denormalizedOrganizationGroupSchema.index({
+  ancestors: 1,
+  directGroup: 1,
+  source: 1,
+  hierarchy: 1,
+  updatedAt: 1,
+});
+
+denormalizedDigitalIdentitySchema.index({
+  source: 1,
+});
+
 export const denormalizedEntityModel = mongoose.model(
   config.mongo.denormalizedEntityCollectionName,
   denormalizedEntitySchema

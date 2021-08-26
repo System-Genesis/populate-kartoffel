@@ -15,12 +15,7 @@ export const findOneAndReplace = async (
   filter: object | ObjectId,
   objectToInsert: object
 ) => {
-  try{
     return await model.findOneAndReplace(filter, objectToInsert).lean();
-  }
-  catch (err){
-    console.log(err)
-  }
 }
 
 export const findOneAndUpdate = async (

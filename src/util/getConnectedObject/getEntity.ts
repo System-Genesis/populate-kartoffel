@@ -5,7 +5,6 @@ import { findOne } from "../repo/repository";
 
 const { mongo } = config;
 
-// TODO generic Fields
 const getEntityByDigitalIdentity = async(digitalIdentity: DigitalIdentity | DenormalizedDigitalIdentity ) => {
   if(digitalIdentity) return await findOne(entityModel, { _id: digitalIdentity.entityId})
   else return null

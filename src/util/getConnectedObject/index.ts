@@ -20,8 +20,7 @@ export const getConnectedObject = async (
   );
   const connectedObject = await connectedObjectMap[
     connectedObjectCollctionName
-  ][currentCollectionName](currentObject); //TODO think maybe use if else and divide the functions
-
+  ][currentCollectionName](currentObject); 
   return connectedObject;
 };
 

@@ -12,8 +12,7 @@ const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, operationType: string) => {
   const updatedDIId = updatedDI.uniqueId;
-  if (operationType == config.operationTypes.insert) {
-  } else {
+  if (operationType != config.operationTypes.insert) {
     if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
       const DIEntity = await getConnectedObject(updatedDIId, denormalizedDICollectionName, entityCollectionName) as Entity
       await entityHandler(DIEntity)

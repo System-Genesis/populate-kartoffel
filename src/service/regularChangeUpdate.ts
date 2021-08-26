@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import collectionsMap  from "../config/collectionsMap";
 import createDenormalizedObject from "../util/createDenormalizedObject";
-import { create, findOneAndUpdate } from "../util/repo/repository";
+import { create, findOneAndReplace } from "../util/repo/repository";
 
 export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
   if(!dataObjectId){
@@ -14,7 +14,7 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
     }; 
     const id = denormalizedObject._id
     delete denormalizedObject._id
-    const responseFromDB = await findOneAndUpdate(collectionsMap.denormalizedModelsMap[collectionName], filterQuery, denormalizedObject)
+    const responseFromDB = await findOneAndReplace(collectionsMap.denormalizedModelsMap[collectionName], filterQuery, denormalizedObject)
     if(!responseFromDB){
       denormalizedObject._id = id;
       await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
