@@ -1,6 +1,7 @@
 import { DenormalizedDigitalIdentity } from "../../config/types";
 import { digitalIdentityModel, roleModel } from "../repo/models";
 import { findOne } from "../repo/repository";
+import { createDenormalizedRole } from "./createDenormalizedRole";
 
 export const createDenormalizedDigitalIdentity = async (
   digitalIdentityId: string
@@ -9,5 +10,6 @@ export const createDenormalizedDigitalIdentity = async (
   const DIRole = await findOne(roleModel, {
     digitalIdentityUniqueId: digitalIdentityId,
   });
-  return { ...digitalIdentity, role: DIRole } as DenormalizedDigitalIdentity;
+  const denormalizedDIRole = DIRole? await createDenormalizedRole(DIRole.roleId) : null;
+  return { ...digitalIdentity, role: denormalizedDIRole } as DenormalizedDigitalIdentity;
 };

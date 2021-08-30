@@ -85,7 +85,7 @@ export interface Role extends Object {
 };
 
 export interface DenormalizedDigitalIdentity extends DigitalIdentity {
-  role: Role[]
+  role: DenormalizedRole[]
 };
 
 export interface DenormalizedOrganizationGroup extends OrganizationGroup {

@@ -1,7 +1,7 @@
 import { Model, Schema } from 'mongoose';
 import config from '..';
 import { DenormalizedDigitalIdentity } from '../types';
-import roleSchema from './roleSchema';
+import denormalizedRoleSchema from './denormalizedRoleSchema';
 
 export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigitalIdentity> ,DenormalizedDigitalIdentity >(
   {
@@ -11,7 +11,7 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     uniqueId: { type: String, unique: true, sparse: true },
     entityId: String,
     isRoleAttachable: Boolean,
-    role: roleSchema,// added
+    role: denormalizedRoleSchema,// added
   }, {
     versionKey: false,
     timestamps: true,
