@@ -9,7 +9,8 @@ FROM node:13.12-alpine
 WORKDIR /
 COPY --from=builder /dist ./dist
 COPY package*.json ./
+COPY --from=builder ./populate-kartoffel.env ./dist/.env
 RUN npm install --production --silent
 WORKDIR /dist
-EXPOSE 3000
+EXPOSE 3001
 CMD node index.js
