@@ -51,7 +51,8 @@ export const config = {
     queueName: env.get("RABBIT_QUEUE_NAME").required().asString(),
   },
   port: env.get("PORT").required().asPortNumber(),
-  isMock: env.get("IS_MOCK").required().asString(),
+  isMock: env.get("IS_MOCK").required().asBool(),
+  iaRecoveryScript: env.get("IS_RECOVERY_SCRIPT").required().asBool(),
   errorCodes: {
     duplicateKey: 11000,
   },
