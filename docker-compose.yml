@@ -46,6 +46,9 @@ services:
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/data
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq/log
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
     networks: 
       - my-network
 
@@ -127,6 +130,20 @@ services:
       - mongo-primary
       - mongo-secondary
       - rabbit
+
+  write-service:
+    image: systemgenesis0/write
+    restart: unless-stopped
+    ports:
+      - 4000:4000
+    volumes:
+      - ./docker-compose-config/write/config/write-env.json:/config/default.json
+    depends_on: 
+      - mongo-primary
+      - mongo-secondary
+      - rabbit
+    networks: 
+      - my-network
   
   populate-kartoffel:
     build: .
@@ -145,10 +162,10 @@ services:
     image: systemgenesis0/search
     restart: unless-stopped
     ports:
-      - 9001:8000
+      - 9001:9001
     env_file: ./docker-compose-config/search/config/search_docker.env
-    volumes:
-      - ./db-enums.ts:/usr/src/app/app/config/db-enums.ts
+    # volumes:
+    #   - ./db-enums.ts:/usr/src/app/app/config/db-enums.ts
     depends_on:
       - rabbit
       - elasticsearch
@@ -168,6 +185,21 @@ services:
     networks: 
       - my-network
 
+  gate:
+    image: systemgenesis0/gate
+    restart: unless-stopped
+    ports:
+      - 7040:3001
+    env_file: ./docker-compose-config/gate/config/gate.env
+    volumes:
+      - ./docker-compose-config/gate/volumes/config.js:/dist/config/index.js
+      - ./docker-compose-config/gate/volumes/config.ts:/src/config/index.ts
+    depends_on:
+      - search
+      - read-service
+      - write-service
+    networks: 
+      - my-network
 
 networks: 
   my-network:
