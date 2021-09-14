@@ -193,7 +193,6 @@ services:
     env_file: ./docker-compose-config/gate/config/gate.env
     volumes:
       - ./docker-compose-config/gate/volumes/config.js:/dist/config/index.js
-      - ./docker-compose-config/gate/volumes/config.ts:/src/config/index.ts
     depends_on:
       - search
       - read-service

@@ -37,14 +37,14 @@ export const config = {
     uri:
       env.get("MONGODB_USER_NAME").asString() &&
       env.get("MONGODB_PASSWORD").asString()
-        ? env.get("MONGO_PROTOCOL").required().asUrlString() +
+        ? env.get("MONGO_PROTOCOL").required().asString() +
           env.get("MONGODB_USER_NAME").asString() +
           ":" +
           env.get("MONGODB_PASSWORD").asString() +
           "@" +
-          env.get("MONGO_URN").required().asUrlString()
-        : env.get("MONGO_PROTOCOL").required().asUrlString() +
-          env.get("MONGO_URN").required().asUrlString(),
+          env.get("MONGO_URN").required().asString()
+        : env.get("MONGO_PROTOCOL").required().asString() +
+          env.get("MONGO_URN").required().asString(),
   },
   rabbit: {
     uri: env.get("RABBIT_URI").required().asString(),
