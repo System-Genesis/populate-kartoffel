@@ -27,3 +27,19 @@ enable-http-server= true
 resume = true
 
 stats= true
+
+[[script]]
+namespace = "kartoffelMock.denormalizedEntity"
+path = "scripts/transform_entity.js"
+
+# [[script]]
+# namespace = "kartoffelMock.denormalizedDigitalIdentity"
+# path = "scripts/transform_DI.js"
+
+# [[script]]
+# namespace = "kartoffel.denormalizedRole"
+# path = "scripts/transform_role.js"
+
+# [script]]
+# namespace = "kartoffel.denormalizedOrganizationGroup"
+# path = "scripts/transform_group.js"
