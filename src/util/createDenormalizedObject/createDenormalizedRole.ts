@@ -37,7 +37,7 @@ export const createDenormalizedRole = async (roleId: string) => {
         " " +
         roleEntity.lastName
       : hierarchyNames;
-    const hierarchyValue = denormalizedOrganizationGroup.hierarchy;
+    const hierarchyValue = hierarchyNames;
     const hierarchyIdsValue = [role.directGroup].concat(
       denormalizedOrganizationGroup.ancestors
     );
