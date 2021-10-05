@@ -13,7 +13,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     firstName: String,
     lastName: String,
     akaUnit: String,
-    dischargeDate: Date,
+    dischargeDay: Date,
     rank: String, 
     phone: [String],
     address: String,

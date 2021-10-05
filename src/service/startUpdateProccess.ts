@@ -22,8 +22,8 @@ const isDependencyFieldChangedQuery = (
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
     for (const updatedField in updatedFields) {
-      for (const connectionField in collectionsMap.objectCconnectionFields[collectionName]) {
-        if (connectionField && collectionsMap.objectCconnectionFields[collectionName][connectionField] == updatedField) return true;
+      for (const connectionField in collectionsMap.objectConnectionFields[collectionName]) {
+        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == updatedField) return true;
       }
     }
     return false;

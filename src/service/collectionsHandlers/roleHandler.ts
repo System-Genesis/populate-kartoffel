@@ -15,7 +15,7 @@ const entityCollectionName = config.mongo.entityCollectionName;
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
   const updatedRoleId = updatedRole.roleId;
   if (operationType != config.operationTypes.insert) {
-    if (connectionUpdate && !updatedRole[collectionsMap.objectCconnectionFields[roleCollectionName][DICollectionName] as string]) {
+    if (connectionUpdate && !updatedRole[collectionsMap.objectConnectionFields[roleCollectionName][DICollectionName] as string]) {
       const roleDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
       
       if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)

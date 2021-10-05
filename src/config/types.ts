@@ -48,7 +48,7 @@ export interface Entity extends Object {
   clearance?: number; // value object
   sex?: String;
   serviceType?: string; //value object
-  dischargeDate?: Date;
+  dischargeDay?: Date;
   birthDate?: Date;
   address?: string; // value?
   phone?: string[]; //value object

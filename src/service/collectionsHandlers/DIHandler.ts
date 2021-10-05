@@ -13,10 +13,10 @@ const entityCollectionName = config.mongo.entityCollectionName;
 export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, operationType: string) => {
   const updatedDIId = updatedDI.uniqueId;
   if (operationType != config.operationTypes.insert) {
-    if (connectionUpdate && !updatedDI[collectionsMap.objectCconnectionFields[DICollectionName][entityCollectionName]]) {
+    if (connectionUpdate && !updatedDI[collectionsMap.objectConnectionFields[DICollectionName][entityCollectionName]]) { //disconnect
       const DIEntity = await getConnectedObject(updatedDIId, denormalizedDICollectionName, entityCollectionName) as Entity
       await entityHandler(DIEntity)
-    } else {
+    } else { // connect
       const DIEntity = await getConnectedObject(updatedDIId, DICollectionName, entityCollectionName) as Entity
       await entityHandler(DIEntity)
     }

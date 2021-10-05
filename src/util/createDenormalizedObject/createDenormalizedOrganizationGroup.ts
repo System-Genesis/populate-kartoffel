@@ -19,7 +19,7 @@ export const createDenormalizedOrganizationGroup = async (
     hierarchy: [],
   };
   ancestorsObjectsArray.forEach((ancestorsObject) => {
-    ancestorsAndHierarchy.ancestors.push(ancestorsObject.ancestors._id);
+    ancestorsAndHierarchy.ancestors.unshift(ancestorsObject.ancestors._id);
     ancestorsAndHierarchy.hierarchy.push(ancestorsObject.ancestors.name);
   });
 

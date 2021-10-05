@@ -5,9 +5,9 @@ import { Types } from "mongoose";
 
 const entityCollectionName = config.mongo.entityCollectionName;
 
-export default async (updetedEntity: Entity) => {
-  if (updetedEntity) {
-    const updatedEntityId = Types.ObjectId(updetedEntity._id as unknown as string);
+export default async (updatedEntity: Entity) => {
+  if (updatedEntity) {
+    const updatedEntityId = Types.ObjectId(updatedEntity._id as unknown as string);
     await regularChangeUpdate(updatedEntityId, entityCollectionName);
   }
 };

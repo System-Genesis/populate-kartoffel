@@ -12,7 +12,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     firstName: String,
     lastName: String,
     akaUnit: String,
-    dischargeDate: Date,
+    dischargeDay: Date,
     rank: String, // enum
     phone: [String],
     address: String,
