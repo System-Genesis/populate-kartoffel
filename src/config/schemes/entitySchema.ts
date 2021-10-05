@@ -16,7 +16,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     rank: String, // enum
     phone: [String],
     address: String,
-    clearance: String, // String,of number - enum
+    clearance: Number, // String,of number - enum
     sex: String,
     birthDate: Date,
     mobilePhone: [String], //value object

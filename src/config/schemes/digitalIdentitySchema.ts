@@ -1,11 +1,11 @@
-import { Model, Schema } from "mongoose";
+import { Model, Schema ,Types } from "mongoose";
 import config from "..";
 import { DigitalIdentity } from "../types";
 
 export default new Schema<DigitalIdentity, Model<DigitalIdentity>, DigitalIdentity>(
   {
     uniqueId: { type: String, unique: true, sparse: true },
-    entityId: String,
+    entityId: Types.ObjectId,
     type: String,
     source: String,
     mail: String,
