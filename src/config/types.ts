@@ -18,7 +18,7 @@ export interface Description extends Object {
   fullDocument: object;
   timeStamp: Timestamp;
   ns: { db: string; coll: string };
-  documentKey: { id: string };
+  documentKey: { _id: string };
   updateDescription: {
     updatedFields : Object,
     removedFields : [ string ],

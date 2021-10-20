@@ -28,3 +28,7 @@ export const create = async (
   model: Model<any, any, any>,
   objectToInsert: object
 ) => await model.create(objectToInsert);
+
+export const deleteOne = async (model: Model<any, any, any>,filter: object | ObjectId) => {
+  return await model.deleteOne(filter).lean();
+}

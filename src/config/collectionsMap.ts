@@ -52,4 +52,6 @@ const collectionsMap = {
     [config.mongo.organizationGroupCollectionName]: denormalizedOrganizationGroupModel,
   },
 };
+
+// TODO move string config fields to the .env file
 export default collectionsMap;

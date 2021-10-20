@@ -8,7 +8,7 @@ import { roleGetOptions } from "./getRole";
 export const getConnectedObject = async (
   currentObjectId: string,
   currentCollectionName: string,
-  connectedObjectCollctionName: string
+  connectedObjectCollectionName: string
 ) => {
   const query = {
     [collectionsMap.uniqueID[currentCollectionName]]: currentObjectId,
@@ -19,7 +19,7 @@ export const getConnectedObject = async (
     query
   );
   const connectedObject = await connectedObjectMap[
-    connectedObjectCollctionName
+    connectedObjectCollectionName
   ][currentCollectionName](currentObject); 
   return connectedObject;
 };

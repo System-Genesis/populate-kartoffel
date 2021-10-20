@@ -1,7 +1,7 @@
 import menash, { ConsumerMessage } from "menashmq";
 import { MyChangeEvent } from "../../config/types";
 import config from "../../config/index";
-import startUpdateProccess from "../../service/startUpdateProccess";
+import startUpdateProcess from "../../service/startUpdateProcess";
 
 export async function rabbitConsumer() {
   await menash.queue(config.rabbit.queueName).activateConsumer(
@@ -11,7 +11,7 @@ export async function rabbitConsumer() {
         `change accepted from rabbit: ${JSON.stringify(changeEventObject)}`
       );
       try {
-        await startUpdateProccess(changeEventObject);
+        await startUpdateProcess(changeEventObject);
         msg.ack();
       } catch (err) {
         msg.nack(true);

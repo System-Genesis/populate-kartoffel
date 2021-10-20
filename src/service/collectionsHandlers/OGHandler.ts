@@ -13,21 +13,23 @@ export default async (
   connectionUpdate: boolean,
   operationType: string
 ) => {
-  const updatedOGId = Types.ObjectId(updatedOG._id as unknown as string);
-  if (operationType == config.operationTypes.update && connectionUpdate) {
-    //TODO check what count as connection- in which case to do this
-    await updateDescendantsRoles(updatedOGId);
-
-    const groupWithDescendants = await getDescendantsFromGroupId(updatedOGId);
-    groupWithDescendants.forEach(async (descendantsObject: any) => {
-      await regularChangeUpdate(
-        descendantsObject.descendants._id,
-        OGCollectionName
-      );
-      await updateDescendantsRoles(descendantsObject.descendants._id);
-    });
+  if(updatedOG){
+    const updatedOGId = Types.ObjectId(updatedOG._id as unknown as string);
+    if (operationType == config.operationTypes.update && connectionUpdate) {
+      //TODO check what count as connection- in which case to do this
+      await updateDescendantsRoles(updatedOGId);
+      
+      const groupWithDescendants = await getDescendantsFromGroupId(updatedOGId);
+      groupWithDescendants.forEach(async (descendantsObject: any) => {
+        await regularChangeUpdate(
+          descendantsObject.descendants._id,
+          OGCollectionName
+          );
+          await updateDescendantsRoles(descendantsObject.descendants._id);
+        });
+      }
+      await regularChangeUpdate(updatedOGId, OGCollectionName);
   }
-  await regularChangeUpdate(updatedOGId, OGCollectionName);
 };
 
 const getDescendantsFromGroupId = async (groupId: Types.ObjectId) => {

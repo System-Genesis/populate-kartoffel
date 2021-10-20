@@ -2,11 +2,11 @@ import config from "../config";
 import collectionsMap from "../config/collectionsMap";
 import { MyChangeEvent } from "../config/types";
 import getCollectionName from "../util/getCollectionName";
-// import { getEntityFromChangeEvent } from "../util/getEntity";
 import DIHandler from "./collectionsHandlers/DIHandler";
 import OGHandler from "./collectionsHandlers/OGHandler";
 import entityHandler from "./collectionsHandlers/entityHandler";
 import roleHandler from "./collectionsHandlers/roleHandler";
+import { deleteHandler } from "./deleteHandler";
 
 const { mongo } = config;
 
@@ -44,7 +44,10 @@ export default async (changeEventObject: MyChangeEvent) => {
   if (!isIgnoreChangeQuery(operationType)) {
     const changedObject = changeEventObject.description.fullDocument as any;
     // const entity = await getEntityFromChangeEvent(changeEventObject, collectionName);
-    if (
+    if (operationType == config.operationTypes.delete){
+      await deleteHandler[collectionName](changeEventObject.description.documentKey._id)
+      console.log(`the object with the id '${changeEventObject.description.documentKey._id}' has deleted`)
+    } else if(
       isDependencyFieldChangedQuery(
         changeEventObject,
         collectionName,
@@ -71,4 +74,4 @@ export default async (changeEventObject: MyChangeEvent) => {
     }
   }
 };
-// TODO reintilize the db on 286 error code
+// TODO reinitialize the db on 286 error code
