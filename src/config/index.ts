@@ -53,6 +53,7 @@ export const config = {
   port: env.get("PORT").required().asPortNumber(),
   isMock: env.get("IS_MOCK").required().asBool(),
   iaRecoveryScript: env.get("IS_RECOVERY_SCRIPT").required().asBool(),
+  recoveryCollectionsArray: env.get("RECOVERY_COLLECTIONS_ARRAY").required().asArray(),
   errorCodes: {
     duplicateKey: 11000,
   },
