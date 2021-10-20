@@ -59,9 +59,9 @@ export const config = {
   operationTypes: {
     update: "update",
     insert: "insert",
-    // delete: "delete",
+    delete: "delete",
   },
-  prefetchAmount: 20,
+  prefetchAmount: env.get("PREFETCH_AMOUNT").asInt() ? env.get("PREFETCH_AMOUNT").asInt() : 20,
 };
 
 // TODO move string config fields to the .env file

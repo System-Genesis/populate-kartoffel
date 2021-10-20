@@ -1,6 +1,6 @@
 import config from "./config/index";
 import buildMocks from "./mocks/index";
-import { recovryScript } from "./util/recovryScript";
+import { recoveryScript } from "./util/recoveryScript";
 import { initializeMongo } from "./util/mongo/initializeMongo";
 import { initializeRabbit } from "./util/rabbit/initializeRabbit";
 import { rabbitConsumer } from "./util/rabbit/initiateRabbitConsumer";
@@ -14,7 +14,7 @@ const main = async () => {
 
   //start dev environment
   if (config.isMock) await buildMocks();
-  if(config.iaRecoveryScript) await recovryScript()
+  if(config.iaRecoveryScript) await recoveryScript()
 };
 
 main().catch((err) => {
