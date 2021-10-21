@@ -1,10 +1,8 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { changeOGDirectGroup, changeRoleDirectGroup, connectDIOnCommand, connectRoleOnCommand, disconnectDIOnCommand, disconnectRoleOnCommand, updatePersonsOnCommand } from "./mocksGenerator";
 import { find } from "../infra/repo/repository";
 import { denormalizedEntityModel } from "../infra/repo/models";
-import config from "../config";
-
-export const app = express();
+import { app } from "../infra/express/server"
 
 export default async () => {
   app.get("/getAllPopulatedEntities", async function (_: Request, res: Response) {
@@ -80,6 +78,4 @@ export default async () => {
       res.send(`${JSON.stringify(responseFromDB)}`);
     }
   });
-
-  app.listen(config.port);
 };

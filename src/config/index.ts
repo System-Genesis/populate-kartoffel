@@ -63,6 +63,7 @@ export const config = {
     delete: "delete",
   },
   prefetchAmount: env.get("PREFETCH_AMOUNT").asInt() ? env.get("PREFETCH_AMOUNT").asInt() : 20,
+  apiPassword: env.get("API_PASSWORD").required().asString(),
 };
 
 // TODO move string config fields to the .env file
