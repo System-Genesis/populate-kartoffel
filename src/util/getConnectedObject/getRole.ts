@@ -1,7 +1,7 @@
 import { DenormalizedDigitalIdentity, DenormalizedRole, DigitalIdentity,  MyChangeEvent,/*Entity, OrganizationGroup,*/ Role } from "../../config/types";
 import config from "../../config";
-import { roleModel } from "../repo/models";
-import { findOne } from "../repo/repository";
+import { roleModel } from "../../infra/repo/models";
+import { findOne } from "../../infra/repo/repository";
 
 const { mongo } = config;
 

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
 import config from "../../config";
 import { DenormalizedOrganizationGroup } from "../../config/types";
-import { organizationGroupModel } from "../repo/models";
-import { findOne } from "../repo/repository";
+import { organizationGroupModel } from "../../infra/repo/models";
+import { findOne } from "../../infra/repo/repository";
 
 export const createDenormalizedOrganizationGroup = async (
   organizationGroupId: Types.ObjectId

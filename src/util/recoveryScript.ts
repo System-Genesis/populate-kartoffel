@@ -1,7 +1,7 @@
 import config from "../config";
 import collectionsMap from "../config/collectionsMap";
 import regularChangeUpdate from "../service/regularChangeUpdate";
-import { find } from "./repo/repository";
+import { find } from "../infra/repo/repository";
 
 export const recoveryScript = async () => {
   for (const collectionName of config.recoveryCollectionsArray) {
@@ -10,14 +10,16 @@ export const recoveryScript = async () => {
 };
 
 const createDenormalizedForCollection = async (collectionName) => {
+  console.log(`running recovery script on - ${collectionName}`);
   const collectionData = await find(
     collectionsMap.modelsMap[collectionName],
     {}
   );
-  await collectionData.forEach((dataObject) => {
-    regularChangeUpdate(
+  collectionData.forEach(async (dataObject) => {
+    await regularChangeUpdate(
       dataObject[collectionsMap.uniqueID[collectionName]],
       collectionName
     );
-  });
+  }, 
+  console.log(`recovery is finished for -${collectionName}`));
 };

@@ -1,6 +1,6 @@
 import config from "../../config";
 import collectionsMap from "../../config/collectionsMap";
-import { findOne } from "../repo/repository";
+import { findOne } from "../../infra/repo/repository";
 import { digitalIdentityGetOptions } from "./getDigitalIdentity";
 import { entityGetOptions } from "./getEntity";
 import { roleGetOptions } from "./getRole";

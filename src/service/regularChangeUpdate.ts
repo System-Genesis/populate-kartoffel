@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import collectionsMap  from "../config/collectionsMap";
 import createDenormalizedObject from "../util/createDenormalizedObject";
-import { create, findOneAndReplace } from "../util/repo/repository";
+import { create, findOneAndReplace } from "../infra/repo/repository";
 
 export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
   if(!dataObjectId){

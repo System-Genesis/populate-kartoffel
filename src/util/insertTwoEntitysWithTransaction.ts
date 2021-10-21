@@ -1,6 +1,6 @@
 import { DenormalizedEntity } from "../config/types";
-import { denormalizedEntityModel } from "./repo/models";
-import { findOneAndUpdate } from "./repo/repository";
+import { denormalizedEntityModel } from "../infra/repo/models";
+import { findOneAndUpdate } from "../infra/repo/repository";
 
 export default async (sourceDenormalizedEntity: DenormalizedEntity, destinationDenormalizedEntity: DenormalizedEntity) =>{
     findOneAndUpdate(denormalizedEntityModel, {_id: sourceDenormalizedEntity._id}, sourceDenormalizedEntity)

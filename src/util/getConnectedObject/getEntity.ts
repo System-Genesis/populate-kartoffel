@@ -1,7 +1,7 @@
 import { DenormalizedDigitalIdentity, DenormalizedEntity, DenormalizedRole, DigitalIdentity, Entity, MyChangeEvent, Role } from "../../config/types";
 import config from "../../config/index";
-import { denormalizedDigitalIdentityModel, digitalIdentityModel, entityModel } from "../repo/models";
-import { findOne } from "../repo/repository";
+import { denormalizedDigitalIdentityModel, digitalIdentityModel, entityModel } from "../../infra/repo/models";
+import { findOne } from "../../infra/repo/repository";
 
 const { mongo } = config;
 

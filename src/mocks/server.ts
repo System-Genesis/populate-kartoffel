@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { changeOGDirectGroup, changeRoleDirectGroup, connectDIOnCommand, connectRoleOnCommand, disconnectDIOnCommand, disconnectRoleOnCommand, updatePersonsOnCommand } from "./mocksGenerator";
-import { find } from "../util/repo/repository";
-import { denormalizedEntityModel } from "../util/repo/models";
+import { find } from "../infra/repo/repository";
+import { denormalizedEntityModel } from "../infra/repo/models";
 import config from "../config";
 
 export const app = express();

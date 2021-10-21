@@ -7,7 +7,7 @@ import {
   entityModel,
   organizationGroupModel,
   roleModel,
-} from "../util/repo/models";
+} from "../infra/repo/models";
 import { config } from "./index";
 
 const collectionsMap = {

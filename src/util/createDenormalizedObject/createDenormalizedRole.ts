@@ -1,8 +1,8 @@
 import config from "../../config";
 import { DenormalizedRole } from "../../config/types";
 import { getConnectedObject } from "../getConnectedObject";
-import { organizationGroupModel, roleModel } from "../repo/models";
-import { findOne } from "../repo/repository";
+import { organizationGroupModel, roleModel } from "../../infra/repo/models";
+import { findOne } from "../../infra/repo/repository";
 import { createDenormalizedOrganizationGroup } from "./createDenormalizedOrganizationGroup";
 
 export const createDenormalizedRole = async (roleId: string) => {

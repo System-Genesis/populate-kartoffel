@@ -1,9 +1,9 @@
 import config from "./config/index";
 import buildMocks from "./mocks/index";
 import { recoveryScript } from "./util/recoveryScript";
-import { initializeMongo } from "./util/mongo/initializeMongo";
-import { initializeRabbit } from "./util/rabbit/initializeRabbit";
-import { rabbitConsumer } from "./util/rabbit/initiateRabbitConsumer";
+import { initializeMongo } from "./infra/mongo/initializeMongo";
+import { initializeRabbit } from "./infra/rabbit/initializeRabbit";
+import { rabbitConsumer } from "./infra/rabbit/initiateRabbitConsumer";
 
 const main = async () => {
   await initializeMongo();

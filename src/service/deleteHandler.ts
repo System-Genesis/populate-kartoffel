@@ -1,6 +1,6 @@
 import config from "../config";
-import { denormalizedDigitalIdentityModel, denormalizedEntityModel, denormalizedOrganizationGroupModel, denormalizedRoleModel } from "../util/repo/models";
-import { deleteOne, findOne } from "../util/repo/repository";
+import { denormalizedDigitalIdentityModel, denormalizedEntityModel, denormalizedOrganizationGroupModel, denormalizedRoleModel } from "../infra/repo/models";
+import { deleteOne, findOne } from "../infra/repo/repository";
 import DIHandler from "./collectionsHandlers/DIHandler";
 import entityHandler from "./collectionsHandlers/entityHandler";
 

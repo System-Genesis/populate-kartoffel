@@ -1,9 +1,9 @@
 import config from "../../config";
 import { OrganizationGroup } from "../../config/types";
 import regularChangeUpdate from "../regularChangeUpdate";
-import { organizationGroupModel, roleModel } from "../../util/repo/models";
+import { organizationGroupModel, roleModel } from "../../infra/repo/models";
 import roleHandler from "./roleHandler";
-import { find } from "../../util/repo/repository";
+import { find } from "../../infra/repo/repository";
 import { Types } from "mongoose";
 
 const OGCollectionName = config.mongo.organizationGroupCollectionName;

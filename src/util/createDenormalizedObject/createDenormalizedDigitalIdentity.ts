@@ -1,6 +1,6 @@
 import { DenormalizedDigitalIdentity } from "../../config/types";
-import { digitalIdentityModel, roleModel } from "../repo/models";
-import { findOne } from "../repo/repository";
+import { digitalIdentityModel, roleModel } from "../../infra/repo/models";
+import { findOne } from "../../infra/repo/repository";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 
 export const createDenormalizedDigitalIdentity = async (

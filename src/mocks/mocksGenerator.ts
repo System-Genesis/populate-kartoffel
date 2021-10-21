@@ -5,7 +5,7 @@ import {
   entityModel,
   organizationGroupModel,
   roleModel,
-} from "../util/repo/models";
+} from "../infra/repo/models";
 import { db } from "./db";
 
 const mocksData = db;

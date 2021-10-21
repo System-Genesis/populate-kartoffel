@@ -3,8 +3,8 @@ import { DenormalizedEntity } from "../../config/types";
 import { createDenormalizedDigitalIdentity } from "./createDenormalizedDigitalIdentity";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 import { getConnectedObject } from "../getConnectedObject";
-import { digitalIdentityModel, entityModel } from "../repo/models";
-import { find, findOne } from "../repo/repository";
+import { digitalIdentityModel, entityModel } from "../../infra/repo/models";
+import { find, findOne } from "../../infra/repo/repository";
 import { Types } from "mongoose";
 
 export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
