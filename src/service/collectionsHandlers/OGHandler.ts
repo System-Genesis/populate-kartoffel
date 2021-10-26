@@ -13,7 +13,9 @@ export default async (
   connectionUpdate: boolean,
   operationType: string
 ) => {
-  if(updatedOG){
+  if(!updatedOG){
+    console.log(`trying to access to 'OrganizationGroup' that doesn't exist`)
+  } else {
     const updatedOGId = Types.ObjectId(updatedOG._id as unknown as string);
     if (operationType == config.operationTypes.update && connectionUpdate) {
       //TODO check what count as connection- in which case to do this

@@ -11,7 +11,9 @@ const denormalizedDICollectionName = config.mongo.denormalizedDICollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, operationType: string) => {
-  if (updatedDI) {
+  if (!updatedDI) {
+    console.log(`trying to access to 'DigitalIdentity' that doesn't exist`)
+  } else {
     const updatedDIId = updatedDI.uniqueId;
     if (operationType != config.operationTypes.insert) {
       if (connectionUpdate && !updatedDI[collectionsMap.objectConnectionFields[DICollectionName][entityCollectionName]]) { //disconnect

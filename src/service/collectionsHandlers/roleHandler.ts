@@ -13,7 +13,9 @@ const DICollectionName = config.mongo.digitalIdentityCollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
-  if(updatedRole){
+  if(!updatedRole){
+    console.log(`trying to access to 'Role' that doesn't exist`)
+  } else {
     const updatedRoleId = updatedRole.roleId;
     if (operationType != config.operationTypes.insert) {
       if (connectionUpdate && !updatedRole[collectionsMap.objectConnectionFields[roleCollectionName][DICollectionName] as string]) {
