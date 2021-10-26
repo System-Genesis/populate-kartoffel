@@ -8,6 +8,7 @@ import roleSchema from "../../config/schemes/roleSchema";
 import denormalizedOrganizationGroupSchema from "../../config/schemes/denormalizedOrganizationGroupSchema";
 import denormalizedDigitalIdentitySchema from "../../config/schemes/denormalizedDigitalIdentitySchema";
 import denormalizedRoleSchema from "../../config/schemes/denormalizedRoleSchema";
+import errorMonitorSchema from "../../config/schemes/errorMonitorSchema";
 
 denormalizedEntitySchema.index({
   personalNumber: 1,
@@ -71,3 +72,8 @@ export const roleModel = mongoose.model(
   config.mongo.roleCollectionName,
   roleSchema
 );
+
+export const errorsMonitorModel = mongoose.model(
+  config.mongo.errorsMonitorCollectionName,
+  errorMonitorSchema
+)

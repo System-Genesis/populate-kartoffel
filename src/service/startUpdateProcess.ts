@@ -43,9 +43,8 @@ export default async (changeEventObject: MyChangeEvent) => {
 
   if (!isIgnoreChangeQuery(operationType)) {
     const changedObject = changeEventObject.description.fullDocument as any;
-    // const entity = await getEntityFromChangeEvent(changeEventObject, collectionName);
     if (operationType == config.operationTypes.delete){
-      await deleteHandler[collectionName](changeEventObject.description.documentKey._id)
+     await deleteHandler[collectionName](changeEventObject.description.documentKey._id)
       console.log(`the object with the id '${changeEventObject.description.documentKey._id}' has deleted`)
     } else if(
       isDependencyFieldChangedQuery(
@@ -60,12 +59,6 @@ export default async (changeEventObject: MyChangeEvent) => {
         operationType
       );
     } else {
-      // if (!entity) {
-      //   console.error(
-      //     "the entity that matches this change does not exist in the DB:",
-      //     changeEventObject.description.fullDocument
-      //   );
-      // } else //send object id
       await collectionsHandler[collectionName](
         changedObject,
         false,

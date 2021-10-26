@@ -34,6 +34,7 @@ export const config = {
       .required()
       .asString(),
     roleCollectionName: env.get("ROLE_COLLECTION_NAME").required().asString(),
+    errorsMonitorCollectionName: env.get("ERRORS_COLLECTION_NAME").required().asString(),
     uri:
       env.get("MONGODB_USER_NAME").asString() &&
       env.get("MONGODB_PASSWORD").asString()
@@ -64,6 +65,7 @@ export const config = {
   },
   prefetchAmount: env.get("PREFETCH_AMOUNT").asInt() ? env.get("PREFETCH_AMOUNT").asInt() : 20,
   apiPassword: env.get("API_PASSWORD").required().asString(),
+  retriesBeforeCriticalErrorAlert: env.get("RETRIES").required().asInt(),
 };
 
 // TODO move string config fields to the .env file

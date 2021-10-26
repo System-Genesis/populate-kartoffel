@@ -9,6 +9,7 @@ export interface MyChangeEvent extends Object {
   isSentToRabbit: Boolean;
   createdAt: Date;
   v: Number;
+  populateKartoffelRetries?: number;
 };
 
 export interface Description extends Object {
@@ -23,6 +24,14 @@ export interface Description extends Object {
     updatedFields : Object,
     removedFields : [ string ],
  },
+};
+
+export interface ErrorsMonitor extends Object {
+  collectionName: String;
+  errorMessages: [String];
+  retries: Number;
+  objectId: Types.ObjectId;
+  description: Description;
 };
 
 export interface DigitalIdentity extends Object {
