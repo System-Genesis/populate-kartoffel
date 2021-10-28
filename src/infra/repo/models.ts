@@ -12,22 +12,45 @@ import errorMonitorSchema from "../../config/schemes/errorMonitorSchema";
 
 denormalizedEntitySchema.index({
   personalNumber: 1,
-  identityCard: 1,
-  goalUserId: 1,
-  hierarchyIds: 1,
-  hierarchy: 1,
-  updatedAt: 1,
-  rank: 1,
+});
+denormalizedEntitySchema.index({
   entityType: 1,
+});
+denormalizedEntitySchema.index({
+  rank: 1,
+});
+denormalizedEntitySchema.index({
+  updatedAt: 1,
+});
+denormalizedEntitySchema.index({
+  hierarchy: 1,
+});
+denormalizedEntitySchema.index({
+  hierarchyIds: 1,
+});
+denormalizedEntitySchema.index({
+  goalUserId: 1,
+});
+denormalizedEntitySchema.index({
+  identityCard: 1,
 });
 
 denormalizedOrganizationGroupSchema.index({
   ancestors: 1,
-  directGroup: 1,
-  source: 1,
-  hierarchy: 1,
+});
+denormalizedOrganizationGroupSchema.index({
   updatedAt: 1,
 });
+denormalizedOrganizationGroupSchema.index({
+  hierarchy: 1,
+});
+denormalizedOrganizationGroupSchema.index({
+  source: 1,
+});
+denormalizedOrganizationGroupSchema.index({
+  directGroup: 1,
+});
+
 
 denormalizedDigitalIdentitySchema.index({
   source: 1,
