@@ -29,7 +29,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     mail: String, //added
     jobTitle: String, //added
     hierarchyIds: [String],//added
-    pictures: {
+    picture: {
       profile: {
         url: String,
         meta: {
