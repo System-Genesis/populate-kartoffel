@@ -64,12 +64,17 @@ export interface Entity extends Object {
   mobilePhone?: string[]; //value object
   goalUserId?: string;
   primaryDigitalIdentityId: String;
-  pictures:{
-    profile:{ 
-      path: String;
-      meta: Object;
+  picture:{
+    profile: {
+      url: String;
+      meta: {
+        path: String;
+        format: String;
+        takenAt: Date;
+        updatedAt: Date;
+      };
     }
-  },
+  };
 };
 
 export interface OrganizationGroup extends Object {

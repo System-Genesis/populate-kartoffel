@@ -37,15 +37,15 @@ export const config = {
     errorsMonitorCollectionName: env.get("ERRORS_COLLECTION_NAME").required().asString(),
     uri:
       env.get("MONGODB_USER_NAME").asString() &&
-      env.get("MONGODB_PASSWORD").asString()
+        env.get("MONGODB_PASSWORD").asString()
         ? env.get("MONGO_PROTOCOL").required().asString() +
-          env.get("MONGODB_USER_NAME").asString() +
-          ":" +
-          env.get("MONGODB_PASSWORD").asString() +
-          "@" +
-          env.get("MONGO_URN").required().asString()
+        env.get("MONGODB_USER_NAME").asString() +
+        ":" +
+        env.get("MONGODB_PASSWORD").asString() +
+        "@" +
+        env.get("MONGO_URN").required().asString()
         : env.get("MONGO_PROTOCOL").required().asString() +
-          env.get("MONGO_URN").required().asString(),
+        env.get("MONGO_URN").required().asString(),
   },
   rabbit: {
     uri: env.get("RABBIT_URI").required().asString(),
@@ -66,6 +66,10 @@ export const config = {
   prefetchAmount: env.get("PREFETCH_AMOUNT").asInt() ? env.get("PREFETCH_AMOUNT").asInt() : 20,
   apiPassword: env.get("API_PASSWORD").required().asString(),
   retriesBeforeCriticalErrorAlert: env.get("RETRIES").required().asInt(),
+  pictures: {
+    baseUrl: env.get("BASE_URlL").required().asUrlString(),
+    urlSuffix: env.get("URL_SUFFIX").required().asString(),
+  }
 };
 
 // TODO move string config fields to the .env file

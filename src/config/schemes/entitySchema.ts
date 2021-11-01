@@ -22,10 +22,15 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     mobilePhone: [String], //value object
     goalUserId: String,
     primaryDigitalIdentityId: String,//-
-    pictures:{
-      profile:{ 
-        path: String,
-        meta: Object,
+    picture: {
+      profile: {
+        url: String,
+        meta: {
+          path: String,
+          format: String,
+          takenAt: Date,
+          updatedAt: Date,
+        },
       }
     },
   },{ 

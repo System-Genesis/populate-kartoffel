@@ -3,9 +3,9 @@ import config from "..";
 import { DenormalizedEntity } from "../types";
 import denormalizedDigitalIdentitySchema from "./denormalizedDigitalIdentitySchema";
 
-export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, DenormalizedEntity> (
+export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, DenormalizedEntity>(
   {
-    _id: {type: Schema.Types.ObjectId, unique: true, sparse: true },
+    _id: { type: Schema.Types.ObjectId, unique: true, sparse: true },
     entityType: String,
     identityCard: String,
     personalNumber: String,
@@ -14,7 +14,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     lastName: String,
     akaUnit: String,
     dischargeDay: Date,
-    rank: String, 
+    rank: String,
     phone: [String],
     address: String,
     clearance: String, 
@@ -29,15 +29,21 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     mail: String, //added
     jobTitle: String, //added
     hierarchyIds: [String],//added
-    pictures:{
-      profile:{ 
-        path: String,
-        meta: Object,
+    picture: {
+      profile: {
+        url: String,
+        meta: {
+          path: String,
+          format: String,
+          takenAt: Date,
+          updatedAt: Date,
+        },
       }
     },
     digitalIdentities: [denormalizedDigitalIdentitySchema],//added
   }, {
-    versionKey: false,
-    timestamps: true,
-    collection: config.mongo.denormalizedEntityCollectionName }
+  versionKey: false,
+  timestamps: true,
+  collection: config.mongo.denormalizedEntityCollectionName
+}
 );

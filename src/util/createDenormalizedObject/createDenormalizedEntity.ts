@@ -73,5 +73,10 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
     }
   }
 
+  if (denormalizedEntity.picture && denormalizedEntity.picture.profile && !denormalizedEntity.picture.profile.url ) {
+    const identifier = entity.personalNumber || entity.identityCard;
+    denormalizedEntity.picture.profile.url = `${config.pictures.baseUrl}/${identifier}/${config.pictures.urlSuffix}`;
+  }
+
   return denormalizedEntity;
 };
