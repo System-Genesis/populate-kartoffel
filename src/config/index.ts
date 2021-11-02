@@ -67,7 +67,7 @@ export const config = {
   apiPassword: env.get("API_PASSWORD").required().asString(),
   retriesBeforeCriticalErrorAlert: env.get("RETRIES").required().asInt(),
   pictures: {
-    baseUrl: env.get("BASE_URlL").required().asUrlString(),
+    baseUrl: env.get("BASE_URL").required().asUrlString(),
     urlSuffix: env.get("URL_SUFFIX").required().asString(),
   }
 };
