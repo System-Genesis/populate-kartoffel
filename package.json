@@ -10,7 +10,7 @@
     "express": "^4.17.1",
     "faker": "^5.5.3",
     "menashmq": "^0.1.5",
-    "mongoose": "^5.12.14",
+    "mongoose": "^6.0.12",
     "node": "^16.1.0"
   },
   "devDependencies": {
