@@ -15,7 +15,7 @@ export const initializeMongo = async () => {
       () => {
         mongoose.connection.on('reconnected', function () {
           console.info('Reconnected to MongoDB')
-        })      
+        })
         mongoose.connection.on("disconnected", () => console.info('MongoDB disconnected'));
         console.log("Mongo connection established");
       },
