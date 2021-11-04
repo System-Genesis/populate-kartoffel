@@ -75,7 +75,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
 
   if (denormalizedEntity.pictures && denormalizedEntity.pictures.profile && !denormalizedEntity.pictures.profile.url) {
     const identifier = entity.personalNumber || entity.identityCard;
-    denormalizedEntity.pictures.profile.url = `${config.pictures.baseUrl}/${identifier}/${config.pictures.urlSuffix}`;
+    denormalizedEntity.pictures.profile.url = `${config.pictures.baseUrl}${identifier}/${config.pictures.urlSuffix}`;
   }
 
   return denormalizedEntity;
