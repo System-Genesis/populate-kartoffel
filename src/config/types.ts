@@ -83,6 +83,7 @@ export interface OrganizationGroup extends Object {
   source: string;
   name: string;
   directGroup?: Types.ObjectId;
+  diPrefix?: string;
   childrenNames: string[];
   status?: string;
   akaUnit?: string;
