@@ -4,7 +4,7 @@ import { Entity } from "../types";
 
 export default new Schema<Entity, Model<Entity>, Entity>(
   {
-    _id: { type: Schema.Types.ObjectId, unique: true, sparse: true},
+    _id: { type: Schema.Types.ObjectId, unique: true, sparse: true },
     entityType: String, // enum
     identityCard: String,
     personalNumber: String,
@@ -22,9 +22,8 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     mobilePhone: [String], //value object
     goalUserId: String,
     primaryDigitalIdentityId: String,//-
-    picture: {
+    pictures: {
       profile: {
-        url: String,
         meta: {
           path: String,
           format: String,
@@ -33,9 +32,9 @@ export default new Schema<Entity, Model<Entity>, Entity>(
         },
       }
     },
-  },{ 
-    collection: config.mongo.entityCollectionName,
-    versionKey: false,
-    timestamps: true,
-  }
+  }, {
+  collection: config.mongo.entityCollectionName,
+  versionKey: false,
+  timestamps: true,
+}
 );

@@ -17,7 +17,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     rank: String,
     phone: [String],
     address: String,
-    clearance: String, 
+    clearance: String,
     sex: String,
     birthDate: Date,
     goalUserId: String,
@@ -29,7 +29,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     mail: String, //added
     jobTitle: String, //added
     hierarchyIds: [String],//added
-    picture: {
+    pictures: {
       profile: {
         url: String,
         meta: {

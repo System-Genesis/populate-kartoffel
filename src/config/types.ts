@@ -21,9 +21,9 @@ export interface Description extends Object {
   ns: { db: string; coll: string };
   documentKey: { _id: string };
   updateDescription: {
-    updatedFields : Object,
-    removedFields : [ string ],
- },
+    updatedFields: Object,
+    removedFields: [string],
+  },
 };
 
 export interface ErrorsMonitor extends Object {
@@ -64,7 +64,7 @@ export interface Entity extends Object {
   mobilePhone?: string[]; //value object
   goalUserId?: string;
   primaryDigitalIdentityId: String;
-  picture:{
+  pictures: {
     profile: {
       url: String;
       meta: {
