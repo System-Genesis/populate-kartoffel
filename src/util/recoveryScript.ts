@@ -15,11 +15,11 @@ const createDenormalizedForCollection = async (collectionName) => {
     collectionsMap.modelsMap[collectionName],
     {}
   );
-  collectionData.forEach(async (dataObject) => {
+  await Promise.all(collectionData.map(async (dataObject) => {
     await regularChangeUpdate(
       dataObject[collectionsMap.uniqueID[collectionName]],
       collectionName
     );
-  }, 
-  console.log(`recovery is finished for -${collectionName}`));
+  }));
+  console.log(`recovery is finished for -${collectionName}`)
 };
