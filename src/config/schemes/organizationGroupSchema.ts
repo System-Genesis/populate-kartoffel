@@ -8,6 +8,7 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     name: String,
     source: String,
     akaUnit: String,
+    diPrefix: String,
     childrenNames: [String],//not in the populated collection
     status: String,
     directGroup: Schema.Types.ObjectId,
