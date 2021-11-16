@@ -11,6 +11,7 @@ export default new Schema<DenormalizedOrganizationGroup,Model<DenormalizedOrgani
     hierarchy: String,//added
     akaUnit: String,
     status: String,
+    diPrefix: String,
     directGroup: Schema.Types.ObjectId,
   },{ 
     collection: config.mongo.denormalizedOGCollectionName,
