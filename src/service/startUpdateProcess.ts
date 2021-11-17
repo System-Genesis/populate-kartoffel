@@ -26,6 +26,13 @@ const isDependencyFieldChangedQuery = (
         if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == updatedField) return true;
       }
     }
+    const removedFields =
+      changeEventObject.description.updateDescription.removedFields;
+    for (const removedField in removedFields) {
+      for (const connectionField in collectionsMap.objectConnectionFields[collectionName]) {
+        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == removedField) return true;
+      }
+    }
     return false;
   } else return false;
 };
