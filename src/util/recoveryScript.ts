@@ -15,11 +15,24 @@ const createDenormalizedForCollection = async (collectionName) => {
     collectionsMap.modelsMap[collectionName],
     {}
   );
-  await Promise.all(collectionData.map(async (dataObject) => {
-    await regularChangeUpdate(
-      dataObject[collectionsMap.uniqueID[collectionName]],
-      collectionName
+  await callFunctionOnEachArrayElementInBatches(collectionName, collectionData);
+  console.log(`recovery is finished for -${collectionName}`);
+};
+
+const callFunctionOnEachArrayElementInBatches = async (
+  collectionName,
+  collectionData
+) => {
+  const chunkSize = config.prefetchAmount;
+  while (collectionData.length > 0) {
+    const batch = collectionData.splice(0, chunkSize);
+    await Promise.all(
+      batch.map(async (dataObject) => {
+        await regularChangeUpdate(
+          dataObject[collectionsMap.uniqueID[collectionName]],
+          collectionName
+        );
+      })
     );
-  }));
-  console.log(`recovery is finished for -${collectionName}`)
+  }
 };
