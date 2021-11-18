@@ -7,6 +7,7 @@ import OGHandler from "./collectionsHandlers/OGHandler";
 import entityHandler from "./collectionsHandlers/entityHandler";
 import roleHandler from "./collectionsHandlers/roleHandler";
 import { deleteHandler } from "./deleteHandler";
+import { updatePersonsOnCommand } from "../mocks/mocksGenerator";
 
 const { mongo } = config;
 
@@ -21,16 +22,12 @@ const isDependencyFieldChangedQuery = (
   if (operationType == config.operationTypes.update) {
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
-    for (const updatedField in updatedFields) {
-      for (const connectionField in collectionsMap.objectConnectionFields[collectionName]) {
-        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == updatedField) return true;
-      }
-    }
     const removedFields =
       changeEventObject.description.updateDescription.removedFields;
-    for (const removedField in removedFields) {
+    const allUpdatesFields =removedFields.concat(Object.keys(updatedFields))
+    for (const updatedField of allUpdatesFields) {
       for (const connectionField in collectionsMap.objectConnectionFields[collectionName]) {
-        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == removedField) return true;
+        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == updatedField) return true;
       }
     }
     return false;
