@@ -7,7 +7,6 @@ import OGHandler from "./collectionsHandlers/OGHandler";
 import entityHandler from "./collectionsHandlers/entityHandler";
 import roleHandler from "./collectionsHandlers/roleHandler";
 import { deleteHandler } from "./deleteHandler";
-import { updatePersonsOnCommand } from "../mocks/mocksGenerator";
 
 const { mongo } = config;
 
