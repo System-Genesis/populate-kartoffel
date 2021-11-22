@@ -7,21 +7,25 @@ import { rabbitConsumer } from "./infra/rabbit/initiateRabbitConsumer";
 import server from "./infra/express/server";
 
 const main = async () => {
-  await initializeMongo();
-  
-  await initializeRabbit();
+  try {
+    await initializeMongo();
 
-  await rabbitConsumer();
+    await initializeRabbit();
 
-  await server();
+    await rabbitConsumer();
 
-  //start dev environment
-  if (config.isMock) await buildMocks();
-  if(config.iaRecoveryScript) await recoveryScript()
+    await server();
+
+    //start dev environment
+    if (config.isMock) await buildMocks();
+    if (config.iaRecoveryScript) await recoveryScript();
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 };
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-
+// main().catch((err) => {
+//   console.error(err);
+//   process.exit(1);
+// });
