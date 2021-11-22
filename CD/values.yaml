@@ -4,7 +4,7 @@ replicaCount: 1
 images:
   PullSecrets: 
     name: kartoffelreg
-  repository: rabazhub.azurecr.io/values-test
+  repository: genesisproject.azurecr.io/populate-kartoffel
   tag: "latest"
 
 service:
@@ -12,23 +12,15 @@ service:
   ports:
   - name: http
     port: 3000
-
+    
 # volume:
-#   -name:
-#    mountPath:
-#    type:
-#    claimName:
+#   - name: gate-volume
+#     mountPath: /opt
+#     secretName: azure-secret 
+#     shareName: system-genesis/
+#     type: azurefile 
 
 config:
   configmaps: 
     name: populate-kartoffel
-
-ingress:
-  enabled: true
-  hosts:
-  - host: test-cd.branch-yesodot.org
-    paths:
-      - path: /message
-        service: testname
-        port: "3000"
   
