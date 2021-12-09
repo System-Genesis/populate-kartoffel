@@ -12,6 +12,7 @@ export default new Schema<OrganizationGroup,Model<OrganizationGroup>, Organizati
     childrenNames: [String],//not in the populated collection
     status: String,
     directGroup: Schema.Types.ObjectId,
+    isLeaf: Boolean,
   },{ 
     collection: config.mongo.organizationGroupCollectionName,
     versionKey: false,

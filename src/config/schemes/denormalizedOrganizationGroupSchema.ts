@@ -13,6 +13,7 @@ export default new Schema<DenormalizedOrganizationGroup,Model<DenormalizedOrgani
     status: String,
     diPrefix: String,
     directGroup: Schema.Types.ObjectId,
+    isLeaf: Boolean,
   },{ 
     collection: config.mongo.denormalizedOGCollectionName,
     versionKey: false,

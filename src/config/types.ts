@@ -87,6 +87,7 @@ export interface OrganizationGroup extends Object {
   childrenNames: string[];
   status?: string;
   akaUnit?: string;
+  isLeaf: boolean,
 }
 
 export interface Role extends Object {
