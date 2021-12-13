@@ -13,7 +13,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
-  const fullNameValue = entity.firstName + " " + entity.lastName;
+  const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
 
   let denormalizedEntity;
   const primaryDIId = entity.primaryDigitalIdentityId;
