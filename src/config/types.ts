@@ -41,6 +41,7 @@ export interface DigitalIdentity extends Object {
   mail?: string;
   uniqueId: string;
   entityId?: string;
+  userPrincipalName?: string;
   isRoleAttachable: boolean;
 };
 
