@@ -43,6 +43,7 @@ export interface DigitalIdentity extends Object {
   entityId?: string;
   userPrincipalName?: string;
   isRoleAttachable: boolean;
+  upn?: String,
 };
 
 export interface Entity extends Object {

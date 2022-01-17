@@ -10,6 +10,7 @@ export default new Schema<DigitalIdentity, Model<DigitalIdentity>, DigitalIdenti
     source: String,
     mail: String,
     isRoleAttachable: Boolean,
+    upn: String,
   },{
     versionKey: false,
     timestamps: true, 

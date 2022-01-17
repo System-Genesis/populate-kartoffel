@@ -12,7 +12,7 @@ export default new Schema<DenormalizedDigitalIdentity ,Model<DenormalizedDigital
     entityId: String,
     isRoleAttachable: Boolean,
     role: denormalizedRoleSchema,// added
-    userPrincipalName: String,
+    upn: String,
   }, {
     versionKey: false,
     timestamps: true,
