@@ -34,6 +34,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
       denormalizedEntity = {
         ...entity,
         fullName: fullNameValue,
+        employeeId: employeeIdValue,
         digitalIdentities: populatedDIs,
       } as unknown as DenormalizedEntity;
     } else {
