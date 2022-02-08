@@ -54,6 +54,9 @@ export interface Entity extends Object {
   entityType: String;
   personalNumber?: string; // use value object
   identityCard?: string;
+  employeeNumber?: string;
+  employeeId?: string;
+  organization?: string;
   rank?: string; //use vale object / enum
   akaUnit?: string;
   clearance?: number; // value object

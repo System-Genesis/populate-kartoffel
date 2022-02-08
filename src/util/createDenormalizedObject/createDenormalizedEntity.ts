@@ -14,7 +14,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
   const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
-
+  const employeeIdValue = ` ${entity.organization? entity.organization: ''}-${entity.employeeNumber? entity.employeeNumber : ''}`;
   let denormalizedEntity;
   const primaryDIId = entity.primaryDigitalIdentityId;
   delete entity.primaryDigitalIdentityId;
@@ -61,6 +61,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
         denormalizedEntity = {
           ...entity,
           displayName: denormalizedPrimaryRole.displayName,
+          employeeId: employeeIdValue,
           directGroup: denormalizedPrimaryRole.directGroup,
           hierarchy: denormalizedPrimaryRole.hierarchy,
           jobTitle: denormalizedPrimaryRole.jobTitle,

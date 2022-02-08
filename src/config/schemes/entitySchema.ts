@@ -8,6 +8,8 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     entityType: String, // enum
     identityCard: String,
     personalNumber: String,
+    employeeNumber: String,
+    organization: String,
     serviceType: String,
     firstName: String,
     lastName: String,
