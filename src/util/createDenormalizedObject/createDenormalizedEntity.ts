@@ -13,66 +13,46 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
-  const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
+  const fullNameValue = `${entity.firstName} ${entity.lastName ? entity.lastName : ''}`;
 
-  let denormalizedEntity;
   const primaryDIId = entity.primaryDigitalIdentityId;
   delete entity.primaryDigitalIdentityId;
-  if (DIs.length == 0) {
-    const populatedDIs = [];
+  let denormalizedEntity = {
+    ...entity,
+    fullName: fullNameValue,
+    digitalIdentities: [],
+  } as unknown as DenormalizedEntity;
 
-    denormalizedEntity = {
-      ...entity,
-      fullName: fullNameValue,
-      digitalIdentities: populatedDIs,
-    } as unknown as DenormalizedEntity;
-  } else {
+  if (DIs.length != 0) {
     const populatedDIs = await Promise.all(
       DIs.map((DI) => createDenormalizedDigitalIdentity(DI.uniqueId))
     );
-    if (!primaryDIId) {
-      denormalizedEntity = {
-        ...entity,
-        fullName: fullNameValue,
-        digitalIdentities: populatedDIs,
-      } as unknown as DenormalizedEntity;
-    } else {
+    denormalizedEntity.digitalIdentities = populatedDIs;
+
+    if (primaryDIId) {
       const primaryDI = await findOne(digitalIdentityModel, {
         uniqueId: primaryDIId,
       });
-      const mailValue = primaryDI.mail;
+      denormalizedEntity.mail = primaryDI.mail;
 
       const primaryRole = await getConnectedObject(
         primaryDIId,
         config.mongo.digitalIdentityCollectionName,
         config.mongo.roleCollectionName
       );
-      if (!primaryRole) {
-        denormalizedEntity = {
-          ...entity,
-          fullName: fullNameValue,
-          mail: mailValue,
-          digitalIdentities: populatedDIs,
-        } as unknown as DenormalizedEntity;
-      } else {
+
+      if (primaryRole) {
         const denormalizedPrimaryRole = await createDenormalizedRole(
           primaryRole.roleId
         );
-        denormalizedEntity = {
-          ...entity,
-          displayName: denormalizedPrimaryRole.displayName,
-          directGroup: denormalizedPrimaryRole.directGroup,
-          hierarchy: denormalizedPrimaryRole.hierarchy,
-          jobTitle: denormalizedPrimaryRole.jobTitle,
-          hierarchyIds: denormalizedPrimaryRole.hierarchyIds,
-          fullName: fullNameValue,
-          mail: mailValue,
-          digitalIdentities: populatedDIs,
-        } as unknown as DenormalizedEntity;
+        denormalizedEntity.displayName = denormalizedPrimaryRole.displayName;
+        denormalizedEntity.directGroup = denormalizedPrimaryRole.directGroup.toString();
+        denormalizedEntity.hierarchy = denormalizedPrimaryRole.hierarchy;
+        denormalizedEntity.jobTitle = denormalizedPrimaryRole.jobTitle;
+        denormalizedEntity.hierarchyIds = denormalizedPrimaryRole.hierarchyIds;
       }
     }
   }
-
   if (denormalizedEntity.pictures && denormalizedEntity.pictures.profile && !denormalizedEntity.pictures.profile.url) {
     const identifier = entity.personalNumber || entity.identityCard;
     denormalizedEntity.pictures.profile.url = `${config.pictures.baseUrl}${identifier}/${config.pictures.urlSuffix}`;
@@ -80,4 +60,3 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
 
   return denormalizedEntity;
 };
-

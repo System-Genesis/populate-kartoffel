@@ -10,6 +10,9 @@ import { db } from "./db";
 
 const mocksData = db;
 
+/**
+ * generates the a fake DB
+ */
 export const generateCollections = async () => {
   mocksData["entities"].forEach(async (element: any) => {
     await entityModel.create(element).catch((err) => {
@@ -37,6 +40,11 @@ export const generateCollections = async () => {
   });
 };
 
+/**
+ * updates the first name of the entity recieved in a random name
+ * @param entityId the entity id to be updated
+ * @returns the person updated
+ */
 export const updatePersonsOnCommand = async (entityId) => {
   const randomFirstName = faker.name.firstName();
 
@@ -49,6 +57,7 @@ export const updatePersonsOnCommand = async (entityId) => {
     )
     .lean();
 };
+
 
 export const disconnectDIOnCommand = async (DIId) => {
   return await digitalIdentityModel

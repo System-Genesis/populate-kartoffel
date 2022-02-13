@@ -5,6 +5,13 @@ import { digitalIdentityGetOptions } from "./getDigitalIdentity";
 import { entityGetOptions } from "./getEntity";
 import { roleGetOptions } from "./getRole";
 
+/**
+ * finds the connected object of the recieved id, in the collection recieved
+ * @param currentObjectId the id of the current object
+ * @param currentCollectionName the collection name of the current object
+ * @param connectedObjectCollectionName the collection name of the connected object that we want to find 
+ * @returns the object connected to the recieved id
+ */
 export const getConnectedObject = async (
   currentObjectId: string,
   currentCollectionName: string,

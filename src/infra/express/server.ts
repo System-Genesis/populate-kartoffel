@@ -8,6 +8,9 @@ export const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/**
+ * recovery runs 
+ */
 export default async () => {
   app.post("/populateEntity", async function (req: Request, res: Response) {
     if (authCheck(req.headers.authorization)) {

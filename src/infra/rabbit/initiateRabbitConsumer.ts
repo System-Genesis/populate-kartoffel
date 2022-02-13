@@ -6,6 +6,9 @@ import isCriticalError from "../../util/isCriticalError";
 import errorHandler from "../../util/errorHandler";
 import publishMessageToRabbit from "./publishMessageToRabbit";
 
+/**
+ * activating the rabbit consumer and starting the update process
+ */
 export async function rabbitConsumer() {
   await menash.queue(config.rabbit.queueName).activateConsumer(
     async (msg: ConsumerMessage) => {

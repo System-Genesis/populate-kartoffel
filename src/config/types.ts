@@ -1,6 +1,9 @@
 import { Timestamp } from "mongodb";
 import { Types } from "mongoose";
 
+/**
+ * the object recieved from MTR type
+ */
 export interface MyChangeEvent extends Object {
   _id: String;
   eventId: String;
@@ -12,6 +15,9 @@ export interface MyChangeEvent extends Object {
   populateKartoffelRetries?: number;
 };
 
+/**
+ * the change stream event type 
+ */
 export interface Description extends Object {
   id: { data: String };
   operationType: String;
@@ -26,6 +32,7 @@ export interface Description extends Object {
   },
 };
 
+
 export interface ErrorsMonitor extends Object {
   collectionName: String;
   errorMessages: [String];
@@ -34,8 +41,10 @@ export interface ErrorsMonitor extends Object {
   description: Description;
 };
 
+//the write types
+
 export interface DigitalIdentity extends Object {
-  // DI's Basic information
+  _id: Types.ObjectId;
   type: string;
   source: string;
   mail?: string;
@@ -47,23 +56,22 @@ export interface DigitalIdentity extends Object {
 };
 
 export interface Entity extends Object {
-  // Entity's Basic information
   _id: Types.ObjectId;
   firstName: string;
   lastName?: string;
   entityType: String;
-  personalNumber?: string; // use value object
+  personalNumber?: string; 
   identityCard?: string;
-  rank?: string; //use vale object / enum
+  rank?: string; 
   akaUnit?: string;
-  clearance?: number; // value object
+  clearance?: number; 
   sex?: String;
-  serviceType?: string; //value object
+  serviceType?: string;
   dischargeDay?: Date;
   birthDate?: Date;
-  address?: string; // value?
-  phone?: string[]; //value object
-  mobilePhone?: string[]; //value object
+  address?: string; 
+  phone?: string[]; 
+  mobilePhone?: string[];
   goalUserId?: string;
   primaryDigitalIdentityId: String;
   pictures: {
@@ -80,7 +88,6 @@ export interface Entity extends Object {
 };
 
 export interface OrganizationGroup extends Object {
-  // OG's Basic information
   _id: Types.ObjectId;
   source: string;
   name: string;
@@ -93,7 +100,7 @@ export interface OrganizationGroup extends Object {
 }
 
 export interface Role extends Object {
-  // Role's Basic information
+  _id: Types.ObjectId;
   roleId: string;
   jobTitle?: string;
   digitalIdentityUniqueId?: string;
@@ -101,6 +108,8 @@ export interface Role extends Object {
   source: string;
   clearance: string,
 };
+
+//the read types
 
 export interface DenormalizedDigitalIdentity extends DigitalIdentity {
   role: DenormalizedRole[]
@@ -124,6 +133,6 @@ export interface DenormalizedEntity extends Entity {
   hierarchyIds: string[];
   fullName: String;
   mail: string;
-  jobTitle: string;
+  jobTitle?: string;
   digitalIdentities: DenormalizedDigitalIdentity[];
 };

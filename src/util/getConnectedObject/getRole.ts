@@ -5,6 +5,11 @@ import { findOne } from "../../infra/repo/repository";
 
 const { mongo } = config;
 
+/**
+ * 
+ * @param digitalIdentity 
+ * @returns 
+ */
 const getRoleWithDigitalIdentity = async (digitalIdentity: DigitalIdentity | DenormalizedDigitalIdentity) => {
   if(digitalIdentity) return await findOne(roleModel, {digitalIdentityUniqueId: digitalIdentity.uniqueId})
   else return null

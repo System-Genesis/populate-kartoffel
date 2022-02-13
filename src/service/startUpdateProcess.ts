@@ -10,9 +10,21 @@ import { deleteHandler } from "./deleteHandler";
 
 const { mongo } = config;
 
+/**
+ * checks if the change event is somthing that is intersting for our system
+ * @param operationType the operation type (update, delete etc)
+ * @returns {boolean} ignore this change or not
+ */
 const isIgnoreChangeQuery = (operationType: string) =>
   !config.operationTypes[operationType];
 
+  /**
+   * checks if the change is about the connection between objects(connecting role to DI for exemple)
+   * @param changeEventObject the event recieved from the change stream
+   * @param collectionName the collection of the change
+   * @param operationType the operation type (update, delete etc)
+   * @returns {boolean} is the change is about the connection between objects or not
+   */
 const isDependencyFieldChangedQuery = (
   changeEventObject: MyChangeEvent,
   collectionName: string,
@@ -40,6 +52,10 @@ const collectionsHandler = {
   [mongo.organizationGroupCollectionName]: OGHandler,
 };
 
+/**
+ * starting the update process, sends the recieved object to the write handler 
+ * @param changeEventObject
+ */
 export default async (changeEventObject: MyChangeEvent) => {
   const operationType = changeEventObject?.description?.operationType as string;
   const collectionName = getCollectionName(changeEventObject);
