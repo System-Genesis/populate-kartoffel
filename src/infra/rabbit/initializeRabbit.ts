@@ -1,17 +1,19 @@
 import menash from "menashmq";
 import config from "../../config/index";
 
+const { rabbit, prefetchAmount } = config;
+
 export const initializeRabbit = async () => {
-  await menash.connect(config.rabbit.uri, {forever: true});
+  await menash.connect(rabbit.uri, { forever: true });
   await menash.declareTopology({
     queues: [
       {
         options: {
-          prefetch: config.prefetchAmount,
+          prefetch: prefetchAmount,
           durable: true,
           autoDelete: false,
         },
-        name: config.rabbit.queueName,
+        name: rabbit.queueName,
       },
     ],
   });

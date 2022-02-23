@@ -9,7 +9,7 @@ import publishMessageToRabbit from "./publishMessageToRabbit";
 /**
  * activating the rabbit consumer and starting the update process
  */
-export async function rabbitConsumer() {
+export const rabbitConsumer = async () => {
   await menash.queue(config.rabbit.queueName).activateConsumer(
     async (msg: ConsumerMessage) => {
       const changeEventObject = msg.getContent() as MyChangeEvent;
@@ -22,8 +22,14 @@ export async function rabbitConsumer() {
         msg.ack();
       } catch (err) {
         if (await isCriticalError(changeEventObject)) {
-          await errorHandler(changedObjectId, changeEventObject.description, err);
-          console.log(`critical error in the object with the id: ${changedObjectId}`);
+          await errorHandler(
+            changedObjectId,
+            changeEventObject.description,
+            err
+          );
+          console.log(
+            `critical error in the object with the id: ${changedObjectId}`
+          );
           msg.ack();
         } else {
           msg.ack();
@@ -31,11 +37,11 @@ export async function rabbitConsumer() {
             changeEventObject.populateKartoffelRetries
               ? changeEventObject.populateKartoffelRetries + 1
               : 1;
-          await publishMessageToRabbit(changeEventObject);
+          publishMessageToRabbit(changeEventObject);
           console.error(err);
         }
       }
     },
     { noAck: false }
   );
-}
+};

@@ -1,21 +1,21 @@
-import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import config from "../../config";
 import regularChangeUpdate from "../../service/regularChangeUpdate";
 
 export const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const { mongo } = config;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /**
- * recovery runs 
+ * recovery runs
  */
 export default async () => {
   app.post("/populateEntity", async function (req: Request, res: Response) {
     if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, config.mongo.entityCollectionName)
-      res.status(200)
+      await regularChangeUpdate(req.body.id, mongo.entityCollectionName);
       res.send(`the object with the id '${req.body.id}' has updated`);
     } else {
       res.status(401);
@@ -25,8 +25,10 @@ export default async () => {
 
   app.post("/populateDI", async function (req: Request, res: Response) {
     if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, config.mongo.digitalIdentityCollectionName)
-      res.status(200)
+      await regularChangeUpdate(
+        req.body.id,
+        mongo.digitalIdentityCollectionName
+      );
       res.send(`the object with the id '${req.body.id}' has updated`);
     } else {
       res.status(401);
@@ -36,8 +38,7 @@ export default async () => {
 
   app.post("/populateRole", async function (req: Request, res: Response) {
     if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, config.mongo.roleCollectionName)
-      res.status(200)
+      await regularChangeUpdate(req.body.id, mongo.roleCollectionName);
       res.send(`the object with the id '${req.body.id}' has updated`);
     } else {
       res.status(401);
@@ -47,8 +48,10 @@ export default async () => {
 
   app.post("/populateGroup", async function (req: Request, res: Response) {
     if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, config.mongo.organizationGroupCollectionName)
-      res.status(200)
+      await regularChangeUpdate(
+        req.body.id,
+        mongo.organizationGroupCollectionName
+      );
       res.send(`the object with the id '${req.body.id}' has updated`);
     } else {
       res.status(401);
@@ -56,7 +59,9 @@ export default async () => {
     }
   });
 
-  app.listen(config.port , () => console.log("server runs on port:" + config.port));
+  app.listen(config.port, () =>
+    console.log("server runs on port:" + config.port)
+  );
 };
 
 const authCheck = (authString) => {

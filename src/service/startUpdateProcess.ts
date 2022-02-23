@@ -8,7 +8,7 @@ import entityHandler from "./collectionsHandlers/entityHandler";
 import roleHandler from "./collectionsHandlers/roleHandler";
 import { deleteHandler } from "./deleteHandler";
 
-const { mongo } = config;
+const { mongo, operationTypes } = config;
 
 /**
  * checks if the change event is somthing that is intersting for our system
@@ -16,33 +16,42 @@ const { mongo } = config;
  * @returns {boolean} ignore this change or not
  */
 const isIgnoreChangeQuery = (operationType: string) =>
-  !config.operationTypes[operationType];
+  !operationTypes[operationType];
 
-  /**
-   * checks if the change is about the connection between objects(connecting role to DI for exemple)
-   * @param changeEventObject the event recieved from the change stream
-   * @param collectionName the collection of the change
-   * @param operationType the operation type (update, delete etc)
-   * @returns {boolean} is the change is about the connection between objects or not
-   */
+/**
+ * checks if the change is about the connection between objects(connecting role to DI for exemple)
+ * @param changeEventObject the event recieved from the change stream
+ * @param collectionName the collection of the change
+ * @param operationType the operation type (update, delete etc)
+ * @returns {boolean} is the change is about the connection between objects or not
+ */
 const isDependencyFieldChangedQuery = (
   changeEventObject: MyChangeEvent,
   collectionName: string,
   operationType: String
 ) => {
-  if (operationType == config.operationTypes.update) {
+  if (operationType == operationTypes.update) {
     const updatedFields =
       changeEventObject.description.updateDescription.updatedFields;
     const removedFields =
       changeEventObject.description.updateDescription.removedFields;
-    const allUpdatesFields =removedFields.concat(Object.keys(updatedFields))
+    const allUpdatesFields = removedFields.concat(Object.keys(updatedFields));
     for (const updatedField of allUpdatesFields) {
-      for (const connectionField in collectionsMap.objectConnectionFields[collectionName]) {
-        if (connectionField && collectionsMap.objectConnectionFields[collectionName][connectionField] == updatedField) return true;
+      for (const connectionField in collectionsMap.objectConnectionFields[
+        collectionName
+      ]) {
+        if (
+          connectionField &&
+          collectionsMap.objectConnectionFields[collectionName][
+            connectionField
+          ] == updatedField
+        )
+          return true;
       }
     }
     return false;
-  } else return false;
+  }
+  return false;
 };
 
 const collectionsHandler = {
@@ -53,7 +62,7 @@ const collectionsHandler = {
 };
 
 /**
- * starting the update process, sends the recieved object to the write handler 
+ * starting the update process, sends the recieved object to the write handler
  * @param changeEventObject
  */
 export default async (changeEventObject: MyChangeEvent) => {
@@ -62,25 +71,21 @@ export default async (changeEventObject: MyChangeEvent) => {
 
   if (!isIgnoreChangeQuery(operationType)) {
     const changedObject = changeEventObject.description.fullDocument as any;
-    if (operationType == config.operationTypes.delete){
-     await deleteHandler[collectionName](changeEventObject.description.documentKey._id)
-      console.log(`the object with the id '${changeEventObject.description.documentKey._id}' has deleted`)
-    } else if(
-      isDependencyFieldChangedQuery(
+    if (operationType == operationTypes.delete) {
+      await deleteHandler[collectionName](
+        changeEventObject.description.documentKey._id
+      );
+      console.log(
+        `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
+      );
+      const isDependencyChange = isDependencyFieldChangedQuery(
         changeEventObject,
         collectionName,
         operationType
-      )
-    ) {
-      await collectionsHandler[collectionName](
-        changedObject,
-        true,
-        operationType
       );
-    } else {
       await collectionsHandler[collectionName](
         changedObject,
-        false,
+        isDependencyChange,
         operationType
       );
     }
