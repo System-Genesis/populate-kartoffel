@@ -14,7 +14,10 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
   const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
-  const employeeIdValue = `${entity.organization? entity.organization: ''}-${entity.employeeNumber? entity.employeeNumber : ''}`;
+  let employeeIdValue : string | null = null;
+  if (entity.organization && entity.employeeNumber) {
+    employeeIdValue = `${entity.organization}-${entity.employeeNumber}`;
+  }
   let denormalizedEntity;
   const primaryDIId = entity.primaryDigitalIdentityId;
   delete entity.primaryDigitalIdentityId;
@@ -24,7 +27,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
     denormalizedEntity = {
       ...entity,
       fullName: fullNameValue,
-      employeeId: employeeIdValue,
+      ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
       digitalIdentities: populatedDIs,
     } as unknown as DenormalizedEntity;
   } else {
@@ -35,7 +38,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
       denormalizedEntity = {
         ...entity,
         fullName: fullNameValue,
-        employeeId: employeeIdValue,
+        ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
         digitalIdentities: populatedDIs,
       } as unknown as DenormalizedEntity;
     } else {
@@ -53,7 +56,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
         denormalizedEntity = {
           ...entity,
           fullName: fullNameValue,
-          employeeId: employeeIdValue,
+          ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
           mail: mailValue,
           digitalIdentities: populatedDIs,
         } as unknown as DenormalizedEntity;
@@ -64,7 +67,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
         denormalizedEntity = {
           ...entity,
           displayName: denormalizedPrimaryRole.displayName,
-          employeeId: employeeIdValue,
+          ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
           directGroup: denormalizedPrimaryRole.directGroup,
           hierarchy: denormalizedPrimaryRole.hierarchy,
           jobTitle: denormalizedPrimaryRole.jobTitle,
