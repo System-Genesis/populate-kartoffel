@@ -34,6 +34,9 @@ denormalizedEntitySchema.index({
 denormalizedEntitySchema.index({
   identityCard: 1,
 });
+denormalizedEntitySchema.index({
+  directGroup: 1,
+});
 
 denormalizedOrganizationGroupSchema.index({
   ancestors: 1,
