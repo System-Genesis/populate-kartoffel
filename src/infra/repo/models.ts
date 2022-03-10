@@ -29,6 +29,9 @@ denormalizedEntitySchema.index({
   hierarchy: 1,
 });
 denormalizedEntitySchema.index({
+  directGroup: 1,
+});
+denormalizedEntitySchema.index({
   hierarchyIds: 1,
 });
 denormalizedEntitySchema.index({
