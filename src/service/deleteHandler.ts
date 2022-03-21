@@ -21,6 +21,7 @@ const DIDeleteHandler = async (DIId: string)=>{
  * @param entityId the entity ID that is going to be deleted
  */
 const entityDeleteHandler = async (entityId: string)=>{
+  // TODO ELI: check dependency on DI.entityId
   await deleteOne(denormalizedEntityModel, {_id: entityId})
 }
 

@@ -37,15 +37,17 @@ const isDependencyFieldChangedQuery = (
       changeEventObject.description.updateDescription.removedFields;
     const allUpdatesFields = removedFields.concat(Object.keys(updatedFields));
     for (const updatedField of allUpdatesFields) {
+      // TODO-ELI: .include() does the job and looks much more sexy
       for (const connectionField in collectionsMap.objectConnectionFields[
         collectionName
       ]) {
         if (
           connectionField &&
           collectionsMap.objectConnectionFields[collectionName][
-            connectionField
+          connectionField
           ] == updatedField
         )
+        // TODO-ELI: add {} when its not one line condition
           return true;
       }
     }
@@ -66,6 +68,7 @@ const collectionsHandler = {
  * @param changeEventObject
  */
 export default async (changeEventObject: MyChangeEvent) => {
+  // TODO-ELI: declare enum of operations
   const operationType = changeEventObject?.description?.operationType as string;
   const collectionName = getCollectionName(changeEventObject);
 
@@ -78,6 +81,8 @@ export default async (changeEventObject: MyChangeEvent) => {
       console.log(
         `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
       );
+    // TODO ELI: test this change 
+    } else {
       const isDependencyChange = isDependencyFieldChangedQuery(
         changeEventObject,
         collectionName,
