@@ -9,9 +9,9 @@ import { create, findOneAndReplace } from "../infra/repo/repository";
  * @param collectionName the collection of the change
  */
 export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
-  // TODO-ELI: if else unnececcarry beter if { return; }
+  // TODO ELI: if else unnececcarry beter if { return; }
   if(!dataObjectId){
-    // TODO-ELI: error..........
+    // TODO ELI: error..........
     console.log('error ')
   } else{
     const denormalizedObject = await createDenormalizedObject[collectionName](dataObjectId as any);
