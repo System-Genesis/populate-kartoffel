@@ -19,6 +19,7 @@ export default async (
     const updatedOGId = Types.ObjectId(updatedOG._id as unknown as string);
     if (operationType == config.operationTypes.update && connectionUpdate) {
       //TODO check what count as connection- in which case to do this
+      //done
       await updateDescendantsRoles(updatedOGId);
       
       const groupWithDescendants = await getDescendantsFromGroupId(updatedOGId);

@@ -11,7 +11,7 @@ import { deleteHandler } from "./deleteHandler";
 const { mongo, operationTypes } = config;
 
 /**
- * checks if the change event is somthing that is intersting for our system
+ * checks if the change event is something that is interesting for our system
  * @param operationType the operation type (update, delete etc)
  * @returns {boolean} ignore this change or not
  */
@@ -19,8 +19,8 @@ const isIgnoreChangeQuery = (operationType: string) =>
   !operationTypes[operationType];
 
 /**
- * checks if the change is about the connection between objects(connecting role to DI for exemple)
- * @param changeEventObject the event recieved from the change stream
+ * checks if the change is about the connection between objects(connecting role to DI for example)
+ * @param changeEventObject the event received from the change stream
  * @param collectionName the collection of the change
  * @param operationType the operation type (update, delete etc)
  * @returns {boolean} is the change is about the connection between objects or not
@@ -44,11 +44,12 @@ const isDependencyFieldChangedQuery = (
         if (
           connectionField &&
           collectionsMap.objectConnectionFields[collectionName][
-          connectionField
+            connectionField
           ] == updatedField
-        )
-        // TODO ELI: add {} when its not one line condition
+        ) {
+          // TODO ELI: add {} when its not one line condition
           return true;
+        }
       }
     }
     return false;
@@ -64,7 +65,7 @@ const collectionsHandler = {
 };
 
 /**
- * starting the update process, sends the recieved object to the write handler
+ * starting the update process, sends the received object to the write handler
  * @param changeEventObject
  */
 export default async (changeEventObject: MyChangeEvent) => {
@@ -81,7 +82,8 @@ export default async (changeEventObject: MyChangeEvent) => {
       console.log(
         `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
       );
-    // TODO ELI: test this change 
+      // TODO ELI: test this change
+      //hagai: looks okay
     } else {
       const isDependencyChange = isDependencyFieldChangedQuery(
         changeEventObject,

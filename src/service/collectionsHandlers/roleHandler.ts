@@ -19,19 +19,22 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
     const updatedRoleId = updatedRole.roleId;
     if (operationType != config.operationTypes.insert) {
       // TODO ELI: Expecting only one dependency between Role DI but in the future might be more
+      //and?
       if (connectionUpdate && !updatedRole[collectionsMap.objectConnectionFields[roleCollectionName][DICollectionName] as string]) {
         // TODO ELI: 'roleDigitalIdentity' is confusing  consider 'connectedDI' instead
-        const roleDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
+        //done
+        const roleConnectedDI = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
         
-        if(roleDigitalIdentity) await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
+        if(roleConnectedDI) await DIHandler(roleConnectedDI, false, config.operationTypes.update)
         // TODO ELI: if their is no connected DI is their connected Entity??
+        // hagai: yes in case that the service stopped in the middle of an operation
         else{
           const entityDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, entityCollectionName)
           await entityHandler(entityDigitalIdentity)
         }
       } else {
-        const roleDigitalIdentity = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
-        await DIHandler(roleDigitalIdentity, false, config.operationTypes.update)
+        const roleConnectedDI = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
+        await DIHandler(roleConnectedDI, false, config.operationTypes.update)
       }
     }  
     await regularChangeUpdate(updatedRoleId as unknown as Types.ObjectId, roleCollectionName);

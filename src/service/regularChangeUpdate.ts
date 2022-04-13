@@ -10,10 +10,8 @@ import { create, findOneAndReplace } from "../infra/repo/repository";
  */
 export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
   // TODO ELI: if else unnececcarry beter if { return; }
-  if(!dataObjectId){
+  if(dataObjectId){
     // TODO ELI: error..........
-    console.log('error ')
-  } else{
     const denormalizedObject = await createDenormalizedObject[collectionName](dataObjectId as any);
     const filterQuery = {
       [collectionsMap.uniqueID[collectionName]]:
@@ -28,5 +26,7 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
       await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
     } 
     console.log(`the change has completed in ${collectionName} collection:`, JSON.stringify(denormalizedObject))
+    return;
   }
+  //console.error('no object id received')
 };

@@ -38,6 +38,7 @@ export const rabbitConsumer = async () => {
               ? changeEventObject.populateKartoffelRetries + 1
               : 1;
           // TODO ELI: 'takeTheMessageAndPutItBackInTheSameQueueThatItCameFromButWithDifferentRetriesCount' is better
+          //?
           publishMessageToRabbit(changeEventObject);
           console.error(err);
         }
