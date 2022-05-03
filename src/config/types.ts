@@ -36,6 +36,7 @@ export interface ErrorsMonitor extends Object {
 
 export interface DigitalIdentity extends Object {
   // DI's Basic information
+  _id: Types.ObjectId;
   type: string;
   source: string;
   mail?: string;
@@ -68,7 +69,7 @@ export interface Entity extends Object {
   phone?: string[]; //value object
   mobilePhone?: string[]; //value object
   goalUserId?: string;
-  primaryDigitalIdentityId: String;
+  primaryDigitalIdentityId: string;
   pictures: {
     profile: {
       url: String;
@@ -89,7 +90,7 @@ export interface OrganizationGroup extends Object {
   name: string;
   directGroup?: Types.ObjectId;
   diPrefix?: string;
-  childrenNames: string[];
+  childrenNames?: string[];
   status?: string;
   akaUnit?: string;
   isLeaf: boolean,
@@ -97,6 +98,7 @@ export interface OrganizationGroup extends Object {
 
 export interface Role extends Object {
   // Role's Basic information
+  _id: Types.ObjectId;
   roleId: string;
   jobTitle?: string;
   digitalIdentityUniqueId?: string;
@@ -112,6 +114,9 @@ export interface DenormalizedDigitalIdentity extends DigitalIdentity {
 export interface DenormalizedOrganizationGroup extends OrganizationGroup {
   ancestors: string[];
   hierarchy: string;
+  directChildrenGroups?: DenormalizedOrganizationGroup[];
+  directChildrenRoles?: DenormalizedRole[];
+  directChildrenEntities?: DenormalizedEntity[];
 }
 
 export interface DenormalizedRole extends Role {
@@ -128,5 +133,5 @@ export interface DenormalizedEntity extends Entity {
   fullName: String;
   mail: string;
   jobTitle: string;
-  digitalIdentities: DenormalizedDigitalIdentity[];
+  digitalIdentities?: DenormalizedDigitalIdentity[];
 };

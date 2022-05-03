@@ -13,9 +13,9 @@ import errorMonitorSchema from "../../config/schemes/errorMonitorSchema";
 denormalizedEntitySchema.index({
   personalNumber: 1,
 },
-{
-  sparse: true
-});
+  {
+    sparse: true
+  });
 denormalizedEntitySchema.index({
   entityType: 1,
 });
@@ -37,28 +37,28 @@ denormalizedEntitySchema.index({
 denormalizedEntitySchema.index({
   goalUserId: 1,
 },
-{
-  sparse: true
-});
+  {
+    sparse: true
+  });
 denormalizedEntitySchema.index({
   identityCard: 1,
 },
-{
-  sparse: true
-});
+  {
+    sparse: true
+  });
 denormalizedEntitySchema.index({
   employeeId: 1,
 },
-{
-  sparse: true
-});
+  {
+    sparse: true
+  });
 denormalizedEntitySchema.index({
   employeeNumber: 1,
   organization: 1,
 },
-{
-  sparse: true
-});
+  {
+    sparse: true
+  });
 denormalizedOrganizationGroupSchema.index({
   ancestors: 1,
 });
