@@ -4,7 +4,7 @@ import { recoveryScript } from "./util/recoveryScript";
 import { initializeMongo } from "./infra/mongo/initializeMongo";
 import { initializeRabbit } from "./infra/rabbit/initializeRabbit";
 import { rabbitConsumer } from "./infra/rabbit/initiateRabbitConsumer";
-// import server from "./infra/express/server";
+import server from "./infra/express/server";
 
 const main = async () => {
   await initializeMongo();
@@ -13,7 +13,7 @@ const main = async () => {
 
   await rabbitConsumer();
 
-  // await server();
+  await server();
 
   //start dev environment
   if (config.isMock) await buildMocks();

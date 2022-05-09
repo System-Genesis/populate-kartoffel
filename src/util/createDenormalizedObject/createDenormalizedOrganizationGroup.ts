@@ -8,7 +8,7 @@ import { createDenormalizedEntity } from "./createDenormalizedEntity";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 
 export const createDenormalizedOrganizationGroup = async (
-  organizationGroupId: Types.ObjectId, isCreateConnectedObjects: boolean
+  organizationGroupId: Types.ObjectId, isCreateConnectedObjects: boolean = true
 ): Promise<Partial<DenormalizedOrganizationGroup>> => {
   const organizationGroup: OrganizationGroup = await findOne(organizationGroupModel, {
     _id: organizationGroupId,
@@ -38,10 +38,7 @@ export const createDenormalizedOrganizationGroup = async (
 
   const directChildrenGroups: OrganizationGroup[] = await find(organizationGroupModel, { directGroup: organizationGroupId });
   const denormalizedGroups: Partial<DenormalizedOrganizationGroup>[] = await Promise.all(
-    directChildrenGroups.map(async (group) => {
-      const denormalizedGroup: Partial<DenormalizedOrganizationGroup> = await createDenormalizedOrganizationGroup(group._id, false);
-      return denormalizedGroup;
-    })
+    directChildrenGroups.map(async (group) => createDenormalizedOrganizationGroup(group._id, false))
   );
 
   const directChildrenRoles: Role[] = await find(roleModel, { directGroup: organizationGroupId });

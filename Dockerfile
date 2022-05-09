@@ -3,7 +3,7 @@ WORKDIR /
 COPY package*.json ./
 RUN npm install --silent
 COPY . .
-RUN npm run build || true
+RUN npm run build
 
 FROM node:13.12-alpine 
 WORKDIR /

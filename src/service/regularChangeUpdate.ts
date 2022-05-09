@@ -14,7 +14,7 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
     console.log('error ')
   } else {
     const denormalizedObject: Partial<DenormalizedEntity | DenormalizedDigitalIdentity | DenormalizedRole | DenormalizedOrganizationGroup> =
-      await createDenormalizedObject[collectionName](dataObjectId as any, true);
+      await createDenormalizedObject[collectionName](dataObjectId as any);
     const filterQuery = {
       [collectionsMap.uniqueID[collectionName]]:
         denormalizedObject[collectionsMap.uniqueID[collectionName]],

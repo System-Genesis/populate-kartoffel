@@ -52,7 +52,7 @@ export interface Entity extends Object {
   _id: Types.ObjectId;
   firstName: string;
   lastName?: string;
-  entityType: String;
+  entityType: string;
   personalNumber?: string; // use value object
   identityCard?: string;
   employeeNumber?: string;
@@ -61,7 +61,7 @@ export interface Entity extends Object {
   rank?: string; //use vale object / enum
   akaUnit?: string;
   clearance?: number; // value object
-  sex?: String;
+  sex?: string;
   serviceType?: string; //value object
   dischargeDay?: Date;
   birthDate?: Date;
@@ -72,10 +72,10 @@ export interface Entity extends Object {
   primaryDigitalIdentityId: string;
   pictures: {
     profile: {
-      url: String;
+      url: string;
       meta: {
-        path: String;
-        format: String;
+        path: string;
+        format: string;
         takenAt: Date;
         updatedAt: Date;
       };
@@ -128,7 +128,7 @@ export interface DenormalizedRole extends Role {
 export interface DenormalizedEntity extends Entity {
   displayName: string;
   directGroup: String;
-  hierarchy: String;
+  hierarchy: string;
   hierarchyIds: string[];
   fullName: String;
   mail: string;
