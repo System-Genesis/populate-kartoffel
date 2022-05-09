@@ -1,14 +1,15 @@
 import { Types } from "mongoose";
 import config from "../../config";
 import { OrganizationGroup, Role, Entity, DenormalizedOrganizationGroup, DenormalizedRole, DenormalizedEntity } from "../../config/types";
-import { entityModel, organizationGroupModel, roleModel } from "../../infra/repo/models";
+import { organizationGroupModel, roleModel } from "../../infra/repo/models";
 import { findOne, find } from "../../infra/repo/repository";
+import { getConnectedObject } from "../getConnectedObject";
 import { createDenormalizedEntity } from "./createDenormalizedEntity";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 
 export const createDenormalizedOrganizationGroup = async (
-  organizationGroupId: Types.ObjectId
-): Promise<DenormalizedOrganizationGroup> => {
+  organizationGroupId: Types.ObjectId, isCreateConnectedObjects: boolean
+): Promise<Partial<DenormalizedOrganizationGroup>> => {
   const organizationGroup: OrganizationGroup = await findOne(organizationGroupModel, {
     _id: organizationGroupId,
   });
@@ -27,23 +28,19 @@ export const createDenormalizedOrganizationGroup = async (
 
   const hierarchyValue = ancestorsAndHierarchy.hierarchy.join("/");
 
+  if (!isCreateConnectedObjects) {
+    return {
+      ...organizationGroup,
+      ancestors: ancestorsAndHierarchy.ancestors,
+      hierarchy: hierarchyValue,
+    };
+  }
+
   const directChildrenGroups: OrganizationGroup[] = await find(organizationGroupModel, { directGroup: organizationGroupId });
   const denormalizedGroups: Partial<DenormalizedOrganizationGroup>[] = await Promise.all(
     directChildrenGroups.map(async (group) => {
-      const denormalizedGroup: DenormalizedOrganizationGroup = await createDenormalizedOrganizationGroup(group._id);
-      delete denormalizedGroup.directChildrenEntities;
-      delete denormalizedGroup.directChildrenGroups;
-      delete denormalizedGroup.directChildrenRoles;
+      const denormalizedGroup: Partial<DenormalizedOrganizationGroup> = await createDenormalizedOrganizationGroup(group._id, false);
       return denormalizedGroup;
-    })
-  );
-
-  const directChildrenEntities: Entity[] = await find(entityModel, { directGroup: organizationGroupId });
-  const denormalizedEntities: Partial<DenormalizedEntity>[] = await Promise.all(
-    directChildrenEntities.map(async (entity) => {
-      const denormalizedEntity: Partial<DenormalizedEntity> = await createDenormalizedEntity(entity._id)
-      delete denormalizedEntity.digitalIdentities;
-      return denormalizedEntity;
     })
   );
 
@@ -52,6 +49,17 @@ export const createDenormalizedOrganizationGroup = async (
     directChildrenRoles.map((role) => createDenormalizedRole(role.roleId))
   );
 
+  const denormalizedEntities: Partial<DenormalizedEntity>[] = await Promise.all(directChildrenRoles.map(async (role: Role) => {
+    const roleEntity: Entity = await getConnectedObject(
+      role.roleId,
+      config.mongo.roleCollectionName,
+      config.mongo.entityCollectionName
+    )
+    const denormalizedEntity: Partial<DenormalizedEntity> = await createDenormalizedEntity(roleEntity._id);
+    delete denormalizedEntity.digitalIdentities;
+    return denormalizedEntity;
+  }));
+
   return {
     ...organizationGroup,
     ancestors: ancestorsAndHierarchy.ancestors,
@@ -59,8 +67,10 @@ export const createDenormalizedOrganizationGroup = async (
     directChildrenGroups: denormalizedGroups,
     directChildrenRoles: denormalizedRoles,
     directChildrenEntities: denormalizedEntities,
-  } as unknown as DenormalizedOrganizationGroup;
+  };
 };
+
+
 const getAncestorsFromGroupId = async (groupId: Types.ObjectId) => {
   const groupsWithAncestors = await organizationGroupModel.aggregate([
     { $match: { _id: groupId } },

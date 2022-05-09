@@ -16,8 +16,8 @@ export const createDenormalizedRole = async (roleId: string) => {
   if (!organizationGroup) {
     return role as DenormalizedRole;
   } else {
-    const denormalizedOrganizationGroup: DenormalizedOrganizationGroup =
-      await createDenormalizedOrganizationGroup(organizationGroup._id);
+    const denormalizedOrganizationGroup: Partial<DenormalizedOrganizationGroup> =
+      await createDenormalizedOrganizationGroup(organizationGroup._id, false);
     const roleEntity: DenormalizedEntity = await getConnectedObject(
       roleId,
       config.mongo.roleCollectionName,
@@ -42,9 +42,10 @@ export const createDenormalizedRole = async (roleId: string) => {
     //   roleEntity.lastName
     //   : hierarchyNames;
 
+    const entityFullName = `${roleEntity.firstName}${roleEntity.lastName ? ` ${roleEntity.lastName}` : ''}`;
 
     const displayNameValue = roleEntity ? `${hierarchyNames}/${validJobTitle(role.jobTitle) ?
-      `${role.jobTitle} - ${roleEntity.fullName}` : `${roleEntity.fullName}`}` : hierarchyNames;
+      `${role.jobTitle} - ${entityFullName}` : `${entityFullName}`}` : hierarchyNames;
 
     const hierarchyValue = hierarchyNames;
     const hierarchyIdsValue = [role.directGroup].concat(

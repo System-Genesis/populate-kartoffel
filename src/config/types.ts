@@ -114,9 +114,9 @@ export interface DenormalizedDigitalIdentity extends DigitalIdentity {
 export interface DenormalizedOrganizationGroup extends OrganizationGroup {
   ancestors: string[];
   hierarchy: string;
-  directChildrenGroups?: DenormalizedOrganizationGroup[];
-  directChildrenRoles?: DenormalizedRole[];
-  directChildrenEntities?: DenormalizedEntity[];
+  directChildrenGroups?: Partial<DenormalizedOrganizationGroup>[];
+  directChildrenRoles?: Partial<DenormalizedRole>[];
+  directChildrenEntities?: Partial<DenormalizedEntity>[];
 }
 
 export interface DenormalizedRole extends Role {
