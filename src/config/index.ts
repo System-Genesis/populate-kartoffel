@@ -50,6 +50,11 @@ export const config = {
   rabbit: {
     uri: env.get("RABBIT_URI").required().asString(),
     queueName: env.get("RABBIT_QUEUE_NAME").required().asString(),
+    retryOptions: {
+      minTimeout: env.get('RABBIT_RETRY_MIN_TIMEOUT').default(1000).asIntPositive(),
+      retries: env.get('RABBIT_RETRY_RETRIES').default(10).asIntPositive(),
+      factor: env.get('RABBIT_RETRY_FACTOR').default(1.8).asFloatPositive(),
+    },
   },
   port: env.get("PORT").required().asPortNumber(),
   isMock: env.get("IS_MOCK").required().asBool(),

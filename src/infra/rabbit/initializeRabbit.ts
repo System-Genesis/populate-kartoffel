@@ -2,7 +2,7 @@ import menash from "menashmq";
 import config from "../../config/index";
 
 export const initializeRabbit = async () => {
-  await menash.connect(config.rabbit.uri, {forever: true});
+  await menash.connect(config.rabbit.uri, config.rabbit.retryOptions);
   await menash.declareTopology({
     queues: [
       {

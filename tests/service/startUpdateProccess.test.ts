@@ -60,7 +60,7 @@ const changeObjectToConnectionTest = (object) => {
     updatedFields: { entityId: "1234567" },
     removedFields: Array(0),
   };
-  newObject["description"].ns.coll = "digitalIdentity" ;
+  newObject["description"].ns.coll = "digitalIdentity";
   newObject["description"].fullDocument = {
     _id: "60f5ecf4c9549fbf8960fe1d",
     type: "domUser",
@@ -74,7 +74,7 @@ const changeObjectToConnectionTest = (object) => {
 
 const operationTypeUnvalidTest = (object) => {
   const newObject = JSON.parse(JSON.stringify(object));
-  newObject["description"].operationType = "drop" ;
+  newObject["description"].operationType = "drop";
   return newObject;
 };
 
@@ -96,10 +96,10 @@ jest.mock("../../src/util/getEntity", () => {
 });
 
 describe("startUpdateProccess test", () => {
-  afterEach(() => {    
+  afterEach(() => {
     jest.clearAllMocks();
   });
-  
+
   test("should start regularChangeUpdate flow", async () => {
     await startUpdateProccess(changeEventObjectRegularTest);
     expect(getEntity.getEntityFromChangeEvent).toHaveBeenCalled();
