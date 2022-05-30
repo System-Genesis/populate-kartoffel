@@ -1,47 +1,27 @@
-import mongoose from "mongoose";
 import config from "./config/index";
-import server from "./express/server";
-import menash from "menashmq";
-
-// import buildMocks from "./mocks/index";
-
-const { mongo, rabbit } = config;
-
-const initializeMongo = async () => {
-  console.log("Connecting to Mongo...");
-
-  await mongoose.connect(mongo.uri, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  });
-
-  console.log("Mongo connection established");
-};
-
-const initializeRabbit = async () => {
-  await menash.connect(rabbit.uri);
-  await menash.declareQueue(rabbit.queueName, { durable: true });
-
-  console.log("Rabbit connected");
-};
-
-const initiateChangeStraem = async () => {
-
-};
+import buildMocks from "./mocks/index";
+import { recoveryScript } from "./util/recoveryScript";
+import { initializeMongo } from "./infra/mongo/initializeMongo";
+import { initializeRabbit } from "./infra/rabbit/initializeRabbit";
+import { rabbitConsumer } from "./infra/rabbit/initiateRabbitConsumer";
+import server from "./infra/express/server";
 
 const main = async () => {
   await initializeMongo();
-
+  
   await initializeRabbit();
 
-  await initiateChangeStraem();
+  await rabbitConsumer();
 
   await server();
 
   //start dev environment
-  // if (config.isMock) await buildMocks()
-
+  if (config.isMock) await buildMocks();
+  if(config.iaRecoveryScript) await recoveryScript()
 };
 
-main().catch((err) => console.error(err));
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+

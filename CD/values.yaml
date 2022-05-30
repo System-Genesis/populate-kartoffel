@@ -1,0 +1,26 @@
+name: "populate-kartoffel"
+replicaCount: 1
+
+images:
+  PullSecrets: 
+    name: kartoffelreg
+  repository: genesisproject.azurecr.io/populate-kartoffel
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3000
+    
+# volume:
+#   - name: gate-volume
+#     mountPath: /opt
+#     secretName: azure-secret 
+#     shareName: system-genesis/
+#     type: azurefile 
+
+config:
+  configmaps: 
+    name: populate-kartoffel
+  
