@@ -1,5 +1,5 @@
 import config from "../../config";
-import { DenormalizedEntity } from "../../config/types";
+import { DenormalizedEntity, DigitalIdentity, Entity } from "../../config/types";
 import { createDenormalizedDigitalIdentity } from "./createDenormalizedDigitalIdentity";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 import { getConnectedObject } from "../getConnectedObject";
@@ -8,37 +8,40 @@ import { find, findOne } from "../../infra/repo/repository";
 import { Types } from "mongoose";
 
 export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
-  const entity = await findOne(entityModel, {
+  const entity: Partial<Entity> = await findOne(entityModel, {
     _id: entityId,
   });
-  const DIs = await find(digitalIdentityModel, { entityId: entityId });
 
-  const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
-  let employeeIdValue : string | null = null;
+  const DIs: Partial<DigitalIdentity>[] = await find(digitalIdentityModel, { entityId: entityId });
+  const fullNameValue: string = `${entity.firstName}${entity.lastName ? ` ${entity.lastName}` : ''}`;
+  let employeeIdValue: string | null = null;
+
   if (entity.organization && entity.employeeNumber) {
     employeeIdValue = `${entity.organization}-${entity.employeeNumber}`;
   }
-  let denormalizedEntity;
+
+  let denormalizedEntity: Partial<DenormalizedEntity>;
   const primaryDIId = entity.primaryDigitalIdentityId;
   delete entity.primaryDigitalIdentityId;
+
   if (DIs.length == 0) {
     const populatedDIs = [];
 
     denormalizedEntity = {
       ...entity,
       fullName: fullNameValue,
-      ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
+      ...(employeeIdValue ? { employeeId: employeeIdValue } : {}),
       digitalIdentities: populatedDIs,
     } as unknown as DenormalizedEntity;
   } else {
     const populatedDIs = await Promise.all(
-      DIs.map((DI) => createDenormalizedDigitalIdentity(DI.uniqueId))
+      DIs.map((DI) => createDenormalizedDigitalIdentity(DI.uniqueId!))
     );
     if (!primaryDIId) {
       denormalizedEntity = {
         ...entity,
         fullName: fullNameValue,
-        ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
+        ...(employeeIdValue ? { employeeId: employeeIdValue } : {}),
         digitalIdentities: populatedDIs,
       } as unknown as DenormalizedEntity;
     } else {
@@ -56,7 +59,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
         denormalizedEntity = {
           ...entity,
           fullName: fullNameValue,
-          ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
+          ...(employeeIdValue ? { employeeId: employeeIdValue } : {}),
           mail: mailValue,
           digitalIdentities: populatedDIs,
         } as unknown as DenormalizedEntity;
@@ -67,7 +70,7 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
         denormalizedEntity = {
           ...entity,
           displayName: denormalizedPrimaryRole.displayName,
-          ...(employeeIdValue ? {employeeId: employeeIdValue} : {}),
+          ...(employeeIdValue ? { employeeId: employeeIdValue } : {}),
           directGroup: denormalizedPrimaryRole.directGroup,
           hierarchy: denormalizedPrimaryRole.hierarchy,
           jobTitle: denormalizedPrimaryRole.jobTitle,

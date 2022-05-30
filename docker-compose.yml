@@ -33,7 +33,7 @@ services:
       - 27018:27017
     depends_on:
       - mongo-primary
-    networks: 
+    networks:
       - my-network
 
   rabbit:
@@ -49,34 +49,6 @@ services:
     depends_on: 
       - mongo-primary
       - mongo-secondary
-    networks: 
-      - my-network
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
-    restart: unless-stopped
-    environment:
-      - discovery.type=single-node
-    ports:
-      - 9200:9200
-    depends_on: 
-      - mongo-primary
-      - mongo-secondary
-    networks: 
-      - my-network
-
-  monstache:
-    image: rwynn/monstache:rel6
-    restart: unless-stopped
-    command: -f ./config.toml
-    working_dir: /app
-    depends_on: 
-      - mongo-primary
-      - mongo-secondary
-      - elasticsearch
-    volumes:
-      - ./docker-compose-config/monstache/config/config.toml:/app/config.toml
-      - ./docker-compose-config/monstache/config/scripts:/app/scripts
     networks: 
       - my-network
 
@@ -131,75 +103,6 @@ services:
       - mongo-primary
       - mongo-secondary
       - rabbit
-
-  write-service:
-    image: systemgenesis0/write
-    restart: unless-stopped
-    ports:
-      - 4000:4000
-    volumes:
-      - ./docker-compose-config/write/config/write-env.json:/config/default.json
-    depends_on: 
-      - mongo-primary
-      - mongo-secondary
-      - rabbit
-    networks: 
-      - my-network
-  
-  populate-kartoffel:
-    build: .
-    restart: always
-    ports:
-      - 3001:3001
-    env_file: populate-kartoffel.env
-    depends_on: 
-      - mongo-primary
-      - mongo-secondary
-      - rabbit
-    networks: 
-      - my-network
-
-  search:
-    image: systemgenesis0/search
-    restart: unless-stopped
-    ports:
-      - 9001:9001
-    env_file: ./docker-compose-config/search/config/search_docker.env
-    # volumes:
-    #   - ./db-enums.ts:/usr/src/app/app/config/db-enums.ts
-    depends_on:
-      - rabbit
-      - elasticsearch
-    networks: 
-      - my-network
-
-  read-service:
-    image: systemgenesis0/read-service
-    restart: unless-stopped
-    ports:
-      - 8000:8000
-    env_file: ./docker-compose-config/read-service/config/read-service.env
-    depends_on:
-      - populate-kartoffel
-      - mongo-primary
-      - mongo-secondary
-    networks: 
-      - my-network
-
-  gate:
-    image: systemgenesis0/gate
-    restart: unless-stopped
-    ports:
-      - 7040:3001
-    env_file: ./docker-compose-config/gate/config/gate.env
-    volumes:
-      - ./docker-compose-config/gate/volumes/config.js:/dist/config/index.js
-    depends_on:
-      - search
-      - read-service
-      - write-service
-    networks: 
-      - my-network
 
 networks: 
   my-network:

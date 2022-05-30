@@ -10,6 +10,6 @@ export const createDenormalizedDigitalIdentity = async (
   const DIRole = await findOne(roleModel, {
     digitalIdentityUniqueId: digitalIdentityId,
   });
-  const denormalizedDIRole = DIRole? await createDenormalizedRole(DIRole.roleId) : null;
+  const denormalizedDIRole = DIRole ? await createDenormalizedRole(DIRole.roleId) : null;
   return { ...digitalIdentity, role: denormalizedDIRole } as DenormalizedDigitalIdentity;
 };

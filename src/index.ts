@@ -8,7 +8,7 @@ import server from "./infra/express/server";
 
 const main = async () => {
   await initializeMongo();
-  
+
   await initializeRabbit();
 
   await rabbitConsumer();
@@ -17,7 +17,7 @@ const main = async () => {
 
   //start dev environment
   if (config.isMock) await buildMocks();
-  if(config.iaRecoveryScript) await recoveryScript()
+  if (config.iaRecoveryScript) await recoveryScript()
 };
 
 main().catch((err) => {

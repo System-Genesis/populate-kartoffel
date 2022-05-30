@@ -1,9 +1,13 @@
 import config from "../../config";
-import { DenormalizedRole } from "../../config/types";
+import { DenormalizedEntity, DenormalizedOrganizationGroup, DenormalizedRole } from "../../config/types";
 import { getConnectedObject } from "../getConnectedObject";
 import { organizationGroupModel, roleModel } from "../../infra/repo/models";
 import { findOne } from "../../infra/repo/repository";
 import { createDenormalizedOrganizationGroup } from "./createDenormalizedOrganizationGroup";
+
+const validJobTitle = (jobTitle: string): boolean => {
+  return !!jobTitle && jobTitle !== 'unknown';
+}
 
 export const createDenormalizedRole = async (roleId: string) => {
   const role = await findOne(roleModel, { roleId: roleId });
@@ -12,15 +16,15 @@ export const createDenormalizedRole = async (roleId: string) => {
   if (!organizationGroup) {
     return role as DenormalizedRole;
   } else {
-    const denormalizedOrganizationGroup =
-      await createDenormalizedOrganizationGroup(organizationGroup._id);
-    const roleEntity = await getConnectedObject(
+    const denormalizedOrganizationGroup: Partial<DenormalizedOrganizationGroup> =
+      await createDenormalizedOrganizationGroup(organizationGroup._id, false);
+    const roleEntity: DenormalizedEntity = await getConnectedObject(
       roleId,
       config.mongo.roleCollectionName,
       config.mongo.entityCollectionName
     );
 
-    const hierarchyNames =
+    const hierarchyNames: string =
       (denormalizedOrganizationGroup.hierarchy
         ? denormalizedOrganizationGroup.hierarchy + "/"
         : "") +
@@ -28,15 +32,21 @@ export const createDenormalizedRole = async (roleId: string) => {
         ? denormalizedOrganizationGroup.name
         : "");
 
-    const displayNameValue = roleEntity
-      ? hierarchyNames +
-        "/" +
-        role.jobTitle +
-        "- " +
-        roleEntity.firstName +
-        " " +
-        roleEntity.lastName
-      : hierarchyNames;
+    // const displayNameValue = roleEntity
+    //   ? hierarchyNames +
+    //   "/" +
+    //   role.jobTitle +
+    //   " - " +
+    //   roleEntity.firstName +
+    //   " " +
+    //   roleEntity.lastName
+    //   : hierarchyNames;
+
+    const entityFullName = `${roleEntity.firstName}${roleEntity.lastName ? ` ${roleEntity.lastName}` : ''}`;
+
+    const displayNameValue = roleEntity ? `${hierarchyNames}/${validJobTitle(role.jobTitle) ?
+      `${role.jobTitle} - ${entityFullName}` : `${entityFullName}`}` : hierarchyNames;
+
     const hierarchyValue = hierarchyNames;
     const hierarchyIdsValue = [role.directGroup].concat(
       denormalizedOrganizationGroup.ancestors
