@@ -16,15 +16,10 @@ export default async (updatedDI: DigitalIdentity, connectionUpdate: boolean, ope
   } else {
     const updatedDIId = updatedDI.uniqueId;
     if (operationType != config.operationTypes.insert) {
-      // TODO ELI: calling the same function at both scenarios
-      //           better just change the values and call 'getConnectedObject' and 'entityHandler' once
-      //done
       let sourceCollectionName: string;
       if (connectionUpdate && !updatedDI[collectionsMap.objectConnectionFields[DICollectionName][entityCollectionName]]) { //disconnect
         sourceCollectionName = denormalizedDICollectionName
       } else { // connect/regular update
-        // TODO ELI: 'DIEntity' is confusing name consider connectedEntity instead
-        //done
         sourceCollectionName = DICollectionName
       }
       const DIEntity = await getConnectedObject(updatedDIId, sourceCollectionName, entityCollectionName) as Entity

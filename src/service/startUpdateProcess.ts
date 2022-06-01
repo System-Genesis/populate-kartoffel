@@ -37,7 +37,6 @@ const isDependencyFieldChangedQuery = (
       changeEventObject.description.updateDescription.removedFields;
     const allUpdatesFields = removedFields.concat(Object.keys(updatedFields));
     for (const updatedField of allUpdatesFields) {
-      // TODO ELI: .include() does the job and looks much more sexy
       for (const connectionField in collectionsMap.objectConnectionFields[
         collectionName
       ]) {
@@ -47,7 +46,6 @@ const isDependencyFieldChangedQuery = (
             connectionField
           ] == updatedField
         ) {
-          // TODO ELI: add {} when its not one line condition
           return true;
         }
       }
@@ -82,8 +80,6 @@ export default async (changeEventObject: MyChangeEvent) => {
       console.log(
         `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
       );
-      // TODO ELI: test this change
-      //hagai: looks okay
     } else {
       const isDependencyChange = isDependencyFieldChangedQuery(
         changeEventObject,

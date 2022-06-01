@@ -10,14 +10,10 @@ export const initializeMongo = async () => {
     useUnifiedTopology: true,
   });
 
-  // TODO ELI: 'await' has no effect on the type of this expression
-  //done
   mongoose.connection.on("reconnected", function () {
     console.info("Reconnected to MongoDB");
   });
 
-  // TODO ELI: 'await' has no effect on the type of this expression
-  //done
   mongoose.connection.on("disconnected", () =>
     console.info("MongoDB disconnected")
   );
