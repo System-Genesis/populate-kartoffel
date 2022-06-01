@@ -19,6 +19,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     phone: [String],
     address: String,
     clearance: String, // String,of number - enum
+    fullClearance: String,
     sex: String,
     birthDate: Date,
     mobilePhone: [String], //value object

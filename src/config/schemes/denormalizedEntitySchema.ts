@@ -21,6 +21,7 @@ export default new Schema<DenormalizedEntity, Model<DenormalizedEntity>, Denorma
     phone: [String],
     address: String,
     clearance: String,
+    fullClearance: String,
     sex: String,
     birthDate: Date,
     goalUserId: String,

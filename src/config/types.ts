@@ -59,8 +59,9 @@ export interface Entity extends Object {
   organization?: string;
   rank?: string; //use vale object / enum
   akaUnit?: string;
-  clearance?: number; // value object
-  sex?: String;
+  clearance?: string; // value object
+  fullClearance?: string;
+  sex?: string;
   serviceType?: string; //value object
   dischargeDay?: Date;
   birthDate?: Date;
@@ -68,13 +69,13 @@ export interface Entity extends Object {
   phone?: string[]; //value object
   mobilePhone?: string[]; //value object
   goalUserId?: string;
-  primaryDigitalIdentityId: String;
+  primaryDigitalIdentityId: string;
   pictures: {
     profile: {
-      url: String;
+      url: string;
       meta: {
-        path: String;
-        format: String;
+        path: string;
+        format: string;
         takenAt: Date;
         updatedAt: Date;
       };
