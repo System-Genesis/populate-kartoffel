@@ -4,7 +4,7 @@ import config from "../../config/index";
 const { rabbit, prefetchAmount } = config;
 
 export const initializeRabbit = async () => {
-  await menash.connect(rabbit.uri, { forever: true });
+  await menash.connect(config.rabbit.uri, config.rabbit.retryOptions);
   await menash.declareTopology({
     queues: [
       {

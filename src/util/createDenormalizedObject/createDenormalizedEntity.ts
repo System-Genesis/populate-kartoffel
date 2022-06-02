@@ -12,14 +12,19 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
     _id: entityId,
   });
   const DIs = await find(digitalIdentityModel, { entityId: entityId });
-
-  const fullNameValue = `${entity.firstName} ${entity.lastName ? entity.lastName : ''}`;
+  const fullNameValue = `${entity.firstName} ${entity.lastName? entity.lastName: ''}`;
+  let employeeIdValue : string | null = null;
+  
+  if (entity.organization && entity.employeeNumber) {
+    employeeIdValue = `${entity.organization}-${entity.employeeNumber}`;
+  }
 
   const primaryDIId = entity.primaryDigitalIdentityId;
   delete entity.primaryDigitalIdentityId;
   let denormalizedEntity = {
     ...entity,
     fullName: fullNameValue,
+    employeeId: employeeIdValue,
     digitalIdentities: [],
   } as unknown as DenormalizedEntity;
 

@@ -33,7 +33,8 @@
     "build": "tsc",
     "start": "ts-node src/index.ts",
     "dev": "npm run build && npm start",
-    "docker-azure": "docker build -t genesisproject.azurecr.io/system-genesis/populate-kartoffel:latest . && docker push genesisproject.azurecr.io/system-genesis/populate-kartoffel:latest "
+    "docker-azure": "docker build -t genesisproject.azurecr.io/system-genesis/populate-kartoffel:latest . && docker push genesisproject.azurecr.io/system-genesis/populate-kartoffel:latest ",
+    "docker-azure-dev": "docker build -t genesisproject.azurecr.io/system-genesis/populate-kartoffel:dev . && docker push genesisproject.azurecr.io/system-genesis/populate-kartoffel:dev "
   },
   "repository": {
     "type": "git",

@@ -8,6 +8,8 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     entityType: String, // enum
     identityCard: String,
     personalNumber: String,
+    employeeNumber: String,
+    organization: String,
     serviceType: String,
     firstName: String,
     lastName: String,
@@ -17,6 +19,7 @@ export default new Schema<Entity, Model<Entity>, Entity>(
     phone: [String],
     address: String,
     clearance: String, // String,of number - enum
+    fullClearance: String,
     sex: String,
     birthDate: Date,
     mobilePhone: [String], //value object

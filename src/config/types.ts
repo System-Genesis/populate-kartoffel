@@ -62,24 +62,28 @@ export interface Entity extends Object {
   entityType: String;
   personalNumber?: string; 
   identityCard?: string;
-  rank?: string; 
+  employeeNumber?: string;
+  employeeId?: string;
+  organization?: string;
+  rank?: string; //use vale object / enum
   akaUnit?: string;
-  clearance?: number; 
-  sex?: String;
-  serviceType?: string;
+  clearance?: string; // value object
+  fullClearance?: string;
+  sex?: string;
+  serviceType?: string; //value object
   dischargeDay?: Date;
   birthDate?: Date;
   address?: string; 
   phone?: string[]; 
   mobilePhone?: string[];
   goalUserId?: string;
-  primaryDigitalIdentityId: String;
+  primaryDigitalIdentityId: string;
   pictures: {
     profile: {
-      url: String;
+      url: string;
       meta: {
-        path: String;
-        format: String;
+        path: string;
+        format: string;
         takenAt: Date;
         updatedAt: Date;
       };
