@@ -1,5 +1,5 @@
 import config from "../../config";
-import { DenormalizedEntity } from "../../config/types";
+import { DenormalizedDigitalIdentity, DenormalizedEntity } from "../../config/types";
 import { createDenormalizedDigitalIdentity } from "./createDenormalizedDigitalIdentity";
 import { createDenormalizedRole } from "./createDenormalizedRole";
 import { getConnectedObject } from "../getConnectedObject";
@@ -29,8 +29,8 @@ export const createDenormalizedEntity = async (entityId: Types.ObjectId) => {
   } as unknown as DenormalizedEntity;
 
   if (DIs.length != 0) {
-    const populatedDIs = await Promise.all(
-      DIs.map((DI) => createDenormalizedDigitalIdentity(DI.uniqueId))
+    const populatedDIs = await Promise.all<DenormalizedDigitalIdentity>(
+      DIs.map((DI)=> createDenormalizedDigitalIdentity(DI.uniqueId))
     );
     denormalizedEntity.digitalIdentities = populatedDIs;
 

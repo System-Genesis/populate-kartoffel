@@ -14,14 +14,14 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
     return;
   }
   // TODO ELI: error handler
-  const denormalizedObject = await createDenormalizedObject[collectionName](dataObjectId as any);
+  const denormalizedObject = await createDenormalizedObject[collectionName](dataObjectId as any) as any;
   const filterQuery = {
     [collectionsMap.uniqueID[collectionName]]:
       denormalizedObject[collectionsMap.uniqueID[collectionName]],
   }; 
   const id = denormalizedObject._id
-  delete denormalizedObject._id
-  delete denormalizedObject.updatedAt
+  delete denormalizedObject._id; //TODO: fix typing
+  delete denormalizedObject.updatedAt //TODO: fix typing
   const responseFromDB = await findOneAndReplace(collectionsMap.denormalizedModelsMap[collectionName], filterQuery, denormalizedObject)
   if(!responseFromDB){
     denormalizedObject._id = id;

@@ -5,7 +5,7 @@ import { createDenormalizedRole } from "./createDenormalizedRole";
 
 export const createDenormalizedDigitalIdentity = async (
   digitalIdentityId: string
-) => {
+) : Promise<DenormalizedDigitalIdentity> => {
   const digitalIdentity = await findOne(digitalIdentityModel, { uniqueId: digitalIdentityId });
   const DIRole = await findOne(roleModel, {
     digitalIdentityUniqueId: digitalIdentityId,
