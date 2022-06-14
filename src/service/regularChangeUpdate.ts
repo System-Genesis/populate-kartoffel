@@ -8,6 +8,7 @@ import {
   DenormalizedOrganizationGroup,
   DenormalizedRole
 } from "../config/types";
+import logger from 'logger-genesis';
 
 export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
   if (!dataObjectId) {
@@ -26,6 +27,7 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
       denormalizedObject._id = id;
       await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
     }
-    console.log(`the change has completed in ${collectionName} collection:`, JSON.stringify(denormalizedObject))
+    // console.log(`the change has completed in ${collectionName} collection:`, JSON.stringify(denormalizedObject))
+    logger.info(true, 'APP', `Change has completed in ${collectionName}`, JSON.stringify(denormalizedObject));
   }
 };

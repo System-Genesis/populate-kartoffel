@@ -69,6 +69,11 @@ export const config = {
   pictures: {
     baseUrl: env.get("BASE_URL").required().asUrlString(),
     urlSuffix: env.get("URL_SUFFIX").required().asString(),
+  },
+  logger: {
+    systemName: env.get("SYSTEM_NAME").required().asString(),
+    serviceName: env.get("SERVICE_NAME").required().asString(),
+    queueName: env.get("QUEUE_NAME").required().asString(),
   }
 };
 
