@@ -1,5 +1,6 @@
 import { menash } from "menashmq";
 import config from "../../config/index";
+import logger from 'logger-genesis';
 
 /**
  * publish an object to rabbit
@@ -8,9 +9,10 @@ import config from "../../config/index";
 export default (objectToSend: Object) => {
   menash.send(config.rabbit.queueName, objectToSend, { persistent: true }).then(
     () => {
-      console.log(
-        `change sent back to rabbit: ${JSON.stringify(objectToSend)}`
-      );
+      // console.log(
+      //   `change sent back to rabbit: ${JSON.stringify(objectToSend)}`
+      // );
+      logger.info(true, 'APP', 'Change sent back to rabbit', JSON.stringify(objectToSend));
     },
     (err) => {
       console.error(err);
