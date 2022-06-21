@@ -8,10 +8,11 @@
     "dotenv": "^10.0.0",
     "env-var": "^7.0.1",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "helmet": "^5.1.0",
     "menashmq": "^0.1.5",
     "mongoose": "^5.12.14",
-    "node": "^16.1.0",
-    "faker": "^5.5.3"
+    "node": "^16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

@@ -1,69 +1,26 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import config from "../../config";
-import regularChangeUpdate from "../../service/regularChangeUpdate";
+import { errorMiddleware } from "./error";
+import appRouter from "./router";
+import helmet from 'helmet';
+import { wrapMiddleware } from "./wrappers";
+import { authCheck } from "./authCheck";
+import mockRouter from "../../mocks/server";
 
 export const app = express();
 
-const { mongo } = config;
-
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/**
- * recovery runs
- */
+app.use('/api', wrapMiddleware(authCheck) ,appRouter);
+if(config.isMock) app.use(mockRouter);
+app.use(errorMiddleware);
+
 export default async () => {
-  app.post("/populateEntity", async function (req: Request, res: Response) {
-    if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, mongo.entityCollectionName);
-      res.send(`the object with the id '${req.body.id}' has updated`);
-    } else {
-      res.status(401);
-      res.send(`request unauthorized`);
-    }
-  });
-
-  app.post("/populateDI", async function (req: Request, res: Response) {
-    if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(
-        req.body.id,
-        mongo.digitalIdentityCollectionName
-      );
-      res.send(`the object with the id '${req.body.id}' has updated`);
-    } else {
-      res.status(401);
-      res.send(`request unauthorized`);
-    }
-  });
-
-  app.post("/populateRole", async function (req: Request, res: Response) {
-    if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(req.body.id, mongo.roleCollectionName);
-      res.send(`the object with the id '${req.body.id}' has updated`);
-    } else {
-      res.status(401);
-      res.send(`request unauthorized`);
-    }
-  });
-
-  app.post("/populateGroup", async function (req: Request, res: Response) {
-    if (authCheck(req.headers.authorization)) {
-      await regularChangeUpdate(
-        req.body.id,
-        mongo.organizationGroupCollectionName
-      );
-      res.send(`the object with the id '${req.body.id}' has updated`);
-    } else {
-      res.status(401);
-      res.send(`request unauthorized`);
-    }
-  });
-
   app.listen(config.port, () =>
     console.log("server runs on port:" + config.port)
   );
 };
 
-const authCheck = (authString) => {
-  return authString === config.apiPassword;
-};
+

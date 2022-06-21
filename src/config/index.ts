@@ -56,7 +56,7 @@ export const config = {
       factor: env.get('RABBIT_RETRY_FACTOR').default(1.8).asFloatPositive(),
     },
   },
-  port: env.get("PORT").required().asPortNumber(),
+  port: env.get("PORT").required().asPortNumber() || 3000,
   isMock: env.get("IS_MOCK").required().asBool(),
   iaRecoveryScript: env.get("IS_RECOVERY_SCRIPT").required().asBool(),
   recoveryCollectionsArray: env.get("RECOVERY_COLLECTIONS_ARRAY").required().asArray(),

@@ -28,4 +28,5 @@ export default async (dataObjectId: Types.ObjectId, collectionName: string) => {
     await create(collectionsMap.denormalizedModelsMap[collectionName], denormalizedObject)
   } 
   console.log(`the change has completed in ${collectionName} collection:`, JSON.stringify(denormalizedObject))
+  return denormalizedObject;
 };
