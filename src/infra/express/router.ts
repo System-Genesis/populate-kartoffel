@@ -1,28 +1,12 @@
-import { Request,Response, Router } from "express";
-import config from '../../config'
-import regularChangeUpdate from "../../service/regularChangeUpdate";
-
-const mongo = config.mongo
+import { Router } from "express";
+import runPopulateOnObject  from "./controllers/runPopulateOnObject";
+// import recoveryRouter from "./routers/router.recovery";
+import { wrapController } from "./wrappers";
 
 const appRouter = Router();
 
-/**
- * recovery runs
- */
-appRouter.post("/populateEntity", async function (req: Request, res: Response) {
-  res.json(await regularChangeUpdate(req.body.id, mongo.entityCollectionName));
-});
+//appRouter.use("/recovery", recoveryRouter)
 
-appRouter.post("/populateDI", async function (req: Request, res: Response) {
-  res.json(await regularChangeUpdate(req.body.id, mongo.digitalIdentityCollectionName));
-});
-
-appRouter.post("/populateRole", async function (req: Request, res: Response) {
-  res.json(await regularChangeUpdate(req.body.id, mongo.roleCollectionName));
-});
-
-appRouter.post("/populateGroup", async function (req: Request, res: Response) {
-  res.json(await regularChangeUpdate(req.body.id, mongo.organizationGroupCollectionName));
-});
+appRouter.post("/populate/:type", wrapController(runPopulateOnObject));
 
 export default appRouter;
