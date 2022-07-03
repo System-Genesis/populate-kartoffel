@@ -2,6 +2,7 @@ import config from "../config";
 import collectionsMap from "../config/collectionsMap";
 import regularChangeUpdate from "../service/regularChangeUpdate";
 import { find } from "../infra/repo/repository";
+import logger from 'logger-genesis';
 
 /**
  * go over all the writeDB and updates the readDB for each one
@@ -18,13 +19,15 @@ export const recoveryScript = async () => {
  * @param collectionName the collection that is going to be updated
  */
 const createDenormalizedForCollection = async (collectionName) => {
-  console.log(`running recovery script on - ${collectionName}`);
+  // console.log(`running recovery script on - ${collectionName}`);
+  logger.info(true, 'APP', 'Recovery is starting', `Recovery on collection: ${collectionName} is starting`);
   const collectionData = await find(
     collectionsMap.modelsMap[collectionName],
     {}
   );
   await callFunctionOnEachArrayElementInBatches(collectionName, collectionData);
-  console.log(`recovery is finished for -${collectionName}`);
+  // console.log(`recovery is finished for -${collectionName}`);
+  logger.info(true, 'APP', 'Recovery done', `Recovery on collection: ${collectionName} has done`);
 };
 
 /**

@@ -6,6 +6,7 @@ import DIHandler from "./DIHandler";
 import entityHandler from "./entityHandler";
 import { getConnectedObject } from "../../util/getConnectedObject";
 import { Types } from "mongoose";
+import logger from 'logger-genesis';
 
 const roleCollectionName = config.mongo.roleCollectionName;
 const denormalizedRoleCollectionName = config.mongo.denormalizedRoleCollectionName;
@@ -13,8 +14,10 @@ const DICollectionName = config.mongo.digitalIdentityCollectionName;
 const entityCollectionName = config.mongo.entityCollectionName;
 
 export default async (updatedRole: Role, connectionUpdate: boolean, operationType: string) => {
-  if(!updatedRole){
-    console.log(`trying to access to 'Role' that doesn't exist`)
+  if (!updatedRole) {
+    // console.log(`trying to access to 'Role' that doesn't exist`)
+    logger.warn(false, 'APP', `trying to access to 'Role' that doesn't exist`,
+      `trying to access to 'Role' that doesn't exist`);
   } else {
     const updatedRoleId = updatedRole.roleId;
     if (operationType != config.operationTypes.insert) {
@@ -23,9 +26,9 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
       if (connectionUpdate && !updatedRole[collectionsMap.objectConnectionFields[roleCollectionName][DICollectionName] as string]) {
 
         const roleConnectedDI = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, DICollectionName)
-        
-        if(roleConnectedDI) await DIHandler(roleConnectedDI, false, config.operationTypes.update)
-        else{
+
+        if (roleConnectedDI) await DIHandler(roleConnectedDI, false, config.operationTypes.update)
+        else {
           const entityDigitalIdentity = await getConnectedObject(updatedRoleId, denormalizedRoleCollectionName, entityCollectionName)
           await entityHandler(entityDigitalIdentity)
         }
@@ -33,7 +36,7 @@ export default async (updatedRole: Role, connectionUpdate: boolean, operationTyp
         const roleConnectedDI = await getConnectedObject(updatedRoleId, roleCollectionName, DICollectionName)
         await DIHandler(roleConnectedDI, false, config.operationTypes.update)
       }
-    }  
+    }
     await regularChangeUpdate(updatedRoleId as unknown as Types.ObjectId, roleCollectionName);
   }
 };

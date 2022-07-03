@@ -7,6 +7,7 @@ import OGHandler from "./collectionsHandlers/OGHandler";
 import entityHandler from "./collectionsHandlers/entityHandler";
 import roleHandler from "./collectionsHandlers/roleHandler";
 import { deleteHandler } from "./deleteHandler";
+import logger from 'logger-genesis';
 
 const { mongo, operationTypes } = config;
 
@@ -43,7 +44,7 @@ const isDependencyFieldChangedQuery = (
         if (
           connectionField &&
           collectionsMap.objectConnectionFields[collectionName][
-            connectionField
+          connectionField
           ] == updatedField
         ) {
           return true;
@@ -77,9 +78,11 @@ export default async (changeEventObject: MyChangeEvent) => {
       await deleteHandler[collectionName](
         changeEventObject.description.documentKey._id
       );
-      console.log(
-        `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
-      );
+      // console.log(
+      //   `the object with the id '${changeEventObject.description.documentKey._id}' has deleted`
+      // );
+      logger.info(true, 'APP', `Object deleted in collection: ${changeEventObject.description.ns.coll}`,
+        `Object with id: ${changeEventObject.description.documentKey._id} has deleted`);
     } else {
       const isDependencyChange = isDependencyFieldChangedQuery(
         changeEventObject,
